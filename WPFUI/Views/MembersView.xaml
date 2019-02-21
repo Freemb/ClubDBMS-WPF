@@ -1,12 +1,14 @@
-﻿<UserControl x:Class="MinervaWPFUI.Views.MembersView"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MinervaWPFUI.Views"
+             xmlns:local="clr-namespace:WPFUI.Views"
+             xmlns:ViewModels="clr-namespace:WPFUI.ViewModels" 
+             x:Class="WPFUI.Views.MembersView"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1000">
-        
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -33,39 +35,38 @@
             <TextBlock Text ="Gender" Margin="5" MinHeight="35" MinWidth="20"/>
             <TextBlock Text ="D.O.B" Margin="5" MinHeight="35" MinWidth="20"/>
         </StackPanel>
-        
-         <StackPanel Grid.Column="2" Grid.Row="1" >
-                <TextBox x:Name="MemNo" Text="{Binding Path = SelectedMember.MemNo, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Title" Text="{Binding Path = SelectedMember.Title, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Forename" Text="{Binding Path = Members/Forename, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Surname" Text="{Binding Path = Members/Surname, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Category" Text="{Binding Path = Members/Category, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Email" Text="{Binding Path = Members/Email, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="MobileTel" Text="{Binding Path = Members/MobileTel, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="HomeTel" Text="{Binding Path = Members/HomeTel, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Gender" Text="{Binding Path = Members/Gender, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="DOB" Text="{Binding Path = Members/DateOfBirth, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-          </StackPanel>
-        
-        <DataGrid x:Name="Members" Grid.Row="1" Grid.Column="3" Margin="5" AlternatingRowBackground="Gray" IsReadOnly="True" 
+
+        <StackPanel Grid.Column="2" Grid.Row="1" >
+            <TextBox x:Name="MemNo" Text="{Binding Members/MemNo, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="Title" Text="{Binding Members/Title, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="Forename" Text="{Binding Members/Forename, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="Surname" Text="{Binding Members/Surname, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="Category" Text="{Binding Members/Category, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="Email" Text="{Binding Members/Email, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="MobileTel" Text="{Binding Members/MobileTel, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="HomeTel" Text="{Binding Members/HomeTel, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="Gender" Text="{Binding Members/Gender, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="DOB" Text="{Binding Members/DateOfBirth, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+        </StackPanel>
+
+        <DataGrid x:Name="GridMembers" ItemsSource="{Binding Members}" Grid.Row="1" Grid.Column="3" Margin="5" AlternatingRowBackground="Gray" IsReadOnly="True" 
                   AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mem No" Binding="{Binding Path = MemNo}"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding Path = Title}"/>
-                <DataGridTextColumn Header="Forename" Binding="{Binding Path = Forename}"/>
-                <DataGridTextColumn Header="Surname" Binding="{Binding Path = Surname}"/>
-                <DataGridTextColumn Header="Category" Binding="{Binding Path = Category}"/>
+                <DataGridTextColumn Header="Mem No" Binding="{Binding MemNo}"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}"/>
+                <DataGridTextColumn Header="Forename" Binding="{Binding Forename}"/>
+                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}"/>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
                 <DataGridTextColumn Header="HomeTel" Binding="{Binding HomeTel}"/>
                 <DataGridTextColumn Header="MobileTel" Binding="{Binding MobileTel}"/>
                 <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
-                <DataGridTextColumn Header="D.O.B." Binding="{Binding Path = DateOfBirth,StringFormat = d}"/>
-            </DataGrid.Columns>
-            
+                <DataGridTextColumn Header="D.O.B." Binding="{Binding DateOfBirth, StringFormat=d}"/>
+            </DataGrid.Columns>            
         </DataGrid>
 
         <!--Row 2-->
     </Grid>
-    
+
 </UserControl>
    

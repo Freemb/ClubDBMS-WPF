@@ -1,0 +1,38 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:VMs="clr-namespace:WPFUI.ViewModels"
+        xmlns:Vs="clr-namespace:WPFUI.Views"
+        xmlns:local ="clr-namespace:WPFUI"
+        x:Class="WPFUI.Views.ShellView"
+        mc:Ignorable="d"
+        Title="ShellView" Height="450" Width="800" FontFamily="Segoe UI" FontSize="16">
+        <Window.DataContext><VMs:ShellViewModel/></Window.DataContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <!--Row 1-->
+        <Button Command="{Binding LoadMembersCommand}" Grid.Column="1" Grid.Row="1" Content="Members" Margin="0,0,5,0"/>
+        <Button x:Name="LoadVisits" Command="{Binding LoadVisitsCommand}" Grid.Column="2" Grid.Row="1" Content ="Visits" Margin="0,0,5,0"/>
+        <!--row 2-->
+        <ContentControl Content="{Binding CurrentView}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
+
+
+    </Grid>
+</Window>

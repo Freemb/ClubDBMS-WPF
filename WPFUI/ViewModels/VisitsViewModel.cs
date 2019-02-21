@@ -4,44 +4,49 @@ using System.Linq;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
-using Caliburn.Micro;
+using System.Collections.ObjectModel;
 using DataLibrary.Models;
 using DataLibrary.Operations;
-using MinervaWPFUI.Views;
+using WPFUI.Views;
+using WPFUI.Utility;
 
-namespace MinervaWPFUI.ViewModels
+namespace WPFUI.ViewModels
 {
-	public class VisitsViewModel: Screen
+	public class VisitsViewModel:ObservableObject
 	{
 		private VisitModel _selectedvisit;
-		private BindableCollection<VisitModel> _visits;
+		private ObservableCollection<VisitModel> _visits;
 		private MemberModel _member;
 
 		public MemberModel Member
 		{
 			get { return _member; }
-			set	{_member = value;	NotifyOfPropertyChange(); }
+			set { OnPropertyChanged(ref _member, value); }   //NotifyOfPropertyChange(); 
+			
 		}
 
 
-		public BindableCollection<VisitModel> Visits
+		public ObservableCollection<VisitModel> Visits
 		{
 			get { return _visits; }
-			set { _visits = value; NotifyOfPropertyChange(() => Visits); }
+			set { OnPropertyChanged(ref _visits, value); } //NotifyOfPropertyChange(() => Visits);
+			
 		}
 
 
 		public VisitModel SelectedVisit
 		{
 			get { return _selectedvisit; }
-			set { _selectedvisit = value; }
+			set { OnPropertyChanged(ref _selectedvisit, value); }
 		}
 		public VisitsViewModel()
 		{
 			VisitConnector vconn = new VisitConnector();
-			Visits = new BindableCollection<VisitModel>( vconn.Load("22/07/2017", true));
+			Visits = new ObservableCollection<VisitModel>( vconn.Load("22/07/2017", true));
 			
 		}
+
+		//move elsewhere
 
 		public List<string> LoadActivities()
 		{

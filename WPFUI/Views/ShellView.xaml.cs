@@ -10,19 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data;
+using DataLibrary.Operations;
+using WPFUI.ViewModels;
 
-namespace WPFUI
+namespace WPFUI.Views
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for ShellView.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class ShellView : Window
 	{
-		public MainWindow()
+		//public ShellViewModel _shell = new ShellViewModel();
+		public static DataSet Softcache { get; set; } = new DataSet();
+		public ShellView()
 		{
 			InitializeComponent();
-		}
+			//DataContext = _shell; // can set here or in xaml
+		}		
 	}
+
 }
