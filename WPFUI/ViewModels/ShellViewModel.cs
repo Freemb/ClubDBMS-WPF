@@ -18,7 +18,7 @@ namespace WPFUI.ViewModels
 		public VisitsViewModel VisVM { get; private set; }
 		public PortalViewModel Portal { get; private set; }
 		public static ShellViewModel GetInstance { get { return _instance; } }
-		public static DataSet Softcache { get; set; } = new DataSet();
+		public static DataSet Softcache { get; set; } = new DataSet("Cache");
 				
 		private static readonly ShellViewModel _instance = new ShellViewModel();
 		private object _currentView;
@@ -48,6 +48,9 @@ namespace WPFUI.ViewModels
 			Softcache.Tables.Add(mc1.Load(null));
 			ActivityConnector ac2 = new ActivityConnector();
 			Softcache.Tables.Add(ac2.Load(null));
+			// passing instance gives unexpected results of recursiveness because constructor gets called within itself.*****
+
+
 
 			Portal = new PortalViewModel(this); VisVM = new VisitsViewModel(this); MemVM = new MembersViewModel(this); //passing instance of shellviewmodel to portal for access to commands
 			LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM);

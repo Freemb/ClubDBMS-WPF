@@ -15,16 +15,16 @@ namespace WPFUI.ViewModels
 {
 	public class MembersViewModel: ObservableObject
 	{
-		private ObservableCollection<MemberModel> _members;
-		private MemberModel _selectedmember;
-		public ShellViewModel ShellDerived { get; private set; }
+		private ObservableCollection<MemberModel> _members = new ObservableCollection<MemberModel>();
+		private MemberModel _selectedmember = new MemberModel();
+		public ShellViewModel ShellPassed { get; private set; }
 
 		public ObservableCollection<MemberModel> Members
 		{
 			get { return _members; }
 			set { OnPropertyChanged(ref _members, value); } 
 		}
-		public MembersViewModel():this(ShellViewModel.GetInstance)
+		public MembersViewModel()//this(ShellViewModel.GetInstance)
 		{
 			
 		}
@@ -34,9 +34,9 @@ namespace WPFUI.ViewModels
 			set	{ OnPropertyChanged(ref _selectedmember, value); }
 		}
 
-		public MembersViewModel(ShellViewModel shellderived)
+		public MembersViewModel(ShellViewModel shell)
 		{
-			ShellDerived = shellderived;
+			this.ShellPassed = shell;
 			MemberConnector mconn = new MemberConnector();
 			Members = new ObservableCollection<MemberModel>(mconn.Load(null, true));
 			SelectedMember = Members.First<MemberModel>();

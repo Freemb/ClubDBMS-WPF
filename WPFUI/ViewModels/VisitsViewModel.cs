@@ -15,23 +15,35 @@ namespace WPFUI.ViewModels
 {
 	public class VisitsViewModel:ObservableObject
 	{
-		private VisitModel _selectedvisit;
 		private ObservableCollection<VisitModel> _visits;
-		private MemberModel _selectedmember;
+		private VisitModel _selectedvisit = new VisitModel();
+		private MemberModel _selectedmember = new MemberModel();
 		private ObservableCollection<string> _activityList;
+		private IEnumerable<ActivityModel> _allActivityWithprices;
 
-		public ShellViewModel ShellDerived { get; private set; }
+		public IEnumerable<ActivityModel> AllPrices
+		{
+			get { return _allActivityWithprices; }
+			set { _allActivityWithprices = value; }
+		}
 
-		public ICommand GetActivityListCommand;
+		//private ObservableCollection<string> _subactivityList;
+
+		public ObservableCollection<string> SubActivityList
+		{
+			get { return GetSubActivities(SelectedVisit.Activity.ActivityName); }
+			//set { OnPropertyChanged(ref _subactivityList, value); }
+		}
+
+
+		public ShellViewModel ShellPassed { get; private set; }
 
 		public MemberModel SelectedMember
 		{
 			get { return _selectedmember; }
-			set { OnPropertyChanged(ref _selectedmember, value); }   //NotifyOfPropertyChange(); 
+			set { OnPropertyChanged(ref _selectedmember, value); }   
 			
 		}
-
-
 		public ObservableCollection<VisitModel> Visits
 		{
 			get { return _visits; }
@@ -40,7 +52,11 @@ namespace WPFUI.ViewModels
 		public ObservableCollection<string> ActivityList
 		{
 			get { return _activityList; }
-			set { OnPropertyChanged(ref _activityList, value); }
+			set
+			{
+				OnPropertyChanged(ref _activityList, value);
+				
+			}
 
 		}
 
@@ -49,37 +65,33 @@ namespace WPFUI.ViewModels
 			get { return _selectedvisit; }
 			set
 			{
-				OnPropertyChanged(ref _selectedvisit, value);
+				OnPropertyChanged(ref _selectedvisit, value);				
+				OnPropertyChanged("SubActivityList");
 				SelectedMember = GetMemberDetails(_selectedvisit.Member.MemNo);
-				
+						
 			}
 		}
-		public VisitsViewModel():this(ShellViewModel.GetInstance)
+		//Constructors
+		public VisitsViewModel()//this(ShellViewModel.GetInstance)
 		{
 			
 		}
-		public VisitsViewModel(ShellViewModel shellderived)
+		public VisitsViewModel(ShellViewModel shell)
 		{
-			ShellDerived = shellderived;
+			this.ShellPassed = shell;
 			VisitConnector vconn = new VisitConnector();
 			ActivityConnector aconn = new ActivityConnector();
 			Visits = new ObservableCollection<VisitModel>(vconn.Load("22/07/2017", true));
-			GetActivityList(aconn);
-
+			SelectedVisit = Visits.First<VisitModel>();
+			ActivityList = GetActivityList();
+			//AllPrices = Convertactivity();
 		}
 
-		private void GetActivityList(ActivityConnector aconn)
-		{
-			ActivityList = new ObservableCollection<string>(ShellViewModel.Softcache.Tables["Activities"].AsEnumerable().Select(
-							datarow => datarow.Field<string>("Activity")).Distinct().ToList());
-
-			//GetActivityListCommand = new RelayCommand(GetActivityList);
-			//ActivityList = new ObservableCollection<ActivityModel>(aconn.Load(true));
-		}
+		
 
 
-		//move elsewhere
-		public MemberModel GetMemberDetails(double memno)
+		//move elsewhere :extension methods
+		private MemberModel GetMemberDetails(double memno)
 		{
 			DataRow dr = ShellViewModel.Softcache.Tables["Members"].AsEnumerable().Where(datarow => datarow.Field<double>("MemNo") == memno).Single();
 			return new MemberModel
@@ -95,17 +107,38 @@ namespace WPFUI.ViewModels
 				DateOfBirth = dr.IsNull("DOB") ? DateTime.MinValue : dr.Field<DateTime>("DOB")
 			};
 		}
-		
-		
-		
-		public List<string> GetSubActivities()
+
+		private ObservableCollection<string> GetActivityList()
 		{
-			return (from datarow in ShellViewModel.Softcache.Tables["Activities"].AsEnumerable()
-					where datarow.Field<string>("Activity") == "selected activity here"
-					select datarow.Field<string>("SubActivity")).Distinct().ToList();
+			return new ObservableCollection<string>(ShellViewModel.Softcache.Tables["Activities"].AsEnumerable().Select(
+							datarow => datarow.Field<string>("Activity")).Distinct().ToList());
 
 		}
 
+		private ObservableCollection<string> GetSubActivities(string activityname)
+		{
+			return new ObservableCollection<string>( (from datarow in ShellViewModel.Softcache.Tables["Activities"].AsEnumerable()
+					where datarow.Field<string>("Activity") == activityname
+					select datarow.Field<string>("SubActivity")).Distinct().ToList());
 
+		}
+
+		private IEnumerable<ActivityModel> Convertactivity()
+		{
+			ActivityConnector ac2 = new ActivityConnector();
+			DataTable table = ac2.Load(null);
+			
+			IEnumerable<DataRow> dt = table.AsEnumerable();
+			IEnumerable<ActivityModel> output = dt.Select(row => new ActivityModel()
+			{
+				SubActivityID = row.Field<int>("SubActivityId"),
+				ActivityID = row.Field<int>("ActivityId"),
+				ActivityName = row.Field<string>("Activity"),
+				SubActivity = row.Field<string>("SubActivity"),
+				ActivityType = row.Field<string>("Type"),
+				Price = row.Field<decimal>("Price"),
+				IsWEBH = row.Field<bool>("WkBH")});
+			return output;
+		}
 	}
 }

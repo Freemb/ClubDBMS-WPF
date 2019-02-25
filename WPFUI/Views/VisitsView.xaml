@@ -60,11 +60,11 @@
 
         <!--Row 2-->
         <TextBlock Grid.Row="2" Grid.Column="1" Text ="Member Details" Margin="5" VerticalAlignment="Center" MinHeight="35"/>
-        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path = SelectedVisit.Member.MemNo, Mode=OneWay}"
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path = SelectedVisit.Member.MemNo, Mode=TwoWay}"
                  Margin="5" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="35"/>
         <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3">
-            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay}" Margin="5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay}" Margin="5,0,5,5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay}" IsReadOnly="True" Margin="5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay}" IsReadOnly="True" Margin="5,0,5,5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
         </StackPanel>
                 
@@ -75,15 +75,15 @@
         <!--Row 4-->
         <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinWidth="20" MinHeight="35"/>
         <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}"/>
-        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" SelectedItem="{Binding Path=SelectedVisit.Activity.SubActivity,Mode=TwoWay}"/>
+        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" ItemsSource="{Binding SubActivityList}" SelectedItem="{Binding Path=SelectedVisit.Activity.SubActivity,Mode=TwoWay}"/>
 
         <!--Row 5-->
         <TextBlock Grid.Column="1" Grid.Row="5" Text="Fee Status" Margin="5" MinWidth="20"/>
-        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
+        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, Mode=TwoWay, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
         <StackPanel Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Horizontal">
             <TextBlock  Text="Paid" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <CheckBox  IsChecked="{Binding SelectedVisit.IsPaid}" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy}"/>
+            <CheckBox  IsChecked="{Binding SelectedVisit.IsPaid, Mode=TwoWay}" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy, Mode=TwoWay}"/>
         </StackPanel>
         <!--Row 6-->
         <TextBlock Grid.Column="1" Grid.Row="6" Text="Notes" Margin="5"/>

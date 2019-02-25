@@ -32,7 +32,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Button  Grid.Row="2" Grid.Column="2" Style="{StaticResource PortalButtons}" Command="{Binding ShellDerived.LoadMembersCommand}">
+        <Button  Grid.Row="2" Grid.Column="2" Style="{StaticResource PortalButtons}" Command="{Binding ShellPassed.LoadMembersCommand}">
                 <Button.Content>
                 <StackPanel>
                 <TextBlock Text=" " MinWidth="110"/>
@@ -41,7 +41,7 @@
                 </StackPanel>
             </Button.Content>
             </Button>
-        <Button  Grid.Row="2" Grid.Column="4" Style="{StaticResource PortalButtons}" Command="{Binding ShellDerived.LoadEventsCommand}">
+        <Button  Grid.Row="2" Grid.Column="4" Style="{StaticResource PortalButtons}" Command="{Binding ShellPassed.LoadEventsCommand}">
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text=" " MinWidth="110"/>
@@ -50,7 +50,7 @@
                 </StackPanel>
             </Button.Content>
         </Button>
-        <Button  Grid.Row="2" Grid.Column="3" Style="{StaticResource PortalButtons}" Command="{Binding ShellDerived.LoadVisitsCommand}">
+        <Button  Grid.Row="2" Grid.Column="3" Style="{StaticResource PortalButtons}" Command="{Binding ShellPassed.LoadVisitsCommand}">
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text=" " MinWidth="110"/>
