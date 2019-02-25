@@ -12,7 +12,6 @@ namespace WPFUI.Views
 		public VisitsView()
 		{
 			InitializeComponent();
-			//DataContext = new VisitsViewModel();
 		}
 	}
 }

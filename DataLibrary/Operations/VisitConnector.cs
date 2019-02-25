@@ -71,7 +71,7 @@ namespace DataLibrary.Operations
 						CommandType = CommandType.StoredProcedure
 					};
 					cmd.Parameters.AddWithValue("@VisitDate", model.VisitDate);
-					cmd.Parameters.AddWithValue("@MemNo", model.MemNo);
+					cmd.Parameters.AddWithValue("@MemNo", model.Member.MemNo);
 					//cmd.Parameters.AddWithValue("@MemFore", model.Member.Forename);
 					//cmd.Parameters.AddWithValue("@MemSur", model.Member.Surname);
 					cmd.Parameters.AddWithValue("@GuestFore", model.Guest.Forename);
@@ -113,7 +113,7 @@ namespace DataLibrary.Operations
 						CommandType = CommandType.StoredProcedure
 					};
 					cmd.Parameters.AddWithValue("@VisitDate", model.VisitDate);
-					cmd.Parameters.AddWithValue("@MemNo", model.MemNo);
+					cmd.Parameters.AddWithValue("@MemNo", model.Member.MemNo);
 					//cmd.Parameters.AddWithValue("@MemFore", model.Member.Forename);
 					//cmd.Parameters.AddWithValue("@MemSur", model.Member.Surname);
 					cmd.Parameters.AddWithValue("@GuestFore", model.Guest.Forename);
@@ -162,6 +162,9 @@ namespace DataLibrary.Operations
 				Convert.ToString(row.Field<int>("VisitID")),
 				Convert.ToString(row.IsNull("VisitDate") ? DateTime.Today.Date : row.Field<DateTime>("VisitDate")),
 				Convert.ToString(row.Field<double>("MemNo")),
+				row.Field<string>("Forename"),
+				row.Field<string>("Surname"),
+				row.Field<string>("Category"),
 				Convert.ToString(row.Field<int>("SubActivityId")),
 				row.Field<string>("Activity"),
 				row.Field<string>("SubActivity"),

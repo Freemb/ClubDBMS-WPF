@@ -13,8 +13,8 @@ namespace DataLibrary.Models
 		public string ActivityName { get; set; } = "";
 		public int ActivityID { get; set; } = 0;
 		public string ActivityType { get; set; } = ""; //social, sporting, unrestricted, match, lesson
-		public decimal Price { get; set; }
-		public bool IsWEBH { get; set; }
+		public decimal Price { get; set; } = 0;
+		public bool IsWEBH { get; set; } = false;
 
 	}
 }

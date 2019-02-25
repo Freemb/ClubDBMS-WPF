@@ -10,26 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Data;
-using DataLibrary.Operations;
 using WPFUI.ViewModels;
 
 namespace WPFUI.Views
 {
 	/// <summary>
-	/// Interaction logic for ShellView.xaml
+	/// Interaction logic for Portal.xaml
 	/// </summary>
-	public partial class ShellView : Window
+	public partial class PortalView : UserControl
 	{
-		private ShellViewModel _shell = ShellViewModel.GetInstance;
 		
-
-		public ShellView()
+		public PortalView()
 		{
 			InitializeComponent();
-			DataContext = _shell; // can set here or in xaml
-		}		
+		}
 	}
-
 }

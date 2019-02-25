@@ -51,5 +51,35 @@ namespace DataLibrary.Operations
 		{
 			throw new NotImplementedException();
 		}
+		public List<ActivityModel> Load(bool all)
+		{
+			using (SqlConnection conn = new SqlConnection(ConnString()))
+			{
+				using (SqlDataAdapter da = new SqlDataAdapter("dbo.spLoadActivityPrices", conn))
+				{
+					da.SelectCommand.CommandType = CommandType.StoredProcedure;
+					da.SelectCommand.Parameters.AddWithValue("@Prices", all);
+					
+					//da.FillSchema(dt,SchemaType.Source);
+					dt.TableName = "Activities";
+					da.Fill(dt);
+					#region ConvertToModels
+					List<ActivityModel> output = dt.AsEnumerable().Select(row => new ActivityModel()
+					{
+						ActivityID = row.Field<int>("ActivityId"),
+						ActivityName = row.Field<string>("Activity"),
+						ActivityType = row.Field<string>("Type"),
+						SubActivity = row.Field<string>("SubActivity"),
+						SubActivityID = row.Field<int>("SubActivityId"),
+						Price = row.Field<decimal>("Price"),
+						IsWEBH = row.Field<bool>("WkBH")
+
+					}).ToList();
+					#endregion
+					return output;
+				}
+			}
+
+		}
 	}
 }

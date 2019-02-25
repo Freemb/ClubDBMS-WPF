@@ -7,7 +7,28 @@
              StartupUri= "Views/ShellView.xaml">
     <Application.Resources>
         <!--Tells App what to display when trying to display a viewmodel-->
+        <DataTemplate DataType="{x:Type VMs:PortalViewModel}"><Vs:PortalView/></DataTemplate>
         <DataTemplate DataType="{x:Type VMs:MembersViewModel}"><Vs:MembersView/></DataTemplate>
         <DataTemplate DataType="{x:Type VMs:VisitsViewModel}"><Vs:VisitsView/></DataTemplate>
+        
+        <Style x:Key="MenuButtons" TargetType="Button">
+            <Setter Property="Background" Value="AliceBlue"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="AliceBlue"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontFamily" Value="Microsoft Jhenghei UI"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="PortalButtons" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="Silver"/>
+            <Setter Property="BorderThickness" Value="5"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
     </Application.Resources>
 </Application>

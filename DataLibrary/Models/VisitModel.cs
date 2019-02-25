@@ -12,7 +12,7 @@ namespace DataLibrary.Models
 		public int VisitID { get; set; } = 0;
 		public DateTime VisitDate { get; set; } = DateTime.Now.Date;
 
-		public double MemNo { get; set; }
+		public MemberModel Member { get; set; }
         public GuestModel Guest { get; set; }
         public ActivityModel Activity { get; set; }
 		public decimal Amount { get; set; } = 0;
@@ -22,14 +22,19 @@ namespace DataLibrary.Models
 
         public VisitModel()
         {
+			Member = new MemberModel();
 			Activity = new ActivityModel();
 			Guest = new GuestModel();
         }
 
-        public VisitModel(string id,string VDate, string memno, string activityID, string activityname, string subactivity = "", 
+        public VisitModel(string id,string VDate, string memno, string memfore, string memsur, string category, string activityID, string activityname, string subactivity = "", 
 							string price = "", string Pdate = "", string GFore= "", string GSur = "")
         {
-            Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity };
+			Member = new MemberModel {Forename = memfore, Surname = memsur, Category = category};
+			double.TryParse(memno, out double MemNoValue);
+			Member.MemNo = MemNoValue;
+
+			Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity };
             int.TryParse(activityID, out int ActivityIDvalue);
             Activity.SubActivityID = ActivityIDvalue;
            
@@ -39,8 +44,7 @@ namespace DataLibrary.Models
 			int.TryParse(id, out int idValue);
 			VisitID = idValue;
 
-            double.TryParse(memno, out double MemNoValue);
-			MemNo = MemNoValue;
+            
 			
             decimal.TryParse(price, out decimal AmountValue);
             Amount = AmountValue;

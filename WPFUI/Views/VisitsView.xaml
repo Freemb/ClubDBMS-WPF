@@ -6,9 +6,10 @@
              xmlns:local="clr-namespace:WPFUI.Views"
              xmlns:VMs="clr-namespace:WPFUI.ViewModels"
              xmlns:Vs="clr-namespace:WPFUI.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext ><VMs:VisitsViewModel/></UserControl.DataContext>
+             mc:Ignorable="d"
+             d:DesignHeight="1000" d:DesignWidth="1000">
+    <!--<UserControl.DataContext><VMs:VisitsViewModel/></UserControl.DataContext> -->
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -34,62 +35,62 @@
         </Grid.RowDefinitions>
         <!--Row 1-->
         
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Visit Details" Margin="5" MinHeight="35" MinWidth="20"/>
-        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path = VisitID, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Path=Visits/VisitDate, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-        <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Path=Visits/VisitDate}" Margin="5" MinHeight="35" MinWidth="300"/>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        <!--Row 2-->
-        <TextBlock Grid.Row="2" Grid.Column="1" Text ="Member Details" Margin="5" MinHeight="35" MinWidth="20"/>
-        <TextBox Grid.Row="2" Grid.Column="2" x:Name="MemNo" Text="{Binding Path = Visits/MemNo, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-        <TextBox x:Name="Category"  Grid.Row="2" Grid.Column="3" Text="{Binding Path = Visits/Category, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-        
-        <TextBox x:Name="Forename" Grid.Row="2" Grid.Column="3" Text="{Binding Path = Visits/Forename, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-        <TextBox x:Name="Surname" Text="{Binding Path = Visits/Surname, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-
-        <!--Row 3-->
-        <TextBlock Grid.Row="3" Grid.Column="1" Text ="Guest Details" Margin="5" MinHeight="35" MinWidth="20"/>
-        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Path=Visits/GuestFore, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="20"/>
-        <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Path=Visits/GuestSur, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="20"/>
-        <!--Row 4-->
-        <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinHeight="35" MinWidth="20"/>
-
-
-        <!--Row 5-->
-        <TextBlock Grid.Column="1" Grid.Row="5" Text="Fee Status" Margin="5" MinHeight="35" MinWidth="20"/>
-
-
-        <!--Row 6-->
-        <TextBlock Grid.Column="1" Grid.Row="6" Text="Notes" Margin="5" MinHeight="35" MinWidth="20"/>
-            
-         <DataGrid x:Name="Visits" Grid.Row="1" Grid.Column="6" Margin="5" AlternatingRowBackground="Gray" IsReadOnly="True" 
-                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True">
-         <DataGrid.Columns>
-                <DataGridTextColumn Header="Date" Binding="{Binding Path= VisitDate,StringFormat=d}"/>
-                <DataGridTextColumn Header="Mem No" Binding="{Binding Path = MemNo}"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding Path = Title}"/>
-                <DataGridTextColumn Header="Forename" Binding="{Binding Path = Forename}"/>
-                <DataGridTextColumn Header="Surname" Binding="{Binding Path = Surname}"/>
-                <DataGridTextColumn Header="Category" Binding="{Binding Path = Category}"/>
-                <DataGridTextColumn Header="GuestFore" Binding="{Binding Path = Guest.Forename}"/>
-                <DataGridTextColumn Header="GuestSur" Binding="{Binding Path = Guest.Surname}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Visit Details" Margin="5" MinHeight="35"/>
+        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path = SelectedVisit.VisitID, Mode=TwoWay}" Margin="5" HorizontalContentAlignment="Center" MinHeight="35" />
+        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Path=SelectedVisit.VisitDate,StringFormat = dd/MM/yyyy, Mode=TwoWay}" Margin="5" MinHeight="35" HorizontalContentAlignment="Center" />
+        <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Path=SelectedVisit.VisitDate, StringFormat = dddd}" Margin="5" MinHeight="35" />
+        <DataGrid x:Name="GridVisits" ItemsSource="{Binding Visits}" Grid.Row="1" Grid.RowSpan="8" Grid.Column="6" Margin="5" AlternatingRowBackground="Gray" IsReadOnly="True" 
+                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True"
+                  SelectedItem="{Binding SelectedVisit, Mode=TwoWay}" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Binding="{Binding Path= VisitDate,StringFormat=dd/MM/yyyy}"/>
+                <DataGridTextColumn Header="Mem No" Binding="{Binding Path = Member.MemNo}"/>
+                <DataGridTextColumn Header="Forename" Binding="{Binding Path = Member.Forename}"/>
+                <DataGridTextColumn Header="Surname" Binding="{Binding Path = Member.Surname}"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding Path = Member.Category}"/>
+                <DataGridTextColumn Header="Guest" Binding="{Binding Path = Guest.Forename}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path = Guest.Surname}"/>
                 <DataGridTextColumn Header="Activity" Binding="{Binding Path=Activity.ActivityName}"/>
                 <DataGridTextColumn Header="SubActivity" Binding="{Binding Path= Activity.SubActivity}"/>
-                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
-                <DataGridTextColumn Header="Date Paid" Binding="{Binding Path = PaidDate,StringFormat = d}"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
+                <DataGridTextColumn Header="Date Paid" Binding="{Binding Path = PaidDate,StringFormat = dd/MM/yyyy}"/>
                 <DataGridCheckBoxColumn Header="Paid" Binding="{Binding Path= IsPaid}"/>
             </DataGrid.Columns>
+        </DataGrid>
 
-         </DataGrid>
+        <!--Row 2-->
+        <TextBlock Grid.Row="2" Grid.Column="1" Text ="Member Details" Margin="5" VerticalAlignment="Center" MinHeight="35"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path = SelectedVisit.Member.MemNo, Mode=OneWay}"
+                 Margin="5" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="35"/>
+        <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3">
+            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay}" Margin="5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay}" Margin="5,0,5,5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+        </StackPanel>
+                
+        <!--Row 3-->
+        <TextBlock Grid.Row="3" Grid.Column="1" Text ="Guest Details" Margin="5" MinHeight="35"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Forename, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="150"/>
+        <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Surname, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="150"/>
+        <!--Row 4-->
+        <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinWidth="20" MinHeight="35"/>
+        <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}"/>
+        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" SelectedItem="{Binding Path=SelectedVisit.Activity.SubActivity,Mode=TwoWay}"/>
+
+        <!--Row 5-->
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="Fee Status" Margin="5" MinWidth="20"/>
+        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
+        <StackPanel Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Horizontal">
+            <TextBlock  Text="Paid" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <CheckBox  IsChecked="{Binding SelectedVisit.IsPaid}" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy}"/>
+        </StackPanel>
+        <!--Row 6-->
+        <TextBlock Grid.Column="1" Grid.Row="6" Text="Notes" Margin="5"/>
+        <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4" />
+
+
+
 
     </Grid>
 </UserControl>

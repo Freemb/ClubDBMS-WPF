@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="WPFUI.Views.PortalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Vs="clr-namespace:WPFUI.Views"
+             xmlns:VMs="clr-namespace:WPFUI.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="AliceBlue">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Button  Grid.Row="2" Grid.Column="2" Style="{StaticResource PortalButtons}" Command="{Binding ShellDerived.LoadMembersCommand}">
+                <Button.Content>
+                <StackPanel>
+                <TextBlock Text=" " MinWidth="110"/>
+                 <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\man.png" MaxHeight="80" MaxWidth="80" />
+                <TextBlock Text="Members" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+            </Button>
+        <Button  Grid.Row="2" Grid.Column="4" Style="{StaticResource PortalButtons}" Command="{Binding ShellDerived.LoadEventsCommand}">
+            <Button.Content>
+                <StackPanel>
+                    <TextBlock Text=" " MinWidth="110"/>
+                    <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\fireworks.png" MaxHeight="80" MaxWidth="80" />
+                    <TextBlock Text="Events" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+        <Button  Grid.Row="2" Grid.Column="3" Style="{StaticResource PortalButtons}" Command="{Binding ShellDerived.LoadVisitsCommand}">
+            <Button.Content>
+                <StackPanel>
+                    <TextBlock Text=" " MinWidth="110"/>
+                    <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\payment.png" MaxHeight="80" MaxWidth="80" />
+                    <TextBlock Text="Visits" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+
+
+    </Grid>
+</UserControl>

@@ -24,7 +24,7 @@ namespace WPFUI.Views
 		public MembersView()
 		{
 			InitializeComponent();
-			DataContext = new MembersViewModel();
+			
 		}
 	}
 }

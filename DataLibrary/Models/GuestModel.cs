@@ -12,5 +12,10 @@ namespace DataLibrary.Models
 
 		public string Surname { get; set; } = "";
 		public string Email { get; set; } = "";
-    }
+
+		public override string ToString()
+		{
+			return Forename + " " + Surname;
+		}
+	}
 }

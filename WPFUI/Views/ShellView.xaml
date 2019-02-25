@@ -7,32 +7,39 @@
         xmlns:Vs="clr-namespace:WPFUI.Views"
         xmlns:local ="clr-namespace:WPFUI"
         x:Class="WPFUI.Views.ShellView"
-        mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800" FontFamily="Segoe UI" FontSize="16">
-        <Window.DataContext><VMs:ShellViewModel/></Window.DataContext>
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="ShellView" Height="450" Width="800" FontFamily="Segoe UI" FontSize="16"
+        WindowStyle="None" WindowState="Maximized" BorderBrush="Silver" BorderThickness="6">
     
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
+    <DockPanel>
+       
+       <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="50" Background="AliceBlue">
+            <Button Command="{Binding LoadPortalCommand}" Grid.Column="3" Grid.Row="1" Style="{StaticResource MenuButtons}">
+                <Button.Content>
+                    <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\home.png" MaxHeight="80" MaxWidth="80"/>
+                </Button.Content>
+            </Button>
+            <Button Command="{Binding QuitCommand}" Grid.Column="3" Grid.Row="1" Style="{StaticResource MenuButtons}">
+                <Button.Content>
+                    <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\close.png" MaxHeight="80" MaxWidth="80"/>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
         <!--Row 1-->
-        <Button Command="{Binding LoadMembersCommand}" Grid.Column="1" Grid.Row="1" Content="Members" Margin="0,0,5,0"/>
-        <Button x:Name="LoadVisits" Command="{Binding LoadVisitsCommand}" Grid.Column="2" Grid.Row="1" Content ="Visits" Margin="0,0,5,0"/>
+        
         <!--row 2-->
-        <ContentControl Content="{Binding CurrentView}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
+            <ContentControl Content="{Binding CurrentView}" Grid.Row="0" Grid.Column="0"/>
 
 
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
