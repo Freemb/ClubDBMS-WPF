@@ -29,6 +29,7 @@ namespace WPFUI.Views
 		{
 			InitializeComponent();
 			DataContext = _shell; // can set here or in xaml
+			
 		}		
 	}
 

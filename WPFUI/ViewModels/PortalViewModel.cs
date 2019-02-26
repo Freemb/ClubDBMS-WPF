@@ -24,9 +24,5 @@ namespace WPFUI.ViewModels
 			
 		}
 		
-		
-
-
-
 	}
 }

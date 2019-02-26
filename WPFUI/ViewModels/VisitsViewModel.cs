@@ -14,51 +14,53 @@ using DataLibrary.Extensions;
 
 namespace WPFUI.ViewModels
 {
-	public class VisitsViewModel:ObservableObject
+	public class VisitsViewModel : ObservableObject
 	{
 		private ObservableCollection<VisitModel> _visits;
 		private VisitModel _selectedvisit = new VisitModel();
 		private MemberModel _selectedmember = new MemberModel();
-		private ObservableCollection<string> _activityList;
 		private ObservableCollection<ActivityModel> _allActivityWithprices;
-
-		public ObservableCollection<ActivityModel> AllPrices
+		//private ObservableCollection<ActivityModel> _activitydetails;
+		private IEnumerable<string> _activitylist;
+		public ObservableCollection<ActivityModel> AllActivityPrices
 		{
 			get { return _allActivityWithprices; }
 			set { _allActivityWithprices = value; }
 		}
 
-		//private ObservableCollection<string> _subactivityList;
-
-		public ObservableCollection<string> SubActivityList
-		{
-			get { return GetSubActivities(SelectedVisit.Activity.ActivityName); }
-			//set { OnPropertyChanged(ref _subactivityList, value); }
+		public IEnumerable<string> ActivityList
+		{ get
+			{
+				if(_activitylist == null) return GetActivityList();
+				return _activitylist;
+			}
+			set
+			{
+				_activitylist = value;
+			}
 		}
+		
 
-
-		//public ShellViewModel ShellPassed { get; private set; }
-
+		public ObservableCollection<ActivityModel> ActivityDetails
+		{
+			get { return GetActivityDetails(SelectedVisit.Activity.ActivityName, SelectedVisit.VisitDate); }
+			//set { OnPropertyChanged(ref _activitydetails, value); }
+		}
 		public MemberModel SelectedMember
 		{
 			get { return _selectedmember; }
-			set { OnPropertyChanged(ref _selectedmember, value); }   
+			set
+			{
+				OnPropertyChanged(ref _selectedmember, value);
+			}   
 			
 		}
 		public ObservableCollection<VisitModel> Visits
 		{
 			get { return _visits; }
-			set { OnPropertyChanged(ref _visits, value); } //NotifyOfPropertyChange(() => Visits);
+			set { OnPropertyChanged(ref _visits, value); } 
 		}
-		public ObservableCollection<string> ActivityList
-		{
-			get { return _activityList; }
-			set
-			{
-				OnPropertyChanged(ref _activityList, value);
-			}
-
-		}
+		
 
 		public VisitModel SelectedVisit
 		{
@@ -66,34 +68,29 @@ namespace WPFUI.ViewModels
 			set
 			{
 				OnPropertyChanged(ref _selectedvisit, value);				
-				OnPropertyChanged("SubActivityList");
+				OnPropertyChanged("ActivityDetails");
 				SelectedMember = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
-						
+
 			}
 		}
+
 		//Constructor
 		public VisitsViewModel()
 		{
 			VisitConnector vconn = new VisitConnector();
 			Visits = new ObservableCollection<VisitModel>(vconn.Load("22/07/2017", true));
 			SelectedVisit = Visits.First<VisitModel>();
-			ActivityList = GetActivityList();
-			AllPrices = new ObservableCollection<ActivityModel>(ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum());
+			AllActivityPrices = new ObservableCollection<ActivityModel>(ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum());
 			
 		}
 		//move elsewhere :extension methods
-		private ObservableCollection<string> GetActivityList()
-		{
-			return new ObservableCollection<string>(ShellViewModel.Softcache.Tables["Activities"].AsEnumerable().Select(
-							datarow => datarow.Field<string>("Activity")).Distinct().ToList());
+		private IEnumerable<string> GetActivityList()
+		{ return AllActivityPrices.Select(model => model.ActivityName).Distinct();}
 
-		}
-
-		private ObservableCollection<string> GetSubActivities(string activityname)
+		private ObservableCollection<ActivityModel> GetActivityDetails(string activityname, DateTime date)
 		{
-			return new ObservableCollection<string>( (from datarow in ShellViewModel.Softcache.Tables["Activities"].AsEnumerable()
-					where datarow.Field<string>("Activity") == activityname
-					select datarow.Field<string>("SubActivity")).Distinct().ToList());
+			return new ObservableCollection<ActivityModel>( AllActivityPrices.Where(model => 
+			(model.ActivityName == activityname && model.IsWEBH == date.IsWeekendBankHoliday())));
 
 		}
 

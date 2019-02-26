@@ -9,6 +9,7 @@ using DataLibrary.Operations;
 using System.Windows.Input;
 using WPFUI.Utility;
 using System.Windows;
+using System.Diagnostics;
 
 namespace WPFUI.ViewModels
 {
@@ -18,7 +19,7 @@ namespace WPFUI.ViewModels
 		public VisitsViewModel VisVM { get; private set; }
 		public PortalViewModel Portal { get; private set; } 
 		public static DataSet Softcache { get; set; }
-		private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor.
+		private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor finalises.
 		private object _currentView;
 		public object CurrentView
 		{
@@ -28,7 +29,7 @@ namespace WPFUI.ViewModels
 		public ICommand LoadPortalCommand { get; private set; }
 		public ICommand QuitCommand { get; private set; }
 		public static ShellViewModel GetInstance { get { return _instance; } }
-		
+				
 		//static constructor called first
 		static ShellViewModel()
 		{
@@ -60,5 +61,6 @@ namespace WPFUI.ViewModels
 				Application.Current.MainWindow.Close();
 			}
 		}
+		
 	}
 }

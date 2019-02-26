@@ -58,6 +58,12 @@ namespace DataLibrary.Extensions
 				DateOfBirth = dr.IsNull("DOB") ? DateTime.MinValue : dr.Field<DateTime>("DOB")
 			};
 		}
+		public static bool IsWeekendBankHoliday(this DateTime date)
+		{
+			if ((int)(date.DayOfWeek) < 5) return true;
+
+			return false;
+		}
 
 	}
 }
