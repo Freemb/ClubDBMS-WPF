@@ -16,16 +16,16 @@ namespace WPFUI.ViewModels
 {
 	public class PortalViewModel: ObservableObject
 	{
-		public ShellViewModel ShellPassed { get; private set; }
-		public PortalViewModel()//this(ShellViewModel.GetInstance)
+		public ICommand LoadMembersCommand { get; set; }
+		public ICommand LoadVisitsCommand { get; set; }
+		
+		public PortalViewModel()
 		{
-
-		}
-		public PortalViewModel(ShellViewModel shell)
-		{
-			this.ShellPassed = shell;
+			
 		}
 		
+		
+
 
 
 	}

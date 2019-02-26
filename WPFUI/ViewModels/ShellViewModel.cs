@@ -14,52 +14,51 @@ namespace WPFUI.ViewModels
 {
 	public sealed class ShellViewModel : ObservableObject
 	{
-		public MembersViewModel MemVM { get; private set; }
+		public MembersViewModel MemVM { get; private set; } 
 		public VisitsViewModel VisVM { get; private set; }
-		public PortalViewModel Portal { get; private set; }
-		public static ShellViewModel GetInstance { get { return _instance; } }
-		public static DataSet Softcache { get; set; } = new DataSet("Cache");
-				
-		private static readonly ShellViewModel _instance = new ShellViewModel();
+		public PortalViewModel Portal { get; private set; } 
+		public static DataSet Softcache { get; set; }
+		private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor.
 		private object _currentView;
 		public object CurrentView
 		{
 			get { return _currentView; }
 			set { OnPropertyChanged(ref _currentView, value); }
 		}
-
-		public ICommand LoadMembersCommand { get; private set; }
-		public ICommand LoadVisitsCommand { get; private set; }
 		public ICommand LoadPortalCommand { get; private set; }
 		public ICommand QuitCommand { get; private set; }
-
-		private void Quit()
+		public static ShellViewModel GetInstance { get { return _instance; } }
+		
+		//static constructor called first
+		static ShellViewModel()
 		{
-			if (MessageBox.Show("Are you sure you want to exit?","Quitting the Application ....",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-			{
-				Application.Current.MainWindow.Close();
-			}
-		}
-
-		private ShellViewModel()
-
-		{
+			
+			Softcache = new DataSet("SoftCache");
 			MemberConnector mc1 = new MemberConnector();
 			Softcache.Tables.Add(mc1.Load(null));
 			ActivityConnector ac2 = new ActivityConnector();
 			Softcache.Tables.Add(ac2.Load(null));
-			// passing instance gives unexpected results of recursiveness because constructor gets called within itself.*****
-
-
-
-			Portal = new PortalViewModel(this); VisVM = new VisitsViewModel(this); MemVM = new MembersViewModel(this); //passing instance of shellviewmodel to portal for access to commands
-			LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM);
-			LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM);
+			_instance = new ShellViewModel(); //call last in static ctor, as ShellVM needs static softcache
+		}
+		//instance (singleton) constructor// passing instance calls constructor again before it completes, within itself.**bad***
+		private ShellViewModel()
+		{
+			MemVM = new MembersViewModel();
+			VisVM = new VisitsViewModel();
+			Portal = new PortalViewModel();
 			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal);
 			QuitCommand = new RelayCommand(Quit);
+			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM);
+			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM);
 			CurrentView = Portal; //Loads portal on opening
 
-
+		}
+		private void Quit()
+		{
+			if (MessageBox.Show("Are you sure you want to exit?", "Quitting the Application ....", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+			{
+				Application.Current.MainWindow.Close();
+			}
 		}
 	}
 }

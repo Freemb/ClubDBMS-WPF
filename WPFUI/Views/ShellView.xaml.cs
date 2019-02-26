@@ -22,7 +22,7 @@ namespace WPFUI.Views
 	/// </summary>
 	public partial class ShellView : Window
 	{
-		private ShellViewModel _shell = ShellViewModel.GetInstance;
+		private ShellViewModel _shell = ShellViewModel.GetInstance; //check this line
 		
 
 		public ShellView()

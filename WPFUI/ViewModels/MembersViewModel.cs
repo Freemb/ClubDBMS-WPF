@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using WPFUI.Utility;
+using DataLibrary.Extensions;
 
 namespace WPFUI.ViewModels
 {
@@ -17,32 +18,24 @@ namespace WPFUI.ViewModels
 	{
 		private ObservableCollection<MemberModel> _members = new ObservableCollection<MemberModel>();
 		private MemberModel _selectedmember = new MemberModel();
-		public ShellViewModel ShellPassed { get; private set; }
-
 		public ObservableCollection<MemberModel> Members
 		{
 			get { return _members; }
 			set { OnPropertyChanged(ref _members, value); } 
 		}
-		public MembersViewModel()//this(ShellViewModel.GetInstance)
-		{
-			
-		}
 		public MemberModel SelectedMember
 		{
 			get { return _selectedmember; }
-			set	{ OnPropertyChanged(ref _selectedmember, value); }
+			set { OnPropertyChanged(ref _selectedmember, value); }
 		}
 
-		public MembersViewModel(ShellViewModel shell)
+		//constructor
+		public MembersViewModel()//this(ShellViewModel.GetInstance)
 		{
-			this.ShellPassed = shell;
-			MemberConnector mconn = new MemberConnector();
-			Members = new ObservableCollection<MemberModel>(mconn.Load(null, true));
+			Members = new ObservableCollection<MemberModel>(ShellViewModel.Softcache.Tables["Members"].ToMemberModelIEnum());
 			SelectedMember = Members.First<MemberModel>();
-
 		}
-
+		
 			   
 	}
 }
