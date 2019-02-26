@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using WPFUI.Utility;
-using DataLibrary.Extensions;
 
 namespace WPFUI.ViewModels
 {

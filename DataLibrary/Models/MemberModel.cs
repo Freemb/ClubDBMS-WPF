@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLibrary.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class MemberModel
+    public class MemberModel:ObservableObject
     {
 		public double MemNo { get; set; } = 0;
 		public string Forename { get; set; } = "";

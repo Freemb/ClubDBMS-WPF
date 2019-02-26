@@ -10,7 +10,6 @@ using DataLibrary.Operations;
 using WPFUI.Views;
 using WPFUI.Utility;
 using System.Windows.Input;
-using DataLibrary.Extensions;
 
 namespace WPFUI.ViewModels
 {

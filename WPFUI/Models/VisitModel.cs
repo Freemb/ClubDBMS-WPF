@@ -1,34 +1,21 @@
-﻿using DataLibrary.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFUI.Utility;
 
-namespace DataLibrary.Models
+namespace WPFUI.Models
 {
-	public class VisitModel : ObservableObject
+	public class VisitModel :ObservableObject
 	{
-		private ActivityModel _activity;
 
 		public int VisitID { get; set; } = 0;
 		public DateTime VisitDate { get; set; } = DateTime.Now.Date;
 
 		public MemberModel Member { get; set; }
 		public GuestModel Guest { get; set; }
-		public ActivityModel Activity
-		{
-			get
-			{
-				return _activity;
-			}
-			set
-			{
-				_activity = value;
-				OnPropertyChanged("Activity");
-			}
-		}
-
+		public ActivityModel Activity { get; set; }
 		public decimal Amount { get; set; } = 0;
 		public bool IsPaid { get; set; } = false;
 		public DateTime PaidDate { get; set; } = DateTime.Now.Date;
@@ -71,5 +58,6 @@ namespace DataLibrary.Models
 			Guest = new GuestModel { Forename = GFore, Surname = GSur };
 
 		}
+
 	}
 }

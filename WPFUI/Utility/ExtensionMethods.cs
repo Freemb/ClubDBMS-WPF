@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataLibrary.Models;
 
-namespace DataLibrary.Extensions
+namespace WPFUI.Extensions
 {
 	public static class ExtensionMethods
 	{
