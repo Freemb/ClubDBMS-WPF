@@ -50,8 +50,8 @@
                 <DataGridTextColumn Header="Category" Binding="{Binding Path = Member.Category}"/>
                 <DataGridTextColumn Header="Guest" Binding="{Binding Path = Guest.Forename}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Path = Guest.Surname}"/>
-                <DataGridTextColumn Header="Activity" Binding="{Binding Path=Activity.ActivityName}"/>
-                <DataGridTextColumn Header="SubActivity" Binding="{Binding Path= Activity.SubActivity}"/>
+                <!--<DataGridTextColumn Header="Activity" Binding="{Binding Path=Activity.ActivityName}"/>-->
+                <DataGridTextColumn Header="SubActivity" Binding="{Binding Path= Activity}"/>
                 <DataGridTextColumn Header="Amount" Binding="{Binding Amount, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
                 <DataGridTextColumn Header="Date Paid" Binding="{Binding Path = PaidDate,StringFormat = dd/MM/yyyy}"/>
                 <DataGridCheckBoxColumn Header="Paid" Binding="{Binding Path= IsPaid}"/>
@@ -75,16 +75,20 @@
         <!--Row 4-->
         <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinWidth="20" MinHeight="35"/>
         <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}"/>
-        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityDetails}" SelectedItem="{Binding Path=SelectedVisit.Activity,Mode=TwoWay}">
+        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityDetails}" 
+                  SelectedItem="{Binding SelectedVisit.Activity, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
-               <DataTemplate>
-                    <TextBox Text="{Binding SubActivity}"/>
+                <DataTemplate>
+                    <TextBlock Text="{Binding SubActivity}"/>
                 </DataTemplate>
-            </ComboBox.ItemTemplate>  
-            
+            </ComboBox.ItemTemplate>
+
         </ComboBox>
 
-            <!--Row 5-->
+        <TextBox Grid.Row="7" Grid.Column="3" Text="{Binding SelectedVisit.Activity.SubActivity}"/>
+
+
+        <!--Row 5-->
         <TextBlock Grid.Column="1" Grid.Row="5" Text="Fee Status" Margin="5" MinWidth="20"/>
         <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, Mode=TwoWay, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
         <StackPanel Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Horizontal">

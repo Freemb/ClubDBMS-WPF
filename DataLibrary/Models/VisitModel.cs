@@ -24,8 +24,9 @@ namespace DataLibrary.Models
 			}
 			set
 			{
-				_activity = value;
-				OnPropertyChanged("Activity");
+				if(value != null) // temporary fix for bug where null introduced after selecting from combo box
+				OnPropertyChanged(ref _activity, value);
+				
 			}
 		}
 

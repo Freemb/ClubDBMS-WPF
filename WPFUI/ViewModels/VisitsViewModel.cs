@@ -88,8 +88,8 @@ namespace WPFUI.ViewModels
 
 		private ObservableCollection<ActivityModel> GetActivityDetails(string activityname, DateTime date)
 		{
-			return new ObservableCollection<ActivityModel>( AllActivityPrices.Where(model => 
-			(model.ActivityName == activityname && model.IsWEBH == date.IsWeekendBankHoliday())));
+			return new ObservableCollection<ActivityModel>(AllActivityPrices.Where(model => 
+			model.ActivityName == activityname && model.IsWEBH == date.IsWeekendBankHoliday()));
 
 		}
 

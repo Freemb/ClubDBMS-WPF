@@ -60,9 +60,9 @@ namespace WPFUI.Utility
 		}
 		public static bool IsWeekendBankHoliday(this DateTime date)
 		{
-			if ((int)(date.DayOfWeek) < 5) return true;
+			if ((int)(date.DayOfWeek) < 5) return false;
 
-			return false;
+			return true;
 		}
 
 	}
