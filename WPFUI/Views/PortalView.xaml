@@ -32,7 +32,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Button  Grid.Row="2" Grid.Column="2" Style="{StaticResource PortalButtons}" Command="{Binding LoadMembersCommand}">
+        <Button  Grid.Row="2" Grid.Column="2" Command="{Binding LoadMembersCommand}">
                 <Button.Content>
                 <StackPanel>
                 <TextBlock Text=" " MinWidth="110"/>
