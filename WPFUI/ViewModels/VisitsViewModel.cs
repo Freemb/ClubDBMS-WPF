@@ -10,6 +10,7 @@ using DataLibrary.Operations;
 using WPFUI.Views;
 using WPFUI.Utility;
 using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace WPFUI.ViewModels
 {
@@ -18,12 +19,11 @@ namespace WPFUI.ViewModels
 		private ObservableCollection<VisitModel> _visits;
 		private VisitModel _selectedvisit = new VisitModel();
 		private MemberModel _selectedmember = new MemberModel();
-		private ObservableCollection<ActivityModel> _allActivityWithprices;
 		private ObservableCollection<string> _activitylist;
 		private ObservableCollection<string> _subactivitylist;
 
 		public IEnumerable<ActivityModel> AllActivityPrices;
-		
+		public ICommand GetSubActivityListCommand { get; set; }
 
 		public ObservableCollection<string> ActivityList
 		{
@@ -43,7 +43,8 @@ namespace WPFUI.ViewModels
 		{
 			get
 			{
-				_subactivitylist = GetSubActivityList(SelectedVisit.Activity.ActivityName, SelectedVisit.VisitDate);
+
+				if (_subactivitylist == null) GetSubActivityList();
 				return _subactivitylist;
 			}
 				
@@ -75,9 +76,7 @@ namespace WPFUI.ViewModels
 			set
 			{
 				OnPropertyChanged(ref _selectedvisit, value);
-				SubActivityList = null; //setting to any value requeries the list in get accessor through OnPropChanged, null is fine
 				SelectedMember = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
-
 			}
 		}
 
@@ -88,17 +87,19 @@ namespace WPFUI.ViewModels
 			Visits = new ObservableCollection<VisitModel>(vconn.Load("22/07/2017", true));
 			SelectedVisit = Visits.First<VisitModel>();
 			AllActivityPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
-			
+			GetSubActivityListCommand = new RelayCommand(GetSubActivityList);
+
 		}
 		//move elsewhere :extension methods
 		private ObservableCollection<string> GetActivityList()
 		{ return new ObservableCollection<string>( AllActivityPrices.Select(model => model.ActivityName).Distinct());}
 
-		private ObservableCollection<string> GetSubActivityList(string activityname, DateTime date)
-		{
-			return new ObservableCollection<string>(AllActivityPrices.Where(model =>
-			model.ActivityName == activityname && model.IsWEBH == date.IsWeekendBankHoliday()).Select(model => model.SubActivity));
 
+		private void GetSubActivityList()
+		{
+			SubActivityList = new ObservableCollection<string>(AllActivityPrices.Where(model =>
+			model.ActivityName == SelectedVisit.Activity.ActivityName && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()).Select(model => model.SubActivity));
+			
 		}
 		private ObservableCollection<decimal> GetPrice(string activityname, DateTime date)
 		{
@@ -106,7 +107,7 @@ namespace WPFUI.ViewModels
 			model.ActivityName == activityname && model.IsWEBH == date.IsWeekendBankHoliday()).Select(model => model.Price));
 
 		}
-
-
+		
+		
 	}
 }

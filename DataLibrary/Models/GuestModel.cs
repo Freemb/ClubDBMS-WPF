@@ -7,13 +7,27 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class GuestModel:ObservableObject
-    {
-		public string Forename { get; set; } = "";
+	public class GuestModel : ObservableObject
+	{
+		private string _forename = "";
+		private string _surname = "";
+		private string _email = "";
 
-		public string Surname { get; set; } = "";
-		public string Email { get; set; } = "";
-
+		public string Forename
+		{
+			get => _forename;
+			set { OnPropertyChanged(ref _forename, value); }
+		}
+		public string Surname
+		{
+			get => _surname;
+			set { OnPropertyChanged(ref _surname, value); }
+		}
+		public string Email
+		{
+			get => _email;
+			set { OnPropertyChanged(ref _email, value); }
+		}
 		public override string ToString()
 		{
 			return Forename + " " + Surname;

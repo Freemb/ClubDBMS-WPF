@@ -51,6 +51,7 @@ namespace WPFUI.ViewModels
 			QuitCommand = new RelayCommand(Quit);
 			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM);
 			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM);
+			
 			CurrentView = Portal; //Loads portal on opening
 
 		}

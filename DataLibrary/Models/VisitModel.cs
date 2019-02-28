@@ -10,10 +10,14 @@ namespace DataLibrary.Models
 	public class VisitModel : ObservableObject
 	{
 		private ActivityModel _activity;
+		private DateTime _visitDate = DateTime.Now.Date;
 
 		public int VisitID { get; set; } = 0;
-		public DateTime VisitDate { get; set; } = DateTime.Now.Date;
-
+		public DateTime VisitDate
+		{
+			get => _visitDate;
+			set { OnPropertyChanged(ref _visitDate , value); }
+		}
 		public MemberModel Member { get; set; }
 		public GuestModel Guest { get; set; }
 		public ActivityModel Activity
@@ -24,9 +28,9 @@ namespace DataLibrary.Models
 			}
 			set
 			{
-				if(value != null) // temporary fix for bug where null introduced after selecting from combo box
-				OnPropertyChanged(ref _activity, value);
-				
+				if (value != null) // temporary fix for bug where null introduced after selecting from combo box
+					OnPropertyChanged(ref _activity, value);
+
 			}
 		}
 
