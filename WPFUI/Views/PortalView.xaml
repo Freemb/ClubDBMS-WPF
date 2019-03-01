@@ -59,8 +59,6 @@
                 </StackPanel>
             </Button.Content>
         </Button>
-        <TextBox TextWrapping="Wrap" Text="TextBox" Grid.ColumnSpan="3" Margin="0,97.24,32,19" Grid.Row="3" Style="{DynamicResource FormTextBox}"/>
-
-
+        
     </Grid>
 </UserControl>

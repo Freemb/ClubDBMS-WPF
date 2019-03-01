@@ -37,7 +37,7 @@
         <!--Row 1-->
         
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Visit Details" Margin="5" MinHeight="35"/>
-        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SelectedVisit.VisitID, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
+        <TextBox x:Name="txtVisitID" Grid.Row="1" Grid.Column="2" Text="{Binding SelectedVisit.VisitID, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
         <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedVisit.VisitDate,StringFormat = dd/MM/yyyy, Mode=TwoWay}" Style="{StaticResource FormTextBox}" />
         <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding SelectedVisit.VisitDate, StringFormat = dddd}" Margin="5" MinHeight="35" />
         <DataGrid x:Name="GridVisits" ItemsSource="{Binding Visits}" Grid.Row="1" Grid.RowSpan="8" Grid.Column="6" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
@@ -62,17 +62,23 @@
         <!--Row 2-->
         <TextBlock Grid.Row="2" Grid.Column="1" Text ="Member Details" Margin="5" VerticalAlignment="Center" MinHeight="35"/>
         <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path = SelectedVisit.Member.MemNo, Mode=TwoWay}"
-                 Margin="5" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="35"/>
-        <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3">
-            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay}" IsReadOnly="True" Margin="5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay}" IsReadOnly="True" Margin="5,0,5,5" MinHeight="35" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                 VerticalAlignment="Center" MinHeight="35" Style="{StaticResource FormTextBox}">
+            <I:Interaction.Triggers>
+                <I:EventTrigger EventName="LostFocus">
+                    <I:InvokeCommandAction Command="{Binding GetMemberDetailsCommand}"/>
+                </I:EventTrigger>
+            </I:Interaction.Triggers>
+            </TextBox>
+            <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3">
+            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay}" IsReadOnly="True" MinHeight="35" Style="{StaticResource FormTextBox}"/>
+            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay}" IsReadOnly="True" Margin="5,0,5,5" MinHeight="35" Style="{StaticResource FormTextBox}"/>
 
         </StackPanel>
                 
         <!--Row 3-->
         <TextBlock Grid.Row="3" Grid.Column="1" Text ="Guest Details" Margin="5" MinHeight="35"/>
-        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Forename, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="150"/>
-        <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Surname, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="150"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Forename, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
+        <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Surname, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
         <!--Row 4-->
         <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinWidth="20" MinHeight="35"/>
         <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}">
@@ -93,16 +99,19 @@
 
         <!--Row 5-->
         <TextBlock Grid.Column="1" Grid.Row="5" Text="Fee Status" Margin="5" MinWidth="20"/>
-        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, Mode=TwoWay, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
+        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, Mode=TwoWay, ConverterCulture=en-GB, StringFormat={}{0:C}}" Style="{StaticResource FormTextBox}"/>
         <StackPanel Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Horizontal">
             <TextBlock  Text="Paid" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <CheckBox  IsChecked="{Binding SelectedVisit.IsPaid, Mode=TwoWay}" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy, Mode=TwoWay}"/>
+            <TextBox Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
         </StackPanel>
         <!--Row 6-->
         <TextBlock Grid.Column="1" Grid.Row="6" Text="Notes" Margin="5"/>
-        <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4" />
-
+        <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4" Text="{Binding SelectedVisit.Notes}" Style="{StaticResource FormTextBox}"/>
+        <!--Row 7-->
+        <WrapPanel Grid.Row="7" Grid.Column="1">
+            <Button Command="{Binding AddVisitCommand}" Content="New Visit"/>
+        </WrapPanel>
 
 
 

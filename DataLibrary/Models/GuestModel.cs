@@ -32,5 +32,9 @@ namespace DataLibrary.Models
 		{
 			return Forename + " " + Surname;
 		}
-	}
+        public bool Equals(GuestModel obj)
+        {
+            return Forename.Equals(obj.Forename) && Surname.Equals(obj.Surname);
+        }
+    }
 }

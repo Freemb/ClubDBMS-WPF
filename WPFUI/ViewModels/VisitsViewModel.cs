@@ -16,17 +16,20 @@ namespace WPFUI.ViewModels
 {
 	public class VisitsViewModel : ObservableObject
 	{
-		private ObservableCollection<VisitModel> _visits;
-		private VisitModel _selectedvisit = new VisitModel();
-		private MemberModel _selectedmember = new MemberModel();
-		private IEnumerable<string> _activitylist;
+        //private fields
+        private VisitModel _selectedvisit = new VisitModel();
+        private MemberModel _selectedmember = new MemberModel();
+        private ObservableCollection<VisitModel> _visits;
+		private ObservableCollection<string> _activitylist;
 		private ObservableCollection<string> _subactivitylist;
-
-		private readonly IEnumerable<ActivityModel> _activitiesWithPrices;
-		public ICommand GetSubActivityListCommand { get; set; }
-		public ICommand GetPriceCommand { get; set; }
-
-		public IEnumerable<string> ActivityList
+		private IEnumerable<ActivityModel> _activitiesWithPrices;
+        //Commands for binding to buttons/events
+		public ICommand GetSubActivityListCommand { get; private set; }
+		public ICommand GetPriceCommand { get; private set; }
+        public ICommand AddVisitCommand { get; private set; }
+        public ICommand GetMemberDetailsCommand { get; set; }
+        //properties for binding to display controls
+		public ObservableCollection<string> ActivityList
 		{
 			get
 			{
@@ -38,8 +41,6 @@ namespace WPFUI.ViewModels
 				_activitylist = value;
 			}
 		}
-		
-
 		public ObservableCollection<string> SubActivityList
 		{
 			get
@@ -53,8 +54,7 @@ namespace WPFUI.ViewModels
 				OnPropertyChanged(ref _subactivitylist, value); 
 			}
 		}
-
-		public MemberModel SelectedMember
+        public MemberModel SelectedMember
 		{
 			get { return _selectedmember; }
 			set
@@ -68,15 +68,15 @@ namespace WPFUI.ViewModels
 			get { return _visits; }
 			set { OnPropertyChanged(ref _visits, value); } 
 		}
-		
-
 		public VisitModel SelectedVisit
 		{
 			get { return _selectedvisit; }
 			set
 			{
-				OnPropertyChanged(ref _selectedvisit, value);
-				SelectedMember = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
+               //_selectedvisit = value;
+               // OnPropertyChanged("SelectedVisit");
+               OnPropertyChanged(ref _selectedvisit, value);
+				
 			}
 		}
 
@@ -89,16 +89,17 @@ namespace WPFUI.ViewModels
 			_activitiesWithPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
 			GetSubActivityListCommand = new RelayCommand(GetSubActivityList);
 			GetPriceCommand = new RelayCommand(GetPrice);
+            AddVisitCommand = new RelayCommand(AddVisit);
+            GetMemberDetailsCommand = new RelayCommand(GetMemberDetails);
 
 		}
 		//move elsewhere :extension methods
-		private IEnumerable<string> GetActivityList()
-		{ return  _activitiesWithPrices.Select(model => model.ActivityName).Distinct();}
+		private ObservableCollection<string> GetActivityList()
+		{ return  new ObservableCollection<string>( _activitiesWithPrices.Select(model => model.ActivityName).Distinct());}
+
 		private void GetSubActivityList()
 		{
-			//SubActivityList = new ObservableCollection<string>(_activitiesWithPrices.Where(model =>
-			//model.ActivityName == SelectedVisit.Activity.ActivityName && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()).Select(model => model.SubActivity));
-			SubActivityList = new ObservableCollection<string>(_activitiesWithPrices.Where(model =>
+            SubActivityList = new ObservableCollection<string>(_activitiesWithPrices.Where(model =>
 			model.ActivityName == SelectedVisit.Activity.ActivityName).Select(model => model.SubActivity).Distinct());
 		}
 		private void GetPrice()
@@ -123,6 +124,19 @@ namespace WPFUI.ViewModels
 			}
 		}
 		
+        private void AddVisit()
+        {
+            
+            Visits.Add(new VisitModel());
+            SelectedVisit = Visits.Last();
+            SubActivityList = null;
+            ActivityList = null;
+            
+        }
+        private void GetMemberDetails()
+        {
+            SelectedVisit.Member = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
+        }
 		
 	}
 }

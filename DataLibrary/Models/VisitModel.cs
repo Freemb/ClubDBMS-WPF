@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,5 +77,26 @@ namespace DataLibrary.Models
 			Guest = new GuestModel { Forename = GFore, Surname = GSur };
 
 		}
-	}
+
+
+
+        public bool Equals(VisitModel obj)
+        {
+            
+            if(
+                VisitID.Equals(obj.VisitID) &&
+                VisitDate.Equals(obj.VisitDate)&&
+                Amount.Equals(obj.Amount) &&
+                IsPaid.Equals(obj.IsPaid) &&
+                PaidDate.Equals(obj.PaidDate) &&
+                Notes.Equals(obj.Notes)&&
+                Activity.Equals(obj.Activity) &&
+                Member.MemNo.Equals(obj.Member.MemNo) &&
+                Guest.Equals(obj.Guest)
+                )
+            return true;
+            return false;
+        }
+
+    }
 }

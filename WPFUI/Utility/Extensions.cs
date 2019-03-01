@@ -61,6 +61,7 @@ namespace WPFUI.Utility
 		public static bool IsWeekendBankHoliday(this DateTime date)
 		{
 			if ((int)(date.DayOfWeek) < 5) return false;
+            //TODO institute checking of list of BH
 
 			return true;
 		}

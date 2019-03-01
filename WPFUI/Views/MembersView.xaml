@@ -38,21 +38,21 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2" Grid.Row="1" >
-            <TextBox x:Name="MemNo" Text="{Binding Members/MemNo, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Title" Text="{Binding Members/Title, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Forename" Text="{Binding Members/Forename, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Surname" Text="{Binding Members/Surname, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Category" Text="{Binding Members/Category, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Email" Text="{Binding Members/Email, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="MobileTel" Text="{Binding Members/MobileTel, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="HomeTel" Text="{Binding Members/HomeTel, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="Gender" Text="{Binding Members/Gender, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
-            <TextBox x:Name="DOB" Text="{Binding Members/DateOfBirth, Mode=TwoWay}" Margin="5" MinHeight="35" MinWidth="300"/>
+            <TextBox x:Name="MemNo" Text="{Binding Members/MemNo, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="Title" Text="{Binding Members/Title, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="Forename" Text="{Binding Members/Forename, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="Surname" Text="{Binding Members/Surname, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="Category" Text="{Binding Members/Category, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="Email" Text="{Binding Members/Email, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="MobileTel" Text="{Binding Members/MobileTel, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="HomeTel" Text="{Binding Members/HomeTel, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="Gender" Text="{Binding Members/Gender, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
+            <TextBox x:Name="DOB" Text="{Binding Members/DateOfBirth, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
         </StackPanel>
 
-        <DataGrid x:Name="GridMembers" ItemsSource="{Binding Members}" Grid.Row="1" Grid.Column="3" Margin="5" AlternatingRowBackground="Gray" IsReadOnly="True" 
-                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True"
-                  SelectedItem="{Binding SelectedMember, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+        <DataGrid x:Name="GridMembers" ItemsSource="{Binding Members}" Grid.Row="1" Grid.Column="3" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
+                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedMember, Mode=TwoWay}"
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Mem No" Binding="{Binding MemNo}"/>
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}"/>

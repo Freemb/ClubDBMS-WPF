@@ -18,13 +18,13 @@ namespace WPFUI.Utility
 			_canExecute = canExecute ?? (x => true);
 		}
 
-		public event EventHandler CanExecuteChanged
-		{
-			add => CommandManager.RequerySuggested += value;
-			remove => CommandManager.RequerySuggested -= value;
-		}
+        public event EventHandler CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
-		public bool CanExecute(object parameter) => _canExecute((T)parameter);
+        public bool CanExecute(object parameter) => _canExecute((T)parameter);
 
 		public void Execute(object parameter) => _execute((T)parameter);
 	}

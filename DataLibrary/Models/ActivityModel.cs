@@ -25,7 +25,7 @@ namespace DataLibrary.Models
 		public int SubActivityID
 		{
 			get => _subActivityID;
-			set	{ OnPropertyChanged(ref _subActivityID, value); }
+            set => _subActivityID = value;
 		}
 		public string ActivityName
 		{
@@ -35,28 +35,36 @@ namespace DataLibrary.Models
 		public int ActivityID
 		{
 			get => _activityID;
-			set	{OnPropertyChanged(ref _activityID, value);	}
+            set => _activityID = value;
 		}
 		public string ActivityType
 		{
 			get => _activityType;
-			set {OnPropertyChanged(ref _activityType , value);}
+            set => _activityType = value;
 		}
 		public decimal Price
 		{
 			get => _price;
-			set	{OnPropertyChanged(ref _price, value);}
+            set => _price = value;
 		}
 		public bool IsWEBH
 		{
 			get => _isWEBH;
-			set{OnPropertyChanged(ref _isWEBH, value);}
+            set => _isWEBH = value;
 		}
 
 		public override string ToString()
 		{
 			return ActivityName + "  |  " + SubActivity;
 		}
+        public bool Equals(ActivityModel other)
+        {
+            if(
+                SubActivity.Equals(other.SubActivity) && ActivityName.Equals(other.ActivityName) 
+               )
+            return true;
+            return false;
+        }
 	}
 
 
