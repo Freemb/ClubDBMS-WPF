@@ -19,13 +19,14 @@ namespace WPFUI.ViewModels
 		private ObservableCollection<VisitModel> _visits;
 		private VisitModel _selectedvisit = new VisitModel();
 		private MemberModel _selectedmember = new MemberModel();
-		private ObservableCollection<string> _activitylist;
+		private IEnumerable<string> _activitylist;
 		private ObservableCollection<string> _subactivitylist;
 
-		public IEnumerable<ActivityModel> AllActivityPrices;
+		private readonly IEnumerable<ActivityModel> _activitiesWithPrices;
 		public ICommand GetSubActivityListCommand { get; set; }
+		public ICommand GetPriceCommand { get; set; }
 
-		public ObservableCollection<string> ActivityList
+		public IEnumerable<string> ActivityList
 		{
 			get
 			{
@@ -43,7 +44,6 @@ namespace WPFUI.ViewModels
 		{
 			get
 			{
-
 				if (_subactivitylist == null) GetSubActivityList();
 				return _subactivitylist;
 			}
@@ -86,26 +86,41 @@ namespace WPFUI.ViewModels
 			VisitConnector vconn = new VisitConnector();
 			Visits = new ObservableCollection<VisitModel>(vconn.Load("22/07/2017", true));
 			SelectedVisit = Visits.First<VisitModel>();
-			AllActivityPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
+			_activitiesWithPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
 			GetSubActivityListCommand = new RelayCommand(GetSubActivityList);
+			GetPriceCommand = new RelayCommand(GetPrice);
 
 		}
 		//move elsewhere :extension methods
-		private ObservableCollection<string> GetActivityList()
-		{ return new ObservableCollection<string>( AllActivityPrices.Select(model => model.ActivityName).Distinct());}
-
-
+		private IEnumerable<string> GetActivityList()
+		{ return  _activitiesWithPrices.Select(model => model.ActivityName).Distinct();}
 		private void GetSubActivityList()
 		{
-			SubActivityList = new ObservableCollection<string>(AllActivityPrices.Where(model =>
-			model.ActivityName == SelectedVisit.Activity.ActivityName && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()).Select(model => model.SubActivity));
-			
+			//SubActivityList = new ObservableCollection<string>(_activitiesWithPrices.Where(model =>
+			//model.ActivityName == SelectedVisit.Activity.ActivityName && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()).Select(model => model.SubActivity));
+			SubActivityList = new ObservableCollection<string>(_activitiesWithPrices.Where(model =>
+			model.ActivityName == SelectedVisit.Activity.ActivityName).Select(model => model.SubActivity).Distinct());
 		}
-		private ObservableCollection<decimal> GetPrice(string activityname, DateTime date)
+		private void GetPrice()
 		{
-			return new ObservableCollection<decimal>(AllActivityPrices.Where(model =>
-			model.ActivityName == activityname && model.IsWEBH == date.IsWeekendBankHoliday()).Select(model => model.Price));
+			//// This code returns exception if no match found in activities
+			//if (!(String.IsNullOrEmpty(SelectedVisit.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit.Activity.SubActivity)))
+			//	SelectedVisit.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedVisit.Activity.ActivityName &&
+			//	model.SubActivity == SelectedVisit.Activity.SubActivity && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()
+			//	).Select(model => model.Price).First();
 
+			// This code does the same as above with no exception as there is no assignment unless a match is found
+			if (!(String.IsNullOrEmpty(SelectedVisit.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit.Activity.SubActivity)))
+			foreach (ActivityModel model in _activitiesWithPrices)
+			{
+				if (model.ActivityName == SelectedVisit.Activity.ActivityName && model.SubActivity == SelectedVisit.Activity.SubActivity
+					&& model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday())
+				{
+					SelectedVisit.Amount = model.Price;
+					return;
+				}
+
+			}
 		}
 		
 		

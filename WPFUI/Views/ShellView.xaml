@@ -14,12 +14,12 @@
     <DockPanel>
        
        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="50" Background="AliceBlue">
-            <Button Command="{Binding LoadPortalCommand}" Grid.Column="3" Grid.Row="1" Style="{StaticResource MenuButtons}">
+            <Button Command="{Binding LoadPortalCommand}" Grid.Column="3" Grid.Row="1">
                 <Button.Content>
                     <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\home.png" MaxHeight="80" MaxWidth="80"/>
                 </Button.Content>
             </Button>
-            <Button Command="{Binding QuitCommand}" Grid.Column="3" Grid.Row="1" Style="{StaticResource MenuButtons}">
+            <Button Command="{Binding QuitCommand}" Grid.Column="3" Grid.Row="1">
                 <Button.Content>
                     <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\close.png" MaxHeight="80" MaxWidth="80"/>
                 </Button.Content>

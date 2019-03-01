@@ -32,16 +32,16 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Button  Grid.Row="2" Grid.Column="2" Command="{Binding LoadMembersCommand}">
-                <Button.Content>
+        <Button  Grid.Row="2" Grid.Column="2" Command="{Binding LoadMembersCommand}" Style="{StaticResource PortalButtons}">
+            <Button.Content>
                 <StackPanel>
-                <TextBlock Text=" " MinWidth="110"/>
-                 <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\man.png" MaxHeight="80" MaxWidth="80" />
-                <TextBlock Text="Members" HorizontalAlignment="Center"/>
+                    <TextBlock Text=" " MinWidth="110"/>
+                    <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\man.png" MaxHeight="80" MaxWidth="80" />
+                    <TextBlock Text="Members" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button.Content>
-            </Button>
-        <Button  Grid.Row="2" Grid.Column="4" Style="{StaticResource PortalButtons}" Command="{Binding LoadEventsCommand}">
+        </Button>
+        <Button  Grid.Row="2" Grid.Column="4" Command="{Binding LoadEventsCommand}" Style="{StaticResource PortalButtons}">
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text=" " MinWidth="110"/>
@@ -50,7 +50,7 @@
                 </StackPanel>
             </Button.Content>
         </Button>
-        <Button  Grid.Row="2" Grid.Column="3" Style="{StaticResource PortalButtons}" Command="{Binding LoadVisitsCommand}">
+        <Button  Grid.Row="2" Grid.Column="3" Command="{Binding LoadVisitsCommand}" Style="{StaticResource PortalButtons}">
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text=" " MinWidth="110"/>
@@ -59,6 +59,7 @@
                 </StackPanel>
             </Button.Content>
         </Button>
+        <TextBox TextWrapping="Wrap" Text="TextBox" Grid.ColumnSpan="3" Margin="0,97.24,32,19" Grid.Row="3" Style="{DynamicResource FormTextBox}"/>
 
 
     </Grid>

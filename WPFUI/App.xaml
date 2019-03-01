@@ -6,134 +6,17 @@
              xmlns:Vs="clr-namespace:WPFUI.Views" 
              StartupUri= "Views/ShellView.xaml">
     <Application.Resources>
-        <!--Tells App what to display when trying to display a viewmodel-->
-        <DataTemplate DataType="{x:Type VMs:PortalViewModel}"><Vs:PortalView/></DataTemplate>
-        <DataTemplate DataType="{x:Type VMs:MembersViewModel}"><Vs:MembersView/></DataTemplate>
-        <DataTemplate DataType="{x:Type VMs:VisitsViewModel}"><Vs:VisitsView/></DataTemplate>
         
-        <Style x:Key="MenuButtons" TargetType="Button">
-            <Setter Property="Background" Value="AliceBlue"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderBrush" Value="AliceBlue"/>
-            <Setter Property="BorderThickness" Value="0,0,1,0"/>
-            <Setter Property="MinWidth" Value="80"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="FontFamily" Value="Microsoft Jhenghei UI"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="PortalButtons" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderBrush" Value="Silver"/>
-            <Setter Property="BorderThickness" Value="5"/>
-            <Setter Property="MinWidth" Value="80"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-        </Style>
-        <!--Brushes (Palette from: https://flatuicolors.com/palette/de)-->
-        <SolidColorBrush x:Key="BlueHorizon" Color="#FF4B6584"/>
-        <SolidColorBrush x:Key="BlueGrey" Color="#FF778CA3"/>
-
-        <SolidColorBrush x:Key="Innuendo" Color="#FFA5b1C2"/>
-        <SolidColorBrush x:Key="TwinkleBlue" Color="#FFD1D8E0"/>
-
-        <SolidColorBrush x:Key="GloomyPurple" Color="#FF8854D0"/>
-        <SolidColorBrush x:Key="LighterPurple" Color="#FFA55EEA"/>
-
-        <SolidColorBrush x:Key="RoyalBlue" Color="#FF3867D6"/>
-        <SolidColorBrush x:Key="NTSC" Color="#FF4B7BEC"/>
-
-        <SolidColorBrush x:Key="BoyZone" Color="#FF2D98DA"/>
-        <SolidColorBrush x:Key="HighBlue" Color="#FF45AAF2"/>
-
-        <SolidColorBrush x:Key="AlgalFuel" Color="#FF20BF6B"/>
-        <SolidColorBrush x:Key="ReptileGreen" Color="#FF26DE81"/>
-
-        <SolidColorBrush x:Key="TurquioseTopaz" Color="#FF0FB9B1"/>
-        <SolidColorBrush x:Key="MaximumBlueGreen" Color="#FF2BCBBA"/>
-
-        <SolidColorBrush x:Key="AlmostBlack" Color="#FF131313"/>
-
-        <!--Gradient Brushes-->
-        <LinearGradientBrush x:Key="BlueGreyGradient" EndPoint="0,1">
-            <GradientStop Color="#FF4B6584" Offset="0.0" />
-            <GradientStop Color="#FF526B89" Offset="0.5" />
-            <GradientStop Color="#FF59718F" Offset="1.0" />
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="LightBlueGreyGradient" EndPoint="0,1">
-            <GradientStop Color="#FF778CA3" Offset="0.0" />
-            <GradientStop Color="#FF7B8FA4" Offset="0.5" />
-            <GradientStop Color="#FF8798AA" Offset="1.0" />
-        </LinearGradientBrush>
-
-        <!-- Controls -->
-        <Style x:Key="MenuTabButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
-            <Setter Property="Foreground" Value="{StaticResource Innuendo}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BlueHorizon}"/>
-            <Setter Property="BorderThickness" Value="0,0,1,0"/>
-            <Setter Property="FontSize" Value="16"/>
-        </Style>
-
-        <Style x:Key="MenuIconButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BlueGreyGradient}"/>
-            <Setter Property="Foreground" Value="{StaticResource MaximumBlueGreen}"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-
-        <Style x:Key="DetailLabel" TargetType="Label">
-            <Setter Property="Foreground" Value="{StaticResource BlueGrey}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="1"/>
-        </Style>
-
-        <Style x:Key="ContentLabel" TargetType="Label">
-            <Setter Property="Foreground" Value="{StaticResource AlmostBlack}"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-<!--Button Style-->
-        <Style x:Key="DetailBorder" TargetType="Border">
-            <Setter Property="CornerRadius" Value="3"/>
-            <Setter Property="Background" Value="{StaticResource LightBlueGreyGradient}"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFThemes;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="MyBackgroundElement" Padding="5" CornerRadius="2" BorderBrush="#387f38" BorderThickness="1">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FF0FB9B1" Offset="0" />
-                                    <GradientStop Color="#FF2BCBBA" Offset="1" />
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter x:Name="ButtonContentPresenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="MyBackgroundElement" Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="#FF0DA69F" Offset="0" />
-                                            <GradientStop Color="#FF12BBB4" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Cursor" Value="Hand" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+            <!--Tells App what to display when trying to display a viewmodel-->
+            <DataTemplate DataType="{x:Type VMs:PortalViewModel}"><Vs:PortalView/></DataTemplate>
+            <DataTemplate DataType="{x:Type VMs:MembersViewModel}"><Vs:MembersView/></DataTemplate>
+            <DataTemplate DataType="{x:Type VMs:VisitsViewModel}"><Vs:VisitsView/></DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
     
 </Application>
