@@ -44,20 +44,27 @@ namespace WPFUI.Utility
 		}
 		public static MemberModel GetMemberDetails(this DataTable memberstable, double memno)
 		{
-			DataRow dr = memberstable.AsEnumerable().Where(datarow => datarow.Field<double>("MemNo") == memno).First();
-			return new MemberModel
-			{
-				MemNo = dr.Field<double>("MemNo"),
-				Forename = dr.Field<string>("Forename"),
-				Surname = dr.Field<string>("Surname"),
-				Category = dr.Field<string>("Category"),
-				Email = dr.Field<string>("Email"),
-				MobileTel = dr.Field<string>("MobileTel"),
-				HomeTel = dr.Field<string>("HomeTel"),
-				Gender = dr.Field<string>("Gender"),
-				DateOfBirth = dr.IsNull("DOB") ? DateTime.MinValue : dr.Field<DateTime>("DOB")
-			};
-		}
+            ////This gives an error if membership number not found, used foreach instead
+			//DataRow row = memberstable.AsEnumerable().Where(datarow => datarow.Field<double>("MemNo") == memno).First();
+            foreach (var row in memberstable.AsEnumerable())
+            {
+                
+                if(row.Field<double>("MemNo") == memno) return new MemberModel
+                {
+                        MemNo = row.Field<double>("MemNo"),
+                        Forename = row.Field<string>("Forename"),
+                        Surname = row.Field<string>("Surname"),
+                        Category = row.Field<string>("Category"),
+                        Email = row.Field<string>("Email"),
+                        MobileTel = row.Field<string>("MobileTel"),
+                        HomeTel = row.Field<string>("HomeTel"),
+                        Gender = row.Field<string>("Gender"),
+                        DateOfBirth = row.IsNull("DOB") ? DateTime.MinValue : row.Field<DateTime>("DOB")
+                };
+                
+            }
+            return new MemberModel();
+        }
 		public static bool IsWeekendBankHoliday(this DateTime date)
 		{
 			if ((int)(date.DayOfWeek) < 5) return false;

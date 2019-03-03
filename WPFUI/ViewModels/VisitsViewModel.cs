@@ -38,7 +38,7 @@ namespace WPFUI.ViewModels
 			}
 			set
 			{
-				_activitylist = value;
+				OnPropertyChanged(ref _activitylist , value);
 			}
 		}
 		public ObservableCollection<string> SubActivityList
@@ -73,9 +73,7 @@ namespace WPFUI.ViewModels
 			get { return _selectedvisit; }
 			set
 			{
-               //_selectedvisit = value;
-               // OnPropertyChanged("SelectedVisit");
-               OnPropertyChanged(ref _selectedvisit, value);
+              OnPropertyChanged(ref _selectedvisit, value);
 				
 			}
 		}
@@ -93,7 +91,7 @@ namespace WPFUI.ViewModels
             GetMemberDetailsCommand = new RelayCommand(GetMemberDetails);
 
 		}
-		//move elsewhere :extension methods
+		
 		private ObservableCollection<string> GetActivityList()
 		{ return  new ObservableCollection<string>( _activitiesWithPrices.Select(model => model.ActivityName).Distinct());}
 

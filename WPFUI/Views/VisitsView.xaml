@@ -37,12 +37,12 @@
         <!--Row 1-->
         
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Visit Details" Margin="5" MinHeight="35"/>
-        <TextBox x:Name="txtVisitID" Grid.Row="1" Grid.Column="2" Text="{Binding SelectedVisit.VisitID, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
+        <TextBox x:Name="txtVisitID" Grid.Row="1" Grid.Column="2" Text="{Binding SelectedVisit.VisitID, Mode=OneWay}" IsReadOnly="True" Style="{StaticResource FormTextBox}"/>
         <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedVisit.VisitDate,StringFormat = dd/MM/yyyy, Mode=TwoWay}" Style="{StaticResource FormTextBox}" />
         <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding SelectedVisit.VisitDate, StringFormat = dddd}" Margin="5" MinHeight="35" />
         <DataGrid x:Name="GridVisits" ItemsSource="{Binding Visits}" Grid.Row="1" Grid.RowSpan="8" Grid.Column="6" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
                   AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True"
-                  SelectedItem="{Binding SelectedVisit, Mode=TwoWay}" >
+                  SelectedItem="{Binding SelectedVisit, Mode=TwoWay}">
             <DataGrid.Columns>
                  <DataGridTextColumn Header="Date" Binding="{Binding Path= VisitDate,StringFormat=dd/MM/yyyy}"/>
                 <DataGridTextColumn Header="Mem No" Binding="{Binding Path = Member.MemNo}"/>
@@ -55,7 +55,7 @@
                 <DataGridTextColumn Header="SubActivity" Binding="{Binding Path= Activity.SubActivity}"/>
                 <DataGridTextColumn Header="Amount" Binding="{Binding Amount, ConverterCulture=en-GB, StringFormat={}{0:C}}"/>
                 <DataGridTextColumn Header="Date Paid" Binding="{Binding Path = PaidDate,StringFormat = dd/MM/yyyy}"/>
-                <DataGridCheckBoxColumn Header="Paid" Binding="{Binding Path= IsPaid}"/>
+                <DataGridCheckBoxColumn Header="Paid" Binding="{Binding Path= IsPaid, Mode=TwoWay}"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -70,8 +70,8 @@
             </I:Interaction.Triggers>
             </TextBox>
             <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3">
-            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay}" IsReadOnly="True" MinHeight="35" Style="{StaticResource FormTextBox}"/>
-            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay}" IsReadOnly="True" Margin="5,0,5,5" MinHeight="35" Style="{StaticResource FormTextBox}"/>
+            <TextBox  Text="{Binding Path = SelectedVisit.Member.Category, Mode=OneWay, NotifyOnSourceUpdated=True}" IsReadOnly="True" MinHeight="35" Style="{StaticResource FormTextBox}"/>
+            <TextBox  Text="{Binding Path = SelectedVisit.Member, Mode=OneWay, NotifyOnSourceUpdated=True}" IsReadOnly="True" Margin="5,0,5,5" MinHeight="35" Style="{StaticResource FormTextBox}"/>
 
         </StackPanel>
                 

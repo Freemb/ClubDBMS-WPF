@@ -7,7 +7,7 @@ using DataLibrary.Utility;
 
 namespace DataLibrary.Models
 {
-	public class ActivityModel : ObservableObject
+	public class ActivityModel : ObservableObject,IEquatable<ActivityModel>
 	{
 		private string _activityName = "";
 		private string _subActivity = "";
@@ -53,18 +53,19 @@ namespace DataLibrary.Models
             set => _isWEBH = value;
 		}
 
-		public override string ToString()
+       bool IEquatable<ActivityModel>.Equals(ActivityModel other)
+       {
+            return
+                SubActivity.Equals(other.SubActivity) && ActivityName.Equals(other.ActivityName);
+
+
+       }
+
+        public override string ToString()
 		{
 			return ActivityName + "  |  " + SubActivity;
 		}
-        public bool Equals(ActivityModel other)
-        {
-            if(
-                SubActivity.Equals(other.SubActivity) && ActivityName.Equals(other.ActivityName) 
-               )
-            return true;
-            return false;
-        }
+        
 	}
 
 
