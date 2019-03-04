@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataLibrary.Models;
 using DataLibrary.Cache;
+using System.Windows;
 
 namespace DataLibrary.Operations
 {
@@ -96,7 +97,7 @@ namespace DataLibrary.Operations
 			catch (Exception ex)
 			{
 				this.Ex = ex;
-				return 0;
+                return 0;
 
 			}
 		}

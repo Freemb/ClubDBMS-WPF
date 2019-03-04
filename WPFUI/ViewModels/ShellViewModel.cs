@@ -10,6 +10,7 @@ using System.Windows.Input;
 using WPFUI.Utility;
 using System.Windows;
 using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace WPFUI.ViewModels
 {
@@ -20,7 +21,8 @@ namespace WPFUI.ViewModels
 		public PortalViewModel Portal { get; private set; } 
 		public static DataSet Softcache { get; set; }
 		private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor finalises.
-		private object _currentView;
+        private Visibility _isMenuCollapsed = Visibility.Collapsed; //0-visible, 1-hidden, 2- collapsed
+        private object _currentView;
 		public object CurrentView
 		{
 			get { return _currentView; }
@@ -28,10 +30,18 @@ namespace WPFUI.ViewModels
 		}
 		public ICommand LoadPortalCommand { get; private set; }
 		public ICommand QuitCommand { get; private set; }
+        public ICommand CollapsePaneCommand { get; private set; }
 		public static ShellViewModel GetInstance { get { return _instance; } }
-				
-		//static constructor called first
-		static ShellViewModel()
+        
+
+        public Visibility  IsMenuCollapsed
+        {
+            get { return _isMenuCollapsed; }
+            set { OnPropertyChanged(ref _isMenuCollapsed, value); }
+        }
+
+        //static constructor called first
+        static ShellViewModel()
 		{
 			
 			Softcache = new DataSet("SoftCache");
@@ -49,6 +59,7 @@ namespace WPFUI.ViewModels
 			Portal = new PortalViewModel();
 			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal);
 			QuitCommand = new RelayCommand(Quit);
+            CollapsePaneCommand = new RelayCommand(CollapsePane);
 			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM);
 			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM);
 			CurrentView = Portal; //Loads portal on opening
@@ -61,6 +72,11 @@ namespace WPFUI.ViewModels
 				Application.Current.MainWindow.Close();
 			}
 		}
+        private void CollapsePane()
+        {
+            IsMenuCollapsed = IsMenuCollapsed == Visibility.Collapsed?Visibility.Visible:Visibility.Collapsed;
+           
+        }
 		
 	}
 }

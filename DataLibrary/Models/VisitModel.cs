@@ -32,7 +32,7 @@ namespace DataLibrary.Models
             }
             set
             {
-                if (value != null) // temporary fix for bug where null introduced after selecting from combo box
+                //if (value != null) // temporary fix for bug where null introduced after selecting from combo box
                     OnPropertyChanged(ref _activity, value);
 
             }

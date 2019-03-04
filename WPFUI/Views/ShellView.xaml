@@ -6,14 +6,33 @@
         xmlns:VMs="clr-namespace:WPFUI.ViewModels"
         xmlns:Vs="clr-namespace:WPFUI.Views"
         xmlns:local ="clr-namespace:WPFUI"
+        xmlns:I ="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         x:Class="WPFUI.Views.ShellView"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="ShellView" Height="450" Width="800" FontFamily="Segoe UI" FontSize="16"
         WindowStyle="None" WindowState="Maximized" BorderBrush="Silver" BorderThickness="6">
     
-    <DockPanel>
-       
-       <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="50" Background="AliceBlue">
+    
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!--Row 0-->
+        <Button Grid.Row="0" Grid.Column="1" Content="Toggle" Command="{Binding CollapsePaneCommand}"/>
+
+        <!--Row 1--> 
+            <StackPanel Visibility="{Binding IsMenuCollapsed}" Grid.Row="1" Grid.Column="1" Orientation="Vertical" Background="AliceBlue" Focusable="True">
+            <I:Interaction.Triggers>
+                <I:EventTrigger EventName="GotFocus">
+                    <I:InvokeCommandAction Command="{Binding CollapsePanecommand}"/>
+                </I:EventTrigger>
+            </I:Interaction.Triggers>
             <Button Command="{Binding LoadPortalCommand}" Grid.Column="3" Grid.Row="1">
                 <Button.Content>
                     <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\home.png" MaxHeight="80" MaxWidth="80"/>
@@ -26,20 +45,13 @@
             </Button>
         </StackPanel>
 
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="20"/>
-            </Grid.RowDefinitions>
-        <!--Row 1-->
         
-        <!--row 2-->
-            <ContentControl Content="{Binding CurrentView}" Grid.Row="0" Grid.Column="0"/>
-
+        <!--Row 2-->
+        <ContentControl Content="{Binding CurrentView}" Grid.Row="1" Grid.Column="0"/>
+           
+            <!--row 2-->
 
         </Grid>
-    </DockPanel>
+    
 </Window>
+

@@ -42,7 +42,7 @@
         <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding SelectedVisit.VisitDate, StringFormat = dddd}" Margin="5" MinHeight="35" />
         <DataGrid x:Name="GridVisits" ItemsSource="{Binding Visits}" Grid.Row="1" Grid.RowSpan="8" Grid.Column="6" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
                   AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True"
-                  SelectedItem="{Binding SelectedVisit, Mode=TwoWay}">
+                  SelectedItem="{Binding SelectedVisit, Mode=TwoWay}" IsEnabled="{Binding IsReadOnly}">
             <DataGrid.Columns>
                  <DataGridTextColumn Header="Date" Binding="{Binding Path= VisitDate,StringFormat=dd/MM/yyyy}"/>
                 <DataGridTextColumn Header="Mem No" Binding="{Binding Path = Member.MemNo}"/>
@@ -77,8 +77,8 @@
                 
         <!--Row 3-->
         <TextBlock Grid.Row="3" Grid.Column="1" Text ="Guest Details" Margin="5" MinHeight="35"/>
-        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Forename, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
-        <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Path=Visits/Guest.Surname, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=SelectedVisit.Guest.Forename, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
+        <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Path=SelectedVisit.Guest.Surname, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
         <!--Row 4-->
         <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinWidth="20" MinHeight="35"/>
         <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}">
@@ -88,7 +88,7 @@
                 </I:EventTrigger>
             </I:Interaction.Triggers>
         </ComboBox>
-        
+
         <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" ItemsSource="{Binding SubActivityList}" SelectedItem="{Binding SelectedVisit.Activity.SubActivity, Mode=TwoWay}">
             <I:Interaction.Triggers>
                 <I:EventTrigger EventName="SelectionChanged">
@@ -100,17 +100,20 @@
         <!--Row 5-->
         <TextBlock Grid.Column="1" Grid.Row="5" Text="Fee Status" Margin="5" MinWidth="20"/>
         <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding SelectedVisit.Amount, Mode=TwoWay, ConverterCulture=en-GB, StringFormat={}{0:C}}" Style="{StaticResource FormTextBox}"/>
-        <StackPanel Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock  Text="Paid" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <CheckBox  IsChecked="{Binding SelectedVisit.IsPaid, Mode=TwoWay}" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
         </StackPanel>
+        <TextBox Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding SelectedVisit.PaidDate,StringFormat=dd/MM/yyyy, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
+        
         <!--Row 6-->
         <TextBlock Grid.Column="1" Grid.Row="6" Text="Notes" Margin="5"/>
-        <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4" Text="{Binding SelectedVisit.Notes}" Style="{StaticResource FormTextBox}"/>
+        <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4" Text="{Binding SelectedVisit.Notes}" Style="{StaticResource FormTextBox}" MaxLines="10" MaxLength="200" TextWrapping="Wrap"/>
         <!--Row 7-->
-        <WrapPanel Grid.Row="7" Grid.Column="1">
+        <WrapPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
             <Button Command="{Binding AddVisitCommand}" Content="New Visit"/>
+            <Button Command="{Binding SaveVisitCommand}" Content="Save"/>
+            <Button Command="{Binding DeleteVisitCommand}" Content="Delete"/>
         </WrapPanel>
 
 
