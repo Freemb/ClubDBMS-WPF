@@ -20,10 +20,10 @@ namespace DataLibrary.Models
         private string _notes = "";
         private DateTime _paidDate = DateTime.Now.Date;
 
-        public int VisitID { get => _visitID; set { OnPropertyChanged(ref _visitID, value); } }
-        public DateTime VisitDate { get => _visitDate; set { OnPropertyChanged(ref _visitDate, value); } }
-        public MemberModel Member { get => _member; set { OnPropertyChanged(ref _member, value); } }
-        public GuestModel Guest { get => _guest; set { OnPropertyChanged(ref _guest, value); } }
+        public int VisitID { get => _visitID; set => OnPropertyChanged(ref _visitID, value);}
+        public DateTime VisitDate { get => _visitDate; set => OnPropertyChanged(ref _visitDate, value);}
+        public MemberModel Member { get => _member; set => OnPropertyChanged(ref _member, value); }
+        public GuestModel Guest { get => _guest; set => OnPropertyChanged(ref _guest, value);}
         public ActivityModel Activity
         {
             get
@@ -38,10 +38,10 @@ namespace DataLibrary.Models
             }
         }
 
-        public decimal Amount { get => _amount; set { OnPropertyChanged(ref _amount, value); } }
-        public bool IsPaid { get => _isPaid; set { OnPropertyChanged(ref _isPaid, value); } }
-        public DateTime PaidDate { get => _paidDate; set { OnPropertyChanged(ref _paidDate, value); } }
-        public string Notes { get => _notes; set { OnPropertyChanged(ref _notes, value); } }
+        public decimal Amount { get => _amount; set => OnPropertyChanged(ref _amount, value);}
+        public bool IsPaid { get => _isPaid; set => OnPropertyChanged(ref _isPaid, value); }
+        public DateTime PaidDate { get => _paidDate; set => OnPropertyChanged(ref _paidDate, value);}
+        public string Notes { get => _notes; set => OnPropertyChanged(ref _notes, value);}
         public VisitModel()
         {
             Member = new MemberModel();
@@ -49,34 +49,19 @@ namespace DataLibrary.Models
             Guest = new GuestModel();
         }
 
-        public VisitModel(string id, string VDate, string memno, string memfore, string memsur, string category, string activityID, string activityname, string subactivity = "",
-                            string price = "", string Pdate = "", string GFore = "", string GSur = "")
+        public VisitModel(int id, DateTime VDate, double memno, string memfore, string memsur, string category, int activityID, string activityname, string subactivity,
+                            decimal price, DateTime Pdate,bool ispaid, string GFore, string GSur)
         {
-            Member = new MemberModel { Forename = memfore, Surname = memsur, Category = category };
-            double.TryParse(memno, out double MemNoValue);
-            Member.MemNo = MemNoValue;
-
-            Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity };
-            int.TryParse(activityID, out int ActivityIDvalue);
-            Activity.SubActivityID = ActivityIDvalue;
-
-            DateTime VisitdateValue = DateTime.Today;
-            DateTime.TryParse(VDate, out VisitdateValue);
-            VisitDate = VisitdateValue;
-            int.TryParse(id, out int idValue);
-            VisitID = idValue;
-
-
-
-            decimal.TryParse(price, out decimal AmountValue);
-            Amount = AmountValue;
-
-            if (DateTime.TryParse(Pdate, out DateTime PaidDateValue))
-            {
-                IsPaid = true;
-                PaidDate = PaidDateValue;
-            }
+            Member = new MemberModel { Forename = memfore, Surname = memsur, Category = category, MemNo = memno };
             Guest = new GuestModel { Forename = GFore, Surname = GSur };
+            Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity, SubActivityID = activityID };
+            VisitDate = VDate;
+            VisitID = id;
+            Amount = price;
+            IsPaid = ispaid;
+            PaidDate = Pdate;
+       
+            
 
         }
 
@@ -96,6 +81,30 @@ namespace DataLibrary.Models
                 Guest.Equals(other.Guest);
 
 
+        }
+        public VisitModel Clone(VisitModel input)
+        {
+            return new VisitModel
+                (
+                input._visitID,
+                input._visitDate,
+                input.Member.MemNo,
+                input.Member.Forename,
+                input.Member.Surname,
+                input.Member.Category,
+                input._activity.ActivityID,
+                input.Activity.ActivityName,
+                input.Activity.SubActivity,
+                input._amount,
+                input._paidDate,
+                input._isPaid,
+                input._guest.Forename,
+                input._guest.Surname
+                );
+                
+                
+
+            
         }
     }
 }

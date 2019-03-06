@@ -160,17 +160,18 @@ namespace DataLibrary.Operations
 				da.Fill(dt);
 				#region ConvertToModels
 				List<VisitModel> output = dt.AsEnumerable().Select(row => new VisitModel(
-				Convert.ToString(row.Field<int>("VisitID")),
-				Convert.ToString(row.IsNull("VisitDate") ? DateTime.Today.Date : row.Field<DateTime>("VisitDate")),
-				Convert.ToString(row.Field<double>("MemNo")),
+				row.Field<int>("VisitID"),
+				row.IsNull("VisitDate") ? DateTime.Today.Date : row.Field<DateTime>("VisitDate"),
+				row.Field<double>("MemNo"),
 				row.Field<string>("Forename"),
 				row.Field<string>("Surname"),
 				row.Field<string>("Category"),
-				Convert.ToString(row.Field<int>("SubActivityId")),
+				row.Field<int>("SubActivityId"),
 				row.Field<string>("Activity"),
 				row.Field<string>("SubActivity"),
-				Convert.ToString(row.Field<decimal>("Amount")),
-				Convert.ToString(row.IsNull("PaidDate") ? DateTime.Today.Date : row.Field<DateTime>("PaidDate")),
+				row.Field<decimal>("Amount"),
+				row.IsNull("PaidDate") ? DateTime.Today.Date : row.Field<DateTime>("PaidDate"),
+                row.Field<bool>("Paid"),
 				row.Field<string>("GuestFore"),
 				row.Field<string>("GuestSur"))).ToList();
 								

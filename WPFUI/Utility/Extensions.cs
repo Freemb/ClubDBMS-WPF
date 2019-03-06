@@ -72,6 +72,30 @@ namespace WPFUI.Utility
 
 			return true;
 		}
+        public static VisitModel Clone(this VisitModel input)
+        {
+            return new VisitModel
+                (
+                input.VisitID,
+                input.VisitDate,
+                input.Member.MemNo,
+                input.Member.Forename,
+                input.Member.Surname,
+                input.Member.Category,
+                input.Activity.ActivityID,
+                input.Activity.ActivityName,
+                input.Activity.SubActivity,
+                input.Amount,
+                input.PaidDate,
+                input.IsPaid,
+                input.Guest.Forename,
+                input.Guest.Surname
+                );
 
-	}
+
+
+
+        }
+
+    }
 }

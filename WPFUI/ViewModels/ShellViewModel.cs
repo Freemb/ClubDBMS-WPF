@@ -57,11 +57,11 @@ namespace WPFUI.ViewModels
 			MemVM = new MembersViewModel();
 			VisVM = new VisitsViewModel();
 			Portal = new PortalViewModel();
-			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal);
-			QuitCommand = new RelayCommand(Quit);
-            CollapsePaneCommand = new RelayCommand(CollapsePane);
-			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM);
-			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM);
+			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal,()=>true);
+			QuitCommand = new RelayCommand(Quit,()=>true);
+            CollapsePaneCommand = new RelayCommand(CollapsePane,()=>true);
+			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM,()=>true);
+			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM,()=>true);
 			CurrentView = Portal; //Loads portal on opening
 
 		}
