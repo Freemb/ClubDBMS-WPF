@@ -13,7 +13,7 @@ namespace DataLibrary.Operations
 		
 		Exception Ex { get; set; }
 		SqlException Sqlex { get; set; }
-		DataTable Load(string input);
+		List<T> Load(string input, bool all);
 		int Update(T model);
 		int Insert(T model);
 		int Delete(T model);

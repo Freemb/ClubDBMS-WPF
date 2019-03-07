@@ -22,8 +22,12 @@ namespace DataLibrary.Operations
 		{
 			throw new NotImplementedException();
 		}
+        public int Update(ActivityModel model)
+        {
+            throw new NotImplementedException();
+        }
 
-		public DataTable Load(string input)
+        public DataTable Load(string input)
 		{
 			using (SqlConnection conn = new SqlConnection(ConnString()))
 			{
@@ -47,10 +51,13 @@ namespace DataLibrary.Operations
 				
 		}
 
-		public int Update(ActivityModel model)
-		{
-			throw new NotImplementedException();
-		}
-		
-	}
+        public List<ActivityModel> Load(string input, bool all)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+       
+    }
 }

@@ -15,27 +15,7 @@ namespace DataLibrary.Operations
 	{
 		
 
-		public DataTable Load(string input)
-		{
-			using (SqlConnection con = new SqlConnection(ConnString()))
-			{
-				SqlDataAdapter da = new SqlDataAdapter("dbo.spLoadVisits", con);
-				da.SelectCommand.CommandType = CommandType.StoredProcedure;
-				//passing in a null gives a default date of today's date in stored procedure
-				if (input != null)
-				{
-					da.SelectCommand.Parameters.AddWithValue("@VisitDate", Convert.ToDateTime(input));
-				}
-				else
-				{
-					da.SelectCommand.Parameters.AddWithValue("@VisitDate", DBNull.Value);
-				}
-				da.FillSchema(dt, SchemaType.Source);
-				dt.TableName = "Visitors";
-				da.Fill(dt);
-				return dt;
-			}
-		}
+		
 		public int Delete(VisitModel model)
 		{
 			try
@@ -140,21 +120,28 @@ namespace DataLibrary.Operations
 			}
 			
 		}
-		public List<VisitModel> Load(string input, bool all)
+		public List<VisitModel> Load(string input = null, bool all = false)
 		{
 			using (SqlConnection con = new SqlConnection(ConnString()))
 			{
 				SqlDataAdapter da = new SqlDataAdapter("dbo.spLoadVisits", con);
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 				//passing in a null gives a default date of today's date in stored procedure
-				if (input != null)
+				if (all)
 				{
-					da.SelectCommand.Parameters.AddWithValue("@VisitDate", Convert.ToDateTime(input));
-				}
-				else
+                    da.SelectCommand.Parameters.AddWithValue("@VisitDate", DBNull.Value);
+                    da.SelectCommand.Parameters.AddWithValue("@All", all);
+                }
+				else if(input == null)
 				{
 					da.SelectCommand.Parameters.AddWithValue("@VisitDate", DBNull.Value);
-				}
+                    da.SelectCommand.Parameters.AddWithValue("@All", false);
+                }
+                else
+                {
+                    da.SelectCommand.Parameters.AddWithValue("@VisitDate", Convert.ToDateTime(input));
+                    da.SelectCommand.Parameters.AddWithValue("@All", false);
+                }
 				da.FillSchema(dt, SchemaType.Source);
 				dt.TableName = "Visitors";
 				da.Fill(dt);
@@ -166,20 +153,18 @@ namespace DataLibrary.Operations
 				row.Field<string>("Forename"),
 				row.Field<string>("Surname"),
 				row.Field<string>("Category"),
-				row.Field<int>("SubActivityId"),
+				row.IsNull("SubActivityId") ? 0 :row.Field<int>("SubActivityId"),
 				row.Field<string>("Activity"),
 				row.Field<string>("SubActivity"),
-				row.Field<decimal>("Amount"),
+                row.IsNull("Amount") ? 0 : row.Field<decimal>("Amount"),
 				row.IsNull("PaidDate") ? DateTime.Today.Date : row.Field<DateTime>("PaidDate"),
-                row.Field<bool>("Paid"),
+                row.IsNull("Paid") ? false : row.Field<bool>("Paid"),
 				row.Field<string>("GuestFore"),
 				row.Field<string>("GuestSur"))).ToList();
-								
-					
-				#endregion
-				return output;
 
-			}
+                return output;
+                #endregion
+            }
 		}
 	}
 }

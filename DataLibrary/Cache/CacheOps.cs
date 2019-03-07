@@ -15,35 +15,35 @@ namespace DataLibrary.Cache
 	public static class CacheOps
 	{
 		// TODO Load members list. switch to new thread or async wait to continue loading the user interface
-		private static readonly object lockMe = new object();
+		//private static readonly object lockMe = new object();
 		
-		public static DataTable GetFromCache<T>(string key, IModelConnector<T> connector = null)
-		{
-			DataTable data = MemoryCache.Default.Get(key) as DataTable;
-			if(data == null)
-			{
-				lock (lockMe)
-				{
-					data = MemoryCache.Default.Get(key) as DataTable;
-					if(data != null)
-					{
-						return data;
-					}
-					data = connector?.Load(null);
-					//data = connector.Load(null).Tables[key]; //key should be same as column name in table
+		//public static DataTable GetFromCache<T>(string key, IModelConnector<T> connector = null)
+		//{
+		//	DataTable data = MemoryCache.Default.Get(key) as DataTable;
+		//	if(data == null)
+		//	{
+		//		lock (lockMe)
+		//		{
+		//			data = MemoryCache.Default.Get(key) as DataTable;
+		//			if(data != null)
+		//			{
+		//				return data;
+		//			}
+		//			data = connector?.Load(null);
+		//			//data = connector.Load(null).Tables[key]; //key should be same as column name in table
 					
-					if(connector != null)
-					{
-						var duration = DateTimeOffset.UtcNow.AddMinutes(30);
-						MemoryCache.Default.AddOrGetExisting(key, data, duration);
-					}
+		//			if(connector != null)
+		//			{
+		//				var duration = DateTimeOffset.UtcNow.AddMinutes(30);
+		//				MemoryCache.Default.AddOrGetExisting(key, data, duration);
+		//			}
 					
 					
-				}
-			}
+		//		}
+		//	}
 
-			return data; //returns null if cache has expired
-		}
+		//	return data; //returns null if cache has expired
+		//}
 
 
 
