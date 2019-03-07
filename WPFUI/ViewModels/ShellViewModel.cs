@@ -74,9 +74,10 @@ namespace WPFUI.ViewModels
 		}
         private void CollapsePane()
         {
-            IsMenuCollapsed = IsMenuCollapsed == Visibility.Collapsed?Visibility.Visible:Visibility.Collapsed;
-           
+            IsMenuCollapsed = IsMenuCollapsed == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+
         }
-		
-	}
+
+
+    }
 }

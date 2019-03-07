@@ -5,7 +5,8 @@
         <ResourceDictionary Source="Brushes/GradientBrushes.xaml"/>
         <ResourceDictionary Source="Controls/Buttons.xaml"/>
         <ResourceDictionary Source="Controls/TextBoxes.xaml"/>
+        <ResourceDictionary Source="Controls/ComboBoxes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
-        
+
+
 </ResourceDictionary>

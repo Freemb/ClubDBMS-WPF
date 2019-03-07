@@ -81,7 +81,7 @@
         <TextBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Path=SelectedVisit.Guest.Surname, Mode=TwoWay}" Style="{StaticResource FormTextBox}" MinHeight="35" MinWidth="150"/>
         <!--Row 4-->
         <TextBlock Grid.Column="1" Grid.Row="4" Text="Activity Details" Margin="5" MinWidth="20" MinHeight="35"/>
-        <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}">
+        <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ActivityList}" SelectedItem="{Binding SelectedVisit.Activity.ActivityName,Mode=TwoWay}" Style="{StaticResource theComboBox}">
             <I:Interaction.Triggers>
                 <I:EventTrigger EventName="SelectionChanged">
                     <I:InvokeCommandAction Command="{Binding GetSubActivityListCommand}"/>
@@ -89,7 +89,8 @@
             </I:Interaction.Triggers>
         </ComboBox>
 
-        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" ItemsSource="{Binding SubActivityList}" SelectedItem="{Binding SelectedVisit.Activity.SubActivity, Mode=TwoWay}">
+        <ComboBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" ItemsSource="{Binding SubActivityList}" SelectedItem="{Binding SelectedVisit.Activity.SubActivity, Mode=TwoWay}"
+                  Style="{StaticResource theComboBox}">
             <I:Interaction.Triggers>
                 <I:EventTrigger EventName="SelectionChanged">
                     <I:InvokeCommandAction Command="{Binding GetPriceCommand}"/>

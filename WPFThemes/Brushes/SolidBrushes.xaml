@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    >
-    
+                     >
+
     <!--Brushes (Palette from: https://flatuicolors.com/palette/de)-->
     <SolidColorBrush x:Key="BlueHorizon" Color="#FF4B6584"/>
     <SolidColorBrush x:Key="BlueGrey" Color="#FF778CA3"/>
@@ -25,5 +25,7 @@
     <SolidColorBrush x:Key="MaximumBlueGreen" Color="#FF2BCBBA"/>
 
     <SolidColorBrush x:Key="AlmostBlack" Color="#FF131313"/>
+
+    
 
 </ResourceDictionary>

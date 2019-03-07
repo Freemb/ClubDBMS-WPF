@@ -26,8 +26,9 @@
             <!--Row 0-->
         <Button Grid.Row="0" Grid.Column="1" Content="Toggle" Command="{Binding CollapsePaneCommand}"/>
 
-        <!--Row 1--> 
-            <StackPanel Visibility="{Binding IsMenuCollapsed}" Grid.Row="1" Grid.Column="1" Orientation="Vertical" Background="AliceBlue" Focusable="True">
+        <!--Row 1-->
+        
+            <StackPanel Grid.Row="1" Grid.Column="1" Visibility="{Binding IsMenuCollapsed}" Orientation="Vertical" Background="AliceBlue" Focusable="True">
             <I:Interaction.Triggers>
                 <I:EventTrigger EventName="GotFocus">
                     <I:InvokeCommandAction Command="{Binding CollapsePanecommand}"/>
@@ -44,8 +45,8 @@
                 </Button.Content>
             </Button>
         </StackPanel>
+       
 
-        
         <!--Row 2-->
         <ContentControl Content="{Binding CurrentView}" Grid.Row="1" Grid.Column="0"/>
            

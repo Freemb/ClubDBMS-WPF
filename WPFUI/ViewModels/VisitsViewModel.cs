@@ -93,10 +93,22 @@ namespace WPFUI.ViewModels
         public bool IsReadOnly
         {
             get { return _isReadOnly; }
-            set {OnPropertyChanged(ref _isReadOnly , value); }
+            set
+            {
+                OnPropertyChanged(ref _isReadOnly , value);
+                OnPropertyChanged("IsEditMode");
+            }
             
         }
         
+        public bool IsEditMode
+
+        {
+            get { return !_isReadOnly; }
+          
+        }
+
+
 
         //Constructor
         public VisitsViewModel()
@@ -115,7 +127,7 @@ namespace WPFUI.ViewModels
             PreviousCommand = new RelayCommand(Previous,CanNavigate);
             NextCommand = new RelayCommand(Next,CanNavigate);
             AddCommand = new RelayCommand(Add,CanNavigate);
-            SaveCommand = new RelayCommand(Save,()=>true);
+            SaveCommand = new RelayCommand(Save,()=> !IsReadOnly);
             EditCommand = new RelayCommand(Edit, CanNavigate);
             DeleteCommand = new RelayCommand(Delete,CanNavigate);
             CloneCommand = new RelayCommand(Clone,CanNavigate);
@@ -136,28 +148,28 @@ namespace WPFUI.ViewModels
 		}
 		private void GetPrice()
 		{
-            //// This code returns exception if no match found in activities
-            //if (!(String.IsNullOrEmpty(SelectedVisit.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit.Activity.SubActivity)))
-            //	SelectedVisit.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedVisit.Activity.ActivityName &&
-            //	model.SubActivity == SelectedVisit.Activity.SubActivity && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()
-            //	).Select(model => model.Price).First();
+            // This code returns exception if no match found in activities
+            if (!(String.IsNullOrEmpty(SelectedVisit?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit?.Activity.SubActivity)))
+                SelectedVisit.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedVisit.Activity.ActivityName &&
+                model.SubActivity == SelectedVisit.Activity.SubActivity && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()
+                ).Select(model => model.Price).FirstOrDefault();
 
             // This code does the same as above with no exception as there is no assignment unless a match is found
-          
-                if (!(String.IsNullOrEmpty(SelectedVisit?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit?.Activity.SubActivity)))
-                    foreach (ActivityModel model in _activitiesWithPrices)
-                    {
-                        if (model.ActivityName == SelectedVisit.Activity.ActivityName && model.SubActivity == SelectedVisit.Activity.SubActivity
-                            && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday())
-                        {
-                            SelectedVisit.Activity.SubActivityID = model.SubActivityID;
-                            SelectedVisit.Amount = model.Price;
-                            return;
-                        }
 
-                    }
-          
-		}
+            //if (!(String.IsNullOrEmpty(SelectedVisit?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit?.Activity.SubActivity)))
+            //    foreach (ActivityModel model in _activitiesWithPrices)
+            //    {
+            //        if (model.ActivityName == SelectedVisit.Activity.ActivityName && model.SubActivity == SelectedVisit.Activity.SubActivity
+            //            && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday())
+            //        {
+            //            SelectedVisit.Activity.SubActivityID = model.SubActivityID;
+            //            SelectedVisit.Amount = model.Price;
+            //            return;
+            //        }
+
+            //    }
+
+        }
         private void GetMemberDetails()
         {
             if(SelectedVisit != null)
