@@ -145,7 +145,7 @@ namespace DataLibrary.Operations
 				var da = new SqlDataAdapter("dbo.spMembers_GetbySurname", con);
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 				//passing in a null gives a default behaviour of returning top 25 records unfiltered
-				if (!all)
+				if (!(all || input == null))
 				{
 					da.SelectCommand.Parameters.AddWithValue("@Surname", input);
 				}

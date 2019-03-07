@@ -40,7 +40,8 @@ namespace WPFUI.ViewModels
         public ICommand DeleteCommand { get; private set; }
         public ICommand CloneCommand { get; private set; }
         public ICommand CancelCommand { get;private set; } 
-                                           //properties for binding to View
+
+        //properties for binding to View
         public ObservableCollection<string> ActivityList
 		{
 			get
@@ -89,7 +90,6 @@ namespace WPFUI.ViewModels
 				
 			}
 		}
-        
         public bool IsReadOnly
         {
             get { return _isReadOnly; }
@@ -100,7 +100,6 @@ namespace WPFUI.ViewModels
             }
             
         }
-        
         public bool IsEditMode
 
         {
@@ -115,8 +114,8 @@ namespace WPFUI.ViewModels
 		{
             //Load Visits and Activity Prices from database to observable collection
             VisitConnector vconn = new VisitConnector();
-			Visits = new ObservableCollection<VisitModel>(vconn.Load("22/07/2017", true));
-			SelectedVisit = Visits.First<VisitModel>();
+			Visits = new ObservableCollection<VisitModel>(vconn.Load(null,true));
+			SelectedVisit = Visits.FirstOrDefault<VisitModel>();
 			_activitiesWithPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
             //Set Command Delegates to methods
             GetSubActivityListCommand = new RelayCommand(GetSubActivityList,()=>true);
@@ -175,7 +174,6 @@ namespace WPFUI.ViewModels
             if(SelectedVisit != null)
             SelectedVisit.Member = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
         }
-
         private bool CanNavigate()
         {
             return IsReadOnly;
@@ -184,12 +182,12 @@ namespace WPFUI.ViewModels
         //Navigation Bar Methods
         private void First()
         {
-            VisitModel temp = Visits.First();
+            VisitModel temp = Visits.FirstOrDefault();
             if (temp != null) SelectedVisit = temp;
         }
         private void Last()
         {
-            VisitModel temp = Visits.Last();
+            VisitModel temp = Visits.LastOrDefault();
             if (temp != null) SelectedVisit = temp;
         }
         private void Previous()
@@ -215,14 +213,15 @@ namespace WPFUI.ViewModels
         private void Edit() 
         {
             IsReadOnly = false;
-            dirtyVisit = SelectedVisit.Clone(SelectedVisit);         
+            dirtyVisit = SelectedVisit?.Clone(SelectedVisit);         
         }
         private void Save()
         {
+            //implement validation checks before saving
             try
             {
                 VisitConnector vconn = new VisitConnector();
-                if (SelectedVisit.VisitID == 0)
+                if (SelectedVisit?.VisitID == 0)
                 {
                     SelectedVisit.VisitID = vconn.Insert(SelectedVisit);
                 }
@@ -248,46 +247,50 @@ namespace WPFUI.ViewModels
         }
         private void Delete()
         {
-            VisitModel x = SelectedVisit;
-            if(x.VisitID != 0)
+            if(SelectedVisit != null)
             {
-                VisitConnector vconn = new VisitConnector();
-                vconn.Delete(x);
-                if (vconn.Ex == null)
+                if(SelectedVisit.VisitID != 0)
                 {
-                    MessageBox.Show("Visit Deleted Successfully");
-                    Visits.Remove(x);
-                    SelectedVisit = Visits.Last();
+                    VisitConnector vconn = new VisitConnector();
+                    vconn.Delete(SelectedVisit);
+                    if (vconn.Ex == null){MessageBox.Show("Visit Deleted Successfully");}
+                    else { MessageBox.Show(vconn.Ex.Message); }
                 }
-                else { MessageBox.Show(vconn.Ex.Message); }
+                Visits.Remove(SelectedVisit);
+                SelectedVisit = Visits.LastOrDefault();
             }
             
         }
         private void Clone()
         {
-            VisitModel temp = SelectedVisit;
-            Add();
-            SelectedVisit.VisitDate = temp.VisitDate;
-            SelectedVisit.Member = temp.Member;
+            if( SelectedVisit != null)
+            {
+                VisitModel temp = SelectedVisit;
+                Add();
+                SelectedVisit.VisitDate = temp.VisitDate;
+                SelectedVisit.Member = temp.Member;
+            }
         }
         private void Cancel()
         {
-            if (SelectedVisit.VisitID == 0)
+            if(SelectedVisit != null)
             {
-                Visits.Remove(Visits.Last());
-                SelectedVisit = Visits.LastOrDefault();
+                //Cancel new visit
+                if (SelectedVisit.VisitID == 0)
+                {
+                    Visits.Remove(Visits.Last());
+                    SelectedVisit = Visits.LastOrDefault();
+                }
+                //Cancel Edit Visit
+                else if(dirtyVisit !=null)
+                {
+                    Visits[GetVisitIndex(SelectedVisit.VisitID)] = dirtyVisit;
+                    dirtyVisit = null;
+                }
             }
-            else if(dirtyVisit !=null)
-            {
-                                
-                Visits[GetVisitIndex(SelectedVisit.VisitID)] = dirtyVisit;
-                dirtyVisit = null;
-                
-            }
-
-            
             IsReadOnly = true;
         }
+
         private int GetVisitIndex(int visitid)
         {
             VisitModel temp = Visits.Where((model) => model.VisitID == visitid).FirstOrDefault();

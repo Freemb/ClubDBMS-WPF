@@ -91,10 +91,11 @@ namespace WPFUI.Utility
                 input.Guest.Forename,
                 input.Guest.Surname
                 );
-
-
-
-
+        }
+        private static int GetIndex<T>(this IEnumerable<T> modelList, int modelID, int id)
+        {
+            T temp = modelList.Where((x) => modelID == id).FirstOrDefault();
+            return Visits.IndexOf(temp);
         }
 
     }

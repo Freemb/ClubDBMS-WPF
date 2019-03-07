@@ -14,7 +14,7 @@ namespace DataLibrary.Models
 		private int _activityID = 0;
 		private decimal _price = 0;
 		private bool _isWEBH = false;
-		private int _subActivityID = 0;
+		private int? _subActivityID = null;
 		private string _activityType = "";
 
 		public string SubActivity
@@ -22,7 +22,7 @@ namespace DataLibrary.Models
 			get => _subActivity;
 			set{OnPropertyChanged(ref _subActivity, value);	}
 		}
-		public int SubActivityID
+		public int? SubActivityID
 		{
 			get => _subActivityID;
             set => _subActivityID = value;

@@ -11,7 +11,7 @@ namespace DataLibrary.Models
     {
         private int _iD = 0;
         private DateTime _entryTime = DateTime.Now;
-        private DateTime _exitTime = DateTime.Now;
+        private DateTime? _exitTime = null;
         private string _vReg = "";
         private string _company = "";
         private string _make = "";
@@ -22,7 +22,7 @@ namespace DataLibrary.Models
 
         public int ID { get => _iD; set => OnPropertyChanged(ref _iD, value); }
         public DateTime EntryTime { get => _entryTime; set => OnPropertyChanged(ref _entryTime , value); }
-        public DateTime ExitTime { get => _exitTime; set => OnPropertyChanged(ref  _exitTime , value); }
+        public DateTime? ExitTime { get => _exitTime; set => OnPropertyChanged(ref  _exitTime , value); }
         public string VReg { get => _vReg; set => OnPropertyChanged(ref _vReg , value); }
         public string Company { get => _company; set => OnPropertyChanged(ref _company , value); }
         public string Make { get => _make; set => OnPropertyChanged(ref _make , value); }
@@ -31,6 +31,10 @@ namespace DataLibrary.Models
         public string DriverName { get => _driverName; set => OnPropertyChanged(ref _driverName , value); }
         public string Description { get => _description; set => OnPropertyChanged(ref _description , value); }
 
+        public DeliveryModel()
+        {
+
+        }
         public DeliveryModel(int id, DateTime entry, DateTime exit, string vreg, string company, string make, string colour, string location, 
                             string driver, string description)
         {

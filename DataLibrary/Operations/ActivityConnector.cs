@@ -12,16 +12,60 @@ namespace DataLibrary.Operations
 {
 	public class ActivityConnector : CommonConnector, IModelConnector<ActivityModel>
 	{
-		
+	
+	
 		public int Delete(ActivityModel model)
-		{
-			throw new NotImplementedException();
-		}
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnString()))
+                {
+                    using (SqlCommand cmd = new SqlCommand("dbo.spDeleteActivity", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@SubActivityID", model.ActivityID);
+                        con.Open();
+                        int RecordsAffected = cmd.ExecuteNonQuery();
+                        this.Ex = null;
+                        return RecordsAffected;
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+              this.Ex = ex;
+              return 0;
+            }
+        }  
+        
+    
 
 		public int Insert(ActivityModel model)
 		{
-			throw new NotImplementedException();
-		}
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnString()))
+                {
+
+                    SqlCommand cmd = new SqlCommand("dbo.spInsertActivity", connection){CommandType = CommandType.StoredProcedure};
+                    //Add after the stored procedure is made
+                    //cmd.Parameters.AddWithValue();
+                    
+                    cmd.Parameters.Add(new SqlParameter
+                    { ParameterName = "@SubActivityID", Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int });
+                    connection.Open();
+                    cmd.ExecuteScalar();
+                    return cmd.Parameters["@SubActivityID"].Value != DBNull.Value ? Convert.ToInt32(cmd.Parameters["@SubActivityID"].Value) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+
+            }
+        }
         public int Update(ActivityModel model)
         {
             throw new NotImplementedException();

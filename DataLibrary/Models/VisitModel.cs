@@ -15,10 +15,10 @@ namespace DataLibrary.Models
         private MemberModel _member;
         private int _visitID = 0;
         private GuestModel _guest;
-        private decimal _amount = 0;
+        private decimal? _amount = null;
         private bool _isPaid = false;
         private string _notes = "";
-        private DateTime _paidDate = DateTime.Now.Date;
+        private DateTime? _paidDate = null;
 
         public int VisitID { get => _visitID; set => OnPropertyChanged(ref _visitID, value);}
         public DateTime VisitDate { get => _visitDate; set => OnPropertyChanged(ref _visitDate, value);}
@@ -38,9 +38,9 @@ namespace DataLibrary.Models
             }
         }
 
-        public decimal Amount { get => _amount; set => OnPropertyChanged(ref _amount, value);}
+        public decimal? Amount { get => _amount; set => OnPropertyChanged(ref _amount, value);}
         public bool IsPaid { get => _isPaid; set => OnPropertyChanged(ref _isPaid, value); }
-        public DateTime PaidDate { get => _paidDate; set => OnPropertyChanged(ref _paidDate, value);}
+        public DateTime? PaidDate { get => _paidDate; set => OnPropertyChanged(ref _paidDate, value);}
         public string Notes { get => _notes; set => OnPropertyChanged(ref _notes, value);}
         public VisitModel()
         {
@@ -49,8 +49,8 @@ namespace DataLibrary.Models
             Guest = new GuestModel();
         }
 
-        public VisitModel(int id, DateTime VDate, double memno, string memfore, string memsur, string category, int activityID, string activityname, string subactivity,
-                            decimal price, DateTime Pdate,bool ispaid, string GFore, string GSur)
+        public VisitModel(int id, DateTime VDate, double memno, string memfore, string memsur, string category, int? activityID, string activityname, string subactivity,
+                            decimal? price, DateTime? Pdate,bool ispaid, string GFore, string GSur)
         {
             Member = new MemberModel { Forename = memfore, Surname = memsur, Category = category, MemNo = memno };
             Guest = new GuestModel { Forename = GFore, Surname = GSur };

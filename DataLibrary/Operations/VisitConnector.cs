@@ -13,9 +13,7 @@ namespace DataLibrary.Operations
 {
 	public class VisitConnector : CommonConnector ,IModelConnector<VisitModel>
 	{
-		
-
-		
+	
 		public int Delete(VisitModel model)
 		{
 			try
@@ -29,7 +27,7 @@ namespace DataLibrary.Operations
 						conn.Open();
 						int RecordsAffected = cmd.ExecuteNonQuery();
 						this.Ex = null;
-						return RecordsAffected;
+                        return RecordsAffected;
 					}
 				}
 			}
@@ -153,11 +151,11 @@ namespace DataLibrary.Operations
 				row.Field<string>("Forename"),
 				row.Field<string>("Surname"),
 				row.Field<string>("Category"),
-				row.IsNull("SubActivityId") ? 0 :row.Field<int>("SubActivityId"),
+				row.Field<int?>("SubActivityId"),
 				row.Field<string>("Activity"),
 				row.Field<string>("SubActivity"),
-                row.IsNull("Amount") ? 0 : row.Field<decimal>("Amount"),
-				row.IsNull("PaidDate") ? DateTime.Today.Date : row.Field<DateTime>("PaidDate"),
+                row.Field<decimal?>("Amount"),
+				row.Field<DateTime?>("PaidDate"),
                 row.IsNull("Paid") ? false : row.Field<bool>("Paid"),
 				row.Field<string>("GuestFore"),
 				row.Field<string>("GuestSur"))).ToList();

@@ -13,17 +13,84 @@ namespace DataLibrary.Operations
     {
         public int Delete(DeliveryModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnString()))
+                {
+                    using (var cmd = new SqlCommand("dbo.spDeleteDelivery", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ID", model.ID);
+                        conn.Open();
+                        int RecordsAffected = cmd.ExecuteNonQuery();
+                        this.Ex = null;
+                        return RecordsAffected;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+            }
         }
 
         public int Insert(DeliveryModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnString()))
+                {
+
+                    SqlCommand cmd = new SqlCommand("dbo.spInsertDelivery", connection) { CommandType = CommandType.StoredProcedure };
+                    //Add after the stored procedure is made
+                    //cmd.Parameters.AddWithValue();
+
+                    cmd.Parameters.Add(new SqlParameter
+                    { ParameterName = "@ID", Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int });
+                    connection.Open();
+                    cmd.ExecuteScalar();
+                    return cmd.Parameters["@ID"].Value != DBNull.Value ? Convert.ToInt32(cmd.Parameters["@ID"].Value) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+
+            }
         }
 
         public int Update(DeliveryModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnString()))
+                {
+
+                    SqlCommand cmd = new SqlCommand("dbo.spUpdateVisit", connection){CommandType = CommandType.StoredProcedure};
+                    cmd.Parameters.AddWithValue("@DeliveryDate", model.EntryTime.Date);
+                    cmd.Parameters.AddWithValue("@Entry", model.EntryTime);
+                    cmd.Parameters.AddWithValue("@VReg", model.VReg);
+                    cmd.Parameters.AddWithValue("@Company", model.Company);
+                    cmd.Parameters.AddWithValue("@Make", model.Make);
+                    cmd.Parameters.AddWithValue("@Colour", model.Colour);
+                    cmd.Parameters.AddWithValue("@Driver", model.DriverName);
+                    cmd.Parameters.AddWithValue("@Location", model.Location);
+                    cmd.Parameters.AddWithValue("@Exit", model.ExitTime);
+                    cmd.Parameters.AddWithValue("@Description", model.Description);
+                    cmd.Parameters.AddWithValue("@ID", model.ID);
+                    connection.Open();
+                    int RecordsAffected = cmd.ExecuteNonQuery();
+                    return RecordsAffected;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+
+            }
         }
 
         public List<DeliveryModel> Load(string input, bool all)
@@ -32,7 +99,7 @@ namespace DataLibrary.Operations
             {
                 SqlDataAdapter da = new SqlDataAdapter("dbo.spLoadDeliveries", con);
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                //passing in a null gives a default date of today's date in stored procedure
+                //passing in a null for input gives a default date of today's date in stored procedure
                 if (!all)
                 {
                     da.SelectCommand.Parameters.AddWithValue("@DeliveryDate", Convert.ToDateTime(input));

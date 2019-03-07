@@ -68,11 +68,15 @@
     </Compile>
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
+    <Compile Include="ViewModels\DeliveriesviewModel.cs" />
     <Compile Include="ViewModels\MembersViewModel.cs" />
     <Compile Include="Utility\ObservableObject.cs" />
     <Compile Include="ViewModels\PortalViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\VisitsViewModel.cs" />
+    <Compile Include="Views\DeliveriesView.xaml.cs">
+      <DependentUpon>DeliveriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MembersView.xaml.cs">
       <DependentUpon>MembersView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Views\DeliveriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MembersView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
