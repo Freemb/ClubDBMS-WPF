@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class DeliveryModel : ObservableObject
+    public class DeliveryModel : ObservableModel
     {
         private int _iD = 0;
         private DateTime _entryTime = DateTime.Now;

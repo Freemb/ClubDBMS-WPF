@@ -12,21 +12,23 @@ using WPFUI.Utility;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows;
+using DataLibrary.Utility;
 
 namespace WPFUI.ViewModels
 {
-	public class VisitsViewModel : ObservableObject
+	public class VisitsViewModel : ObservableObject,IViewModel
 	{
         //private objects
         private bool _isReadOnly = true;
         private VisitModel _selectedvisit = new VisitModel();
-        private VisitModel dirtyVisit;
+        private VisitModel dirtySelection;
         private MemberModel _selectedmember = new MemberModel();
-        private ObservableCollection<VisitModel> _visits;
+        private ObservableCollection<VisitModel> _sourceModels;
 		private ObservableCollection<string> _activitylist;
 		private ObservableCollection<string> _subactivitylist;
 		private IEnumerable<ActivityModel> _activitiesWithPrices;
-        //Commands for binding to buttons/events
+       
+        #region ICommands for binding to buttons/events
         public ICommand GetSubActivityListCommand { get; private set; }
 		public ICommand GetPriceCommand { get; private set; }
         public ICommand AddCommand { get; private set; }
@@ -39,9 +41,24 @@ namespace WPFUI.ViewModels
         public ICommand EditCommand { get; private set; }  
         public ICommand DeleteCommand { get; private set; }
         public ICommand CloneCommand { get; private set; }
-        public ICommand CancelCommand { get;private set; } 
+        public ICommand CancelCommand { get;private set; }
+        #endregion
 
-        //properties for binding to View
+        //properties for binding to View control properties
+        public ObservableCollection<VisitModel> SourceModels
+        {
+            get { return _sourceModels; }
+            set { OnPropertyChanged(ref _sourceModels, value); }
+        }
+        public VisitModel SelectedModel
+        {
+            get { return _selectedvisit; }
+            set
+            {
+                OnPropertyChanged(ref _selectedvisit, value);
+
+            }
+        }
         public ObservableCollection<string> ActivityList
 		{
 			get
@@ -76,20 +93,7 @@ namespace WPFUI.ViewModels
 			}   
 			
 		}
-		public ObservableCollection<VisitModel> Visits
-		{
-			get { return _visits; }
-			set { OnPropertyChanged(ref _visits, value); } 
-		}
-		public VisitModel SelectedVisit
-		{
-			get { return _selectedvisit; }
-			set
-			{
-              OnPropertyChanged(ref _selectedvisit, value);
-				
-			}
-		}
+		
         public bool IsReadOnly
         {
             get { return _isReadOnly; }
@@ -106,51 +110,50 @@ namespace WPFUI.ViewModels
             get { return !_isReadOnly; }
           
         }
-
-
-
+        
         //Constructor
         public VisitsViewModel()
 		{
             //Load Visits and Activity Prices from database to observable collection
             VisitConnector vconn = new VisitConnector();
-			Visits = new ObservableCollection<VisitModel>(vconn.Load(null,true));
-			SelectedVisit = Visits.FirstOrDefault<VisitModel>();
+			SourceModels = new ObservableCollection<VisitModel>(vconn.Load(null,true));
+			SelectedModel = SourceModels.FirstOrDefault();
 			_activitiesWithPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
-            //Set Command Delegates to methods
+            
+            #region Set Command Delegates to methods
             GetSubActivityListCommand = new RelayCommand(GetSubActivityList,()=>true);
 			GetPriceCommand = new RelayCommand(GetPrice,()=>true);
             GetMemberDetailsCommand = new RelayCommand(GetMemberDetails, () => true);
-            LastCommand = new RelayCommand(Last,CanNavigate);
-            FirstCommand = new RelayCommand(First,CanNavigate);
-            PreviousCommand = new RelayCommand(Previous,CanNavigate);
-            NextCommand = new RelayCommand(Next,CanNavigate);
-            AddCommand = new RelayCommand(Add,CanNavigate);
-            SaveCommand = new RelayCommand(Save,()=> !IsReadOnly);
-            EditCommand = new RelayCommand(Edit, CanNavigate);
-            DeleteCommand = new RelayCommand(Delete,CanNavigate);
-            CloneCommand = new RelayCommand(Clone,CanNavigate);
-            CancelCommand = new RelayCommand(Cancel, () => !IsReadOnly);
+            LastCommand = new RelayCommand(Last,()=>IsReadOnly);
+            FirstCommand = new RelayCommand(First, () => IsReadOnly);
+            PreviousCommand = new RelayCommand(Previous, () => IsReadOnly);
+            NextCommand = new RelayCommand(Next, () => IsReadOnly);
+            AddCommand = new RelayCommand(Add, () => IsReadOnly);
+            SaveCommand = new RelayCommand(Save, () => IsEditMode);
+            EditCommand = new RelayCommand(Edit, () => IsReadOnly);
+            DeleteCommand = new RelayCommand(Delete, () => IsReadOnly);
+            CloneCommand = new RelayCommand(Clone, () => IsReadOnly);
+            CancelCommand = new RelayCommand(Cancel, () => IsEditMode);
+            #endregion
+        }
 
-		}
-		
-        //Fetch Methods for data bound to controls
-		private ObservableCollection<string> GetActivityList()
+        //Fetch Methods for data bound to view controls by System.Windows.Interactivity triggers
+        private ObservableCollection<string> GetActivityList()
 		{ return  new ObservableCollection<string>( _activitiesWithPrices.Select(model => model.ActivityName).Distinct());}
 		private void GetSubActivityList()
 		{
-            if (SelectedVisit != null )
+            if (SelectedModel != null )
             {
                 SubActivityList = new ObservableCollection<string>(_activitiesWithPrices.Where(model =>
-                model.ActivityName == SelectedVisit.Activity.ActivityName).Select(model => model.SubActivity).Distinct());
+                model.ActivityName == SelectedModel.Activity.ActivityName).Select(model => model.SubActivity).Distinct());
             }
 		}
 		private void GetPrice()
 		{
             // This code returns exception if no match found in activities
-            if (!(String.IsNullOrEmpty(SelectedVisit?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit?.Activity.SubActivity)))
-                SelectedVisit.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedVisit.Activity.ActivityName &&
-                model.SubActivity == SelectedVisit.Activity.SubActivity && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday()
+            if (!(String.IsNullOrEmpty(SelectedModel?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedModel?.Activity.SubActivity)))
+                SelectedModel.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedModel.Activity.ActivityName &&
+                model.SubActivity == SelectedModel.Activity.SubActivity && model.IsWEBH == SelectedModel.VisitDate.IsWeekendBankHoliday()
                 ).Select(model => model.Price).FirstOrDefault();
 
             // This code does the same as above with no exception as there is no assignment unless a match is found
@@ -171,41 +174,37 @@ namespace WPFUI.ViewModels
         }
         private void GetMemberDetails()
         {
-            if(SelectedVisit != null)
-            SelectedVisit.Member = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
-        }
-        private bool CanNavigate()
-        {
-            return IsReadOnly;
+            if(SelectedModel != null)
+            SelectedModel.Member = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
         }
 
-        //Navigation Bar Methods
+        #region Navigation Bar Methods
         private void First()
         {
-            VisitModel temp = Visits.FirstOrDefault();
-            if (temp != null) SelectedVisit = temp;
+            VisitModel temp = SourceModels.FirstOrDefault();
+            if (temp != null) SelectedModel = temp;
         }
         private void Last()
         {
-            VisitModel temp = Visits.LastOrDefault();
-            if (temp != null) SelectedVisit = temp;
+            VisitModel temp = SourceModels.LastOrDefault();
+            if (temp != null) SelectedModel = temp;
         }
         private void Previous()
         {
-            VisitModel temp = Visits.Where((model) => model.VisitID < SelectedVisit.VisitID).LastOrDefault();
-            if(temp != null) SelectedVisit = temp;
+            VisitModel temp = SourceModels.Where((model) => model.ID < SelectedModel.ID).LastOrDefault();
+            if(temp != null) SelectedModel = temp;
 
         }
         private void Next()
         {
-            VisitModel temp = Visits.Where((model) => model.VisitID > SelectedVisit.VisitID).FirstOrDefault();
-            if (temp != null) SelectedVisit = temp;
+            VisitModel temp = SourceModels.Where((model) => model.ID > SelectedModel.ID).FirstOrDefault();
+            if (temp != null) SelectedModel = temp;
 
         }
         private void Add()
         {
-            Visits.Add(new VisitModel());
-            SelectedVisit = Visits.Last();
+            SourceModels.Add(new VisitModel());
+            SelectedModel = SourceModels.Last();
             SubActivityList = null;
             ActivityList = null;
             IsReadOnly = false;
@@ -213,7 +212,7 @@ namespace WPFUI.ViewModels
         private void Edit() 
         {
             IsReadOnly = false;
-            dirtyVisit = SelectedVisit?.Clone(SelectedVisit);         
+            dirtySelection = SelectedModel?.Clone(SelectedModel);         
         }
         private void Save()
         {
@@ -221,11 +220,11 @@ namespace WPFUI.ViewModels
             try
             {
                 VisitConnector vconn = new VisitConnector();
-                if (SelectedVisit?.VisitID == 0)
+                if (SelectedModel?.ID == 0)
                 {
-                    SelectedVisit.VisitID = vconn.Insert(SelectedVisit);
+                    SelectedModel.ID = vconn.Insert(SelectedModel);
                 }
-                else { vconn.Update(SelectedVisit); }
+                else { vconn.Update(SelectedModel); }
                 if (vconn.Ex == null)
                 {
                     MessageBox.Show("Visit Added Successfully");
@@ -239,7 +238,7 @@ namespace WPFUI.ViewModels
             }
             finally
             {
-                dirtyVisit = null;
+                dirtySelection = null;
                 IsReadOnly = true;
             }
             
@@ -247,55 +246,56 @@ namespace WPFUI.ViewModels
         }
         private void Delete()
         {
-            if(SelectedVisit != null)
+            if(SelectedModel != null)
             {
-                if(SelectedVisit.VisitID != 0)
+                if(SelectedModel.ID != 0)
                 {
                     VisitConnector vconn = new VisitConnector();
-                    vconn.Delete(SelectedVisit);
+                    vconn.Delete(SelectedModel);
                     if (vconn.Ex == null){MessageBox.Show("Visit Deleted Successfully");}
                     else { MessageBox.Show(vconn.Ex.Message); }
                 }
-                Visits.Remove(SelectedVisit);
-                SelectedVisit = Visits.LastOrDefault();
+                SourceModels.Remove(SelectedModel);
+                SelectedModel = SourceModels.LastOrDefault();
             }
             
         }
         private void Clone()
         {
-            if( SelectedVisit != null)
+            if( SelectedModel != null)
             {
-                VisitModel temp = SelectedVisit;
+                VisitModel temp = SelectedModel;
                 Add();
-                SelectedVisit.VisitDate = temp.VisitDate;
-                SelectedVisit.Member = temp.Member;
+                SelectedModel.VisitDate = temp.VisitDate;
+                SelectedModel.Member = temp.Member;
             }
         }
         private void Cancel()
         {
-            if(SelectedVisit != null)
+            if(SelectedModel != null)
             {
                 //Cancel new visit
-                if (SelectedVisit.VisitID == 0)
+                if (SelectedModel.ID == 0)
                 {
-                    Visits.Remove(Visits.Last());
-                    SelectedVisit = Visits.LastOrDefault();
+                    SourceModels.Remove(SourceModels.Last());
+                    SelectedModel = SourceModels.LastOrDefault();
                 }
                 //Cancel Edit Visit
-                else if(dirtyVisit !=null)
+                else if(dirtySelection !=null)
                 {
-                    Visits[GetVisitIndex(SelectedVisit.VisitID)] = dirtyVisit;
-                    dirtyVisit = null;
+                    SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
+                    dirtySelection = null;
                 }
             }
             IsReadOnly = true;
         }
+        #endregion
 
-        private int GetVisitIndex(int visitid)
+        private int GetIndex(int visitid)
         {
-            VisitModel temp = Visits.Where((model) => model.VisitID == visitid).FirstOrDefault();
-            return Visits.IndexOf(temp);
+            VisitModel temp = SourceModels.Where((model) => model.ID == visitid).FirstOrDefault();
+            return SourceModels.IndexOf(temp);
         }
-		
-	}
+
+    }
 }

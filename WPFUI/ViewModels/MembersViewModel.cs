@@ -17,22 +17,22 @@ namespace WPFUI.ViewModels
 	{
 		private ObservableCollection<MemberModel> _members = new ObservableCollection<MemberModel>();
 		private MemberModel _selectedmember = new MemberModel();
-		public ObservableCollection<MemberModel> Members
+		public ObservableCollection<MemberModel> SourceModels
 		{
 			get { return _members; }
 			set { OnPropertyChanged(ref _members, value); } 
 		}
-		public MemberModel SelectedMember
+		public MemberModel SelectedModel
 		{
 			get { return _selectedmember; }
 			set { OnPropertyChanged(ref _selectedmember, value); }
 		}
 
 		//constructor
-		public MembersViewModel()//this(ShellViewModel.GetInstance)
+		public MembersViewModel()
 		{
-			Members = new ObservableCollection<MemberModel>(ShellViewModel.Softcache.Tables["Members"].ToMemberModelIEnum());
-			SelectedMember = Members.First<MemberModel>();
+			SourceModels = new ObservableCollection<MemberModel>(ShellViewModel.Softcache.Tables["Members"].ToMemberModelIEnum());
+			SelectedModel = SourceModels.First<MemberModel>();
 		}
 		
 			   

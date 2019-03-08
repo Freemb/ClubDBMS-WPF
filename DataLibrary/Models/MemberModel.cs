@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class MemberModel : ObservableObject
+    public class MemberModel : ObservableModel
     {
         private double _memNo = 0;
         private string _forename = "";

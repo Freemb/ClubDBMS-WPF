@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLibrary.Models;
+using DataLibrary.Utility;
 
 namespace WPFUI.Utility
 {
@@ -72,11 +74,11 @@ namespace WPFUI.Utility
 
 			return true;
 		}
-        public static VisitModel Clone(this VisitModel input)
+        public static VisitModel CloneEx(this VisitModel input)
         {
             return new VisitModel
                 (
-                input.VisitID,
+                input.ID,
                 input.VisitDate,
                 input.Member.MemNo,
                 input.Member.Forename,
@@ -92,11 +94,7 @@ namespace WPFUI.Utility
                 input.Guest.Surname
                 );
         }
-        private static int GetIndex<T>(this IEnumerable<T> modelList, int modelID, int id)
-        {
-            T temp = modelList.Where((x) => modelID == id).FirstOrDefault();
-            return Visits.IndexOf(temp);
-        }
 
+      
     }
 }

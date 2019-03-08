@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class VisitModel : ObservableObject, IEquatable<VisitModel>
+    public class VisitModel : ObservableModel, IEquatable<VisitModel>
     {
         private ActivityModel _activity;
         private DateTime _visitDate = DateTime.Now.Date;
@@ -20,22 +20,14 @@ namespace DataLibrary.Models
         private string _notes = "";
         private DateTime? _paidDate = null;
 
-        public int VisitID { get => _visitID; set => OnPropertyChanged(ref _visitID, value);}
+        public int ID { get => _visitID; set => OnPropertyChanged(ref _visitID, value);}
         public DateTime VisitDate { get => _visitDate; set => OnPropertyChanged(ref _visitDate, value);}
         public MemberModel Member { get => _member; set => OnPropertyChanged(ref _member, value); }
         public GuestModel Guest { get => _guest; set => OnPropertyChanged(ref _guest, value);}
         public ActivityModel Activity
         {
-            get
-            {
-                return _activity;
-            }
-            set
-            {
-                //if (value != null) // temporary fix for bug where null introduced after selecting from combo box
-                    OnPropertyChanged(ref _activity, value);
-
-            }
+            get{return _activity;}
+            set{OnPropertyChanged(ref _activity, value);}
         }
 
         public decimal? Amount { get => _amount; set => OnPropertyChanged(ref _amount, value);}
@@ -56,7 +48,7 @@ namespace DataLibrary.Models
             Guest = new GuestModel { Forename = GFore, Surname = GSur };
             Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity, SubActivityID = activityID };
             VisitDate = VDate;
-            VisitID = id;
+            ID = id;
             Amount = price;
             IsPaid = ispaid;
             PaidDate = Pdate;
@@ -66,11 +58,11 @@ namespace DataLibrary.Models
         }
 
 
-        //overwrites equals method when used with IEqualityComparer<T>, i.e custom equality test
+        //out-prioritizes equals method when used with IEqualityComparer<T>, i.e custom equality test
         bool IEquatable<VisitModel>.Equals(VisitModel other)
         {
             return
-                VisitID.Equals(other.VisitID) &&
+                ID.Equals(other.ID) &&
                 VisitDate.Equals(other.VisitDate) &&
                 Amount.Equals(other.Amount) &&
                 IsPaid.Equals(other.IsPaid) &&

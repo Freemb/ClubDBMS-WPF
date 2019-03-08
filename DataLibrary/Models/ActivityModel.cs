@@ -7,7 +7,7 @@ using DataLibrary.Utility;
 
 namespace DataLibrary.Models
 {
-	public class ActivityModel : ObservableObject,IEquatable<ActivityModel>
+	public class ActivityModel : ObservableModel,IEquatable<ActivityModel>
 	{
 		private string _activityName = "";
 		private string _subActivity = "";

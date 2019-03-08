@@ -23,7 +23,7 @@ namespace DataLibrary.Operations
 					using (var cmd = new SqlCommand("dbo.spDeleteVisit", conn))
 					{
 						cmd.CommandType = CommandType.StoredProcedure;
-						cmd.Parameters.AddWithValue("@VisitID", model.VisitID);
+						cmd.Parameters.AddWithValue("@VisitID", model.ID);
 						conn.Open();
 						int RecordsAffected = cmd.ExecuteNonQuery();
 						this.Ex = null;
@@ -104,7 +104,7 @@ namespace DataLibrary.Operations
 					cmd.Parameters.AddWithValue("@PaidDate", model.PaidDate);
 					cmd.Parameters.AddWithValue("@Paid", model.IsPaid);
 					cmd.Parameters.AddWithValue("@Notes", model.Notes);
-					cmd.Parameters.AddWithValue("@VisitID", model.VisitID);
+					cmd.Parameters.AddWithValue("@VisitID", model.ID);
 					connection.Open();
 					int RecordsAffected = cmd.ExecuteNonQuery();
 					return RecordsAffected;
@@ -159,9 +159,9 @@ namespace DataLibrary.Operations
                 row.IsNull("Paid") ? false : row.Field<bool>("Paid"),
 				row.Field<string>("GuestFore"),
 				row.Field<string>("GuestSur"))).ToList();
-
-                return output;
                 #endregion
+                return output;
+                
             }
 		}
 	}

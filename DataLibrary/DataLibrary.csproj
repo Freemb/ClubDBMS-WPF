@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\IModel.cs" />
     <Compile Include="Operations\ActivityConnector.cs" />
     <Compile Include="Cache\CacheOps.cs" />
     <Compile Include="Operations\CommonConnector.cs" />
@@ -57,7 +56,7 @@
     <Compile Include="Models\VisitModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operations\VisitConnector.cs" />
-    <Compile Include="Utility\ObservableObject.cs" />
+    <Compile Include="Utility\ObservableModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

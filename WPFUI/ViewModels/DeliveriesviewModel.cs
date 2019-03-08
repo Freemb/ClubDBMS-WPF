@@ -1,4 +1,5 @@
 ﻿using DataLibrary.Models;
+using DataLibrary.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,12 +11,12 @@ using WPFUI.Utility;
 
 namespace WPFUI.ViewModels
 {
-    public class DeliveriesviewModel : ObservableObject
+    public class DeliveriesViewModel : ObservableObject, IViewModel
     {
         private bool _isReadOnly;
         private DeliveryModel _selectedDelivery = new DeliveryModel();
         private ObservableCollection<DeliveryModel> _deliveries;
-        private DeliveryModel dirtyDelivery;
+        private DeliveryModel dirtySelection;
 
         public bool IsReadOnly
         {
@@ -35,16 +36,18 @@ namespace WPFUI.ViewModels
         }
 
         //properties for binding to View
-        public ObservableCollection<DeliveryModel> Deliveries
-        { get => _deliveries;
-          set => OnPropertyChanged(ref _deliveries , value); }
-        public DeliveryModel SelectedDelivery
+        public ObservableCollection<DeliveryModel> SourceModels
+        {
+            get => _deliveries;
+            set => OnPropertyChanged(ref _deliveries, value);
+        }
+        public DeliveryModel SelectedModel
         {
             get { return _selectedDelivery; }
             set { OnPropertyChanged(ref _selectedDelivery, value); }
         }
 
-        //Commands for binding to buttons/events
+        //Command properties for binding to buttons/events
         public ICommand AddCommand { get; private set; }
         public ICommand FirstCommand { get; private set; }
         public ICommand PreviousCommand { get; private set; }
@@ -53,44 +56,101 @@ namespace WPFUI.ViewModels
         public ICommand SaveCommand { get; private set; }
         public ICommand EditCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
+
+        //Constructor
+        public DeliveriesViewModel()
+        {
+            //Load Deliveries data from database and assign to observable collection for binding
+            DeliveryConnector conn = new DeliveryConnector();
+            SourceModels = new ObservableCollection<DeliveryModel>(conn.Load(null, true));
+            SelectedModel = SourceModels.FirstOrDefault();
+
+            //Assign Commands for Binding
+            LastCommand = new RelayCommand(Last, () => IsReadOnly);
+            FirstCommand = new RelayCommand(First, () => IsReadOnly);
+            PreviousCommand = new RelayCommand(Previous, () => IsReadOnly);
+            NextCommand = new RelayCommand(Next, () => IsReadOnly);
+            AddCommand = new RelayCommand(Add, () => IsReadOnly);
+            SaveCommand = new RelayCommand(Save, () => IsEditMode);
+            EditCommand = new RelayCommand(Edit, () => IsReadOnly);
+            DeleteCommand = new RelayCommand(Delete, () => IsReadOnly);
+            CancelCommand = new RelayCommand(Cancel, () => IsEditMode);
+
+        }
+
+
 
         //Navigation Bar Methods
         private void First()
         {
-            DeliveryModel temp = Deliveries.FirstOrDefault();
-            if (temp != null) SelectedDelivery = temp;
+            DeliveryModel temp = SourceModels.FirstOrDefault();
+            if (temp != null) SelectedModel = temp;
         }
         private void Last()
         {
-            DeliveryModel temp = Deliveries.LastOrDefault();
-            if (temp != null) SelectedDelivery = temp;
+            DeliveryModel temp = SourceModels.LastOrDefault();
+            if (temp != null) SelectedModel = temp;
         }
         private void Previous()
         {
-            DeliveryModel temp = Deliveries.Where((model) => model.ID < SelectedDelivery.ID).LastOrDefault();
-            if (temp != null) SelectedDelivery = temp;
+            DeliveryModel temp = SourceModels.Where((model) => model.ID < SelectedModel.ID).LastOrDefault();
+            if (temp != null) SelectedModel = temp;
 
         }
         private void Next()
         {
-            DeliveryModel temp = Deliveries.Where((model) => model.ID > SelectedDelivery.ID).FirstOrDefault();
-            if (temp != null) SelectedDelivery = temp;
+            DeliveryModel temp = SourceModels.Where((model) => model.ID > SelectedModel.ID).FirstOrDefault();
+            if (temp != null) SelectedModel = temp;
 
         }
         private void Add()
         {
-            Deliveries.Add(new DeliveryModel());
-            SelectedDelivery = Deliveries.Last();
+            SourceModels.Add(new DeliveryModel());
+            SelectedModel = SourceModels.Last();
             IsReadOnly = false;
         }
         private void Edit()
         {
             IsReadOnly = false;
-            dirtyDelivery = SelectedDelivery.MemberWiseClone();
+            // dirtyDelivery = SelectedDelivery.MemberWiseClone();
         }
-        
+        private void Cancel()
+        {
+            if (SelectedModel != null)
+            {
+                //Cancel new visit
+                if (SelectedModel.ID == 0)
+                {
+                    SourceModels.Remove(SourceModels.Last());
+                    SelectedModel = SourceModels.LastOrDefault();
+                }
+                //Cancel Edit Visit
+                else if (dirtySelection != null)
+                {
+                    SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
+                    dirtySelection = null;
+                }
+            }
+            IsReadOnly = true;
+        }
+
+        private void Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Save()
+        {
+            throw new NotImplementedException();
+        }
+        private int GetIndex(int id)
+        {
+            DeliveryModel temp = SourceModels.Where((model) => model.ID == id).FirstOrDefault();
+            return SourceModels.IndexOf(temp);
+        }
 
 
+    }  
 
-    }
 }

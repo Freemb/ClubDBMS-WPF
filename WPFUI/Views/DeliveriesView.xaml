@@ -29,7 +29,7 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <TextBox Style="{StaticResource FormTextBox}" Text="{Binding SelectedDelivery.ID, Mode=TwoWay}" IsReadOnly="True"/>
+        <TextBox Style="{StaticResource FormTextBox}" Text="{Binding SelectedModel.ID, Mode=TwoWay}" IsReadOnly="True"/>
 
     </Grid>
 </UserControl>
