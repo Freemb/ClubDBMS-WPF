@@ -88,6 +88,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DatePickers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TextBoxes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

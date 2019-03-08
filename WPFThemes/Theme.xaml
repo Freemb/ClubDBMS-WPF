@@ -6,7 +6,8 @@
         <ResourceDictionary Source="Controls/Buttons.xaml"/>
         <ResourceDictionary Source="Controls/TextBoxes.xaml"/>
         <ResourceDictionary Source="Controls/ComboBoxes.xaml"/>
+        <ResourceDictionary Source="Controls/DatePickers.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+    
 
 </ResourceDictionary>

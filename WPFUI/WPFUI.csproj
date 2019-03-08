@@ -69,14 +69,23 @@
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="ViewModels\DeliveriesViewModel.cs" />
+    <Compile Include="ViewModels\EventsPortalViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\MembersPortalViewModel.cs" />
     <Compile Include="ViewModels\MembersViewModel.cs" />
     <Compile Include="Utility\ObservableObject.cs" />
     <Compile Include="ViewModels\PortalViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\VisitsPortalViewModel.cs" />
     <Compile Include="ViewModels\VisitsViewModel.cs" />
     <Compile Include="Views\DeliveriesView.xaml.cs">
       <DependentUpon>DeliveriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventsPortalView.xaml.cs">
+      <DependentUpon>EventsPortalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MembersPortalView.xaml.cs">
+      <DependentUpon>MembersPortalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MembersView.xaml.cs">
       <DependentUpon>MembersView.xaml</DependentUpon>
@@ -86,6 +95,9 @@
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VisitsPortalView.xaml.cs">
+      <DependentUpon>VisitsPortalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VisitsView.xaml.cs">
       <DependentUpon>VisitsView.xaml</DependentUpon>
@@ -134,6 +146,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EventsPortalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MembersPortalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MembersView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -143,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VisitsPortalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
