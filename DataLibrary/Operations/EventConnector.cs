@@ -13,16 +13,111 @@ namespace DataLibrary.Operations
     {
         public int Delete(EventSpecModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnString()))
+                {
+                    using (var cmd = new SqlCommand("dbo.spDeleteEventSpec", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ID", model.ID);
+                        conn.Open();
+                        int RecordsAffected = cmd.ExecuteNonQuery();
+                        this.Ex = null;
+                        return RecordsAffected;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+            }
         }
 
         public int Insert(EventSpecModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnString()))
+                {
+
+                    SqlCommand cmd = new SqlCommand("dbo.spUpdateEventSpec", connection) { CommandType = CommandType.StoredProcedure };
+                    cmd.Parameters.AddWithValue("@EventDate", model.EventDate);
+                    cmd.Parameters.AddWithValue("@Location", model.Location);
+                    cmd.Parameters.AddWithValue("@MaxLimit", model.MaxLimit);
+                    cmd.Parameters.AddWithValue("@EventsID", model.Event.ID);
+                    cmd.Parameters.Add(new SqlParameter { ParameterName = "@ID", Direction = ParameterDirection.InputOutput, SqlDbType = SqlDbType.Int });
+
+                    DataTable pricelist = new DataTable();
+                    pricelist.Columns.Add(new DataColumn("ID", typeof(int)));
+                    pricelist.Columns.Add(new DataColumn("Group", typeof(string)));
+                    pricelist.Columns.Add(new DataColumn("Cost", typeof(decimal)));
+                    foreach (EventPriceModel item in model.PriceList)
+                    {
+                        pricelist.Rows.Add(item.EventSpecID, item.Group, item.Cost);
+                    }
+                    cmd.Parameters.Add(new SqlParameter
+                    {
+                        SqlDbType = SqlDbType.Structured,
+                        ParameterName = "@PriceList",
+                        Value = pricelist,
+                        TypeName = "dbo.EventPrices"
+                    });
+                    connection.Open();
+                    cmd.ExecuteScalar();
+                    return cmd.Parameters["@ID"].Value != DBNull.Value ? Convert.ToInt32(cmd.Parameters["@ID"].Value) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+
+            }
+        }
+        
+        public int Update(EventSpecModel model)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnString()))
+                {
+                    SqlCommand cmd = new SqlCommand("dbo.spUpdateEventSpec", conn) { CommandType = CommandType.StoredProcedure };
+                    cmd.Parameters.AddWithValue("@ID", model.ID);
+                    cmd.Parameters.AddWithValue("@EventDate", model.EventDate);
+                    cmd.Parameters.AddWithValue("@Location", model.Location);
+                    cmd.Parameters.AddWithValue("@MaxLimit", model.MaxLimit);
+
+                    DataTable pricelist = new DataTable();
+                    pricelist.Columns.Add(new DataColumn("ID", typeof(int)));
+                    pricelist.Columns.Add(new DataColumn("Group", typeof(string)));
+                    pricelist.Columns.Add(new DataColumn("Cost", typeof(decimal)));
+                    foreach (EventPriceModel item in model.PriceList)
+                    {
+                        pricelist.Rows.Add(item.EventSpecID, item.Group, item.Cost);
+                    }
+
+                    cmd.Parameters.Add( new SqlParameter {SqlDbType = SqlDbType.Structured,ParameterName = "@PriceList",
+                                                           Value = pricelist, TypeName = "dbo.EventPrices"});
+                    
+                    conn.Open();
+                    int RecordsAffected = cmd.ExecuteNonQuery();
+                    this.Ex = null;
+                    return RecordsAffected;
+                }
+            }
+            catch(Exception ex)
+            {
+                this.Ex = ex;
+                return 0;
+            }
+            
         }
 
         public List<EventSpecModel> Load(string input, bool all)
         {
+            //Load from sql database into datatable
             using (SqlConnection conn = new SqlConnection(ConnString()))
             {
 
@@ -37,47 +132,61 @@ namespace DataLibrary.Operations
                 da.Fill(dt);
             }
 
-            
+            //Convert datatable to List of models
             List<EventSpecModel> output = new List<EventSpecModel>();
-            List<DataRow> temp = dt.AsEnumerable().ToList();
-            int? ID = 0;
-            
-            for (int i=0; i < temp.Count(); i++)
+            List<DataRow> tempList = dt.AsEnumerable().ToList();
+            int? IDholder = 0; // initialise a comparison temp variable
+
+            for (int i = 0; i < tempList.Count(); i++)
             {
-                EventPriceModel modelprices = new EventPriceModel()
-                {
-                    EventSpecID = temp[i].Field<int?>("ID"),
-                    Group = temp[i].Field<string>("Group"),
-                    Cost = temp[i].IsNull("Cost") ? 0 : temp[i].Field<decimal?>("Cost")
-                };
+                int? EventSpecID = tempList[i].Field<int?>("ID"); //same read value used more than twice so set to temp variable for EventSpec ID
 
-                //Data is grouped according to integer ID from database sorting, O(n) behaviour
-                if (ID != temp[i].Field<int?>("ID"))
+                //If not null EventSpecID then there will be price details to convert to models
+                if (EventSpecID != null)
                 {
-                    ID = temp[i].Field<int?>("ID");
-                    EventSpecModel model = new EventSpecModel()
+                    EventPriceModel modelprices = new EventPriceModel()
                     {
-                        EventID = temp[i].Field<int>("EventID"),
-                        ID = temp[i].Field<int?>("ID"),
-                        EventDate = temp[i].Field<DateTime?>("EventDate"),
-                        Location = temp[i].Field<string>("Location"),
-                        MaxLimit = temp[i].Field<short?>("MaxLimit")
+                        EventSpecID = EventSpecID,
+                        Group = tempList[i].Field<string>("Group"),
+                        Cost = tempList[i].IsNull("Cost") ? 0 : tempList[i].Field<decimal?>("Cost")
                     };
-                    model.PriceList.Add(modelprices);
-                    output.Add(model);
+
+                    //The Data is grouped according to integer ID from database sorting, O(n) behaviour from iterating through list once and extract price models for each ID group
+                    if (EventSpecID != IDholder)
+                    {
+                        IDholder = EventSpecID;
+                        EventSpecModel model = new EventSpecModel()
+                        {
+                            ID = tempList[i].Field<int?>("ID"),
+                            EventDate = tempList[i].Field<DateTime?>("EventDate"),
+                            Location = tempList[i].Field<string>("Location"),
+                            MaxLimit = tempList[i].Field<short?>("MaxLimit")
+                        };
+                        model.Event.ID = tempList[i].Field<int>("EventID");
+                        model.Event.EventName = tempList[i].Field<string>("EventName");
+                        model.Event.Type = tempList[i].Field<string>("EventType");
+                        model.Event.Frequency = tempList[i].Field<string>("EventFreq");
+                        model.Event.Mode = tempList[i].Field<string>("BookingMode");
+                        model.PriceList.Add(modelprices);
+                        output.Add(model);
+                    }
+
+                    else { output.Last().PriceList.Add(modelprices); }
                 }
+                //if EventSpecID is null, add the EventModel without specifications and move on
+                else
+                {
+                    EventSpecModel model = new EventSpecModel();
+                    model.Event.ID = tempList[i].Field<int>("EventID");
+                    model.Event.EventName = tempList[i].Field<string>("EventName");
+                    model.Event.Type = tempList[i].Field<string>("EventType");
+                    model.Event.Frequency = tempList[i].Field<string>("EventFreq");
+                    model.Event.Mode = tempList[i].Field<string>("BookingMode");
+                    output.Add(model);
 
-                else { output.Last().PriceList.Add(modelprices); }
-                    
+                }
             }
-               return output;
-
-            
-        }
-
-        public int Update(EventSpecModel model)
-        {
-            throw new NotImplementedException();
+            return output;
         }
     }
 }

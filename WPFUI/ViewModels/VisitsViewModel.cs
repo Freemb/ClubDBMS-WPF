@@ -212,7 +212,7 @@ namespace WPFUI.ViewModels
         private void Edit() 
         {
             IsReadOnly = false;
-            dirtySelection = SelectedModel?.Clone(SelectedModel);         
+            dirtySelection = SelectedModel?.Clone(SelectedModel);       
         }
         private void Save()
         {

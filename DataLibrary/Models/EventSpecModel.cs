@@ -9,22 +9,18 @@ namespace DataLibrary.Models
 {
     public class EventSpecModel : ObservableModel
     {
-        private int _eventID;
         private int? _id = 0;
         private DateTime? _eventdate;
         private string _location;
         private short? _maxLimit;
         private List<EventPriceModel> _pricelist = new List<EventPriceModel>();
+        private EventModel _event = new EventModel();
 
+        public EventModel Event { get => _event; set => OnPropertyChanged(ref _event , value); }
         public int? ID
         {
             get { return _id; }
             set { OnPropertyChanged(ref _id, value); }
-        }
-        public int EventID
-        {
-            get { return _eventID; }
-            set { OnPropertyChanged(ref _eventID, value); }
         }
         public DateTime? EventDate
         {
@@ -52,13 +48,21 @@ namespace DataLibrary.Models
 
         }
 
-        public EventSpecModel(int eventid, int? eventspecid, DateTime? eventdate, string location, short? maxlimit)
+        public EventSpecModel(int eventid, int? eventspecid, DateTime? eventdate, string location, short? maxlimit, string name, string type, string freq, string mode)
         {
-            EventID = eventid;
             ID = eventspecid;
             EventDate = eventdate;
             Location = location;
             MaxLimit = maxlimit;
+            Event.ID = eventid;
+            Event.EventName = name;
+            Event.Type = type;
+            Event.Frequency = freq;
+            Event.Mode = mode;
+        }
+        public EventSpecModel Clone()
+        {
+            return (EventSpecModel)this.MemberwiseClone();
         }
     }
 }

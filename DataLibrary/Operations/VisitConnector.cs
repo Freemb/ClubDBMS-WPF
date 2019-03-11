@@ -45,14 +45,12 @@ namespace DataLibrary.Operations
 				using (SqlConnection connection = new SqlConnection(ConnString()))
 				{
 
-					SqlCommand cmd = new SqlCommand("dbo.spInsertVisit", connection)
+					SqlCommand cmd = new SqlCommand("dbo.spUpsertVisit", connection)
 					{
 						CommandType = CommandType.StoredProcedure
 					};
 					cmd.Parameters.AddWithValue("@VisitDate", model.VisitDate);
 					cmd.Parameters.AddWithValue("@MemNo", model.Member.MemNo);
-					//cmd.Parameters.AddWithValue("@MemFore", model.Member.Forename);
-					//cmd.Parameters.AddWithValue("@MemSur", model.Member.Surname);
 					cmd.Parameters.AddWithValue("@GuestFore", model.Guest.Forename);
 					cmd.Parameters.AddWithValue("@GuestSur", model.Guest.Surname);
 					cmd.Parameters.AddWithValue("@Activity", model.Activity.ActivityName);
@@ -63,12 +61,11 @@ namespace DataLibrary.Operations
 					cmd.Parameters.AddWithValue("@Paid", model.IsPaid);
 					cmd.Parameters.AddWithValue("@Notes", model.Notes);
 					cmd.Parameters.Add(new SqlParameter
-										{ ParameterName = "@VisitID", Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int });
+										{ ParameterName = "@VisitID", Direction = ParameterDirection.InputOutput, SqlDbType = SqlDbType.Int, Value = model.ID });
 
 					connection.Open();
 					cmd.ExecuteScalar();
 					
-					//return RecordsAffected ?? model.VisitID;
 					return cmd.Parameters["@VisitID"].Value != DBNull.Value ? Convert.ToInt32(cmd.Parameters["@VisitID"].Value) : 0;
 				}
 			}
@@ -82,40 +79,39 @@ namespace DataLibrary.Operations
 				
 		public int Update(VisitModel model)
 		{
-			try
-			{
-				using (SqlConnection connection = new SqlConnection(ConnString()))
-				{
+           return Insert(model);
+			//try
+			//{
+			//	using (SqlConnection connection = new SqlConnection(ConnString()))
+			//	{
 
-					SqlCommand cmd = new SqlCommand("dbo.spUpdateVisit", connection)
-					{
-						CommandType = CommandType.StoredProcedure
-					};
-					cmd.Parameters.AddWithValue("@VisitDate", model.VisitDate);
-					cmd.Parameters.AddWithValue("@MemNo", model.Member.MemNo);
-					//cmd.Parameters.AddWithValue("@MemFore", model.Member.Forename);
-					//cmd.Parameters.AddWithValue("@MemSur", model.Member.Surname);
-					cmd.Parameters.AddWithValue("@GuestFore", model.Guest.Forename);
-					cmd.Parameters.AddWithValue("@GuestSur", model.Guest.Surname);
-					cmd.Parameters.AddWithValue("@Activity", model.Activity.ActivityName);
-					cmd.Parameters.AddWithValue("@SubActivity", model.Activity.SubActivity);
-					cmd.Parameters.AddWithValue("@SubActivityID", model.Activity.SubActivityID);
-					cmd.Parameters.AddWithValue("@Amount", model.Amount);
-					cmd.Parameters.AddWithValue("@PaidDate", model.PaidDate);
-					cmd.Parameters.AddWithValue("@Paid", model.IsPaid);
-					cmd.Parameters.AddWithValue("@Notes", model.Notes);
-					cmd.Parameters.AddWithValue("@VisitID", model.ID);
-					connection.Open();
-					int RecordsAffected = cmd.ExecuteNonQuery();
-					return RecordsAffected;
-				}
-			}
-			catch (Exception ex)
-			{
-				this.Ex = ex;
-				return 0;
+			//		SqlCommand cmd = new SqlCommand("dbo.spUpdateVisit", connection)
+			//		{
+			//			CommandType = CommandType.StoredProcedure
+			//		};
+			//		cmd.Parameters.AddWithValue("@VisitDate", model.VisitDate);
+			//		cmd.Parameters.AddWithValue("@MemNo", model.Member.MemNo);
+			//		cmd.Parameters.AddWithValue("@GuestFore", model.Guest.Forename);
+			//		cmd.Parameters.AddWithValue("@GuestSur", model.Guest.Surname);
+			//		cmd.Parameters.AddWithValue("@Activity", model.Activity.ActivityName);
+			//		cmd.Parameters.AddWithValue("@SubActivity", model.Activity.SubActivity);
+			//		cmd.Parameters.AddWithValue("@SubActivityID", model.Activity.SubActivityID);
+			//		cmd.Parameters.AddWithValue("@Amount", model.Amount);
+			//		cmd.Parameters.AddWithValue("@PaidDate", model.PaidDate);
+			//		cmd.Parameters.AddWithValue("@Paid", model.IsPaid);
+			//		cmd.Parameters.AddWithValue("@Notes", model.Notes);
+			//		cmd.Parameters.AddWithValue("@VisitID", model.ID);
+			//		connection.Open();
+			//		int RecordsAffected = cmd.ExecuteNonQuery();
+			//		return RecordsAffected;
+			//	}
+			//}
+			//catch (Exception ex)
+			//{
+			//	this.Ex = ex;
+			//	return 0;
 
-			}
+			//}
 			
 		}
 		public List<VisitModel> Load(string input = null, bool all = false)

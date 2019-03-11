@@ -43,7 +43,6 @@ namespace DataLibrary.Operations
                 {
 
                     SqlCommand cmd = new SqlCommand("dbo.spInsertDelivery", connection) { CommandType = CommandType.StoredProcedure };
-                    //Add after the stored procedure is made
                     cmd.Parameters.AddWithValue("@Date",model.EntryTime.Date);
                     cmd.Parameters.AddWithValue("@Entry", model.EntryTime);
                     cmd.Parameters.AddWithValue("@VReg", model.VReg);
@@ -122,7 +121,7 @@ namespace DataLibrary.Operations
                 List<DeliveryModel> output = dt.AsEnumerable().Select(row => new DeliveryModel(
                 row.Field<int>("ID"),
                 row.IsNull("EntryTime") ? DateTime.Now : row.Field<DateTime>("EntryTime"),
-                row.IsNull("ExitTime") ? DateTime.Now : row.Field<DateTime>("ExitTime"),
+                row.Field<DateTime?>("ExitTime"),
                 row.Field<string>("VReg"),
                 row.Field<string>("Company"),
                 row.Field<string>("Make"),

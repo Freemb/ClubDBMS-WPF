@@ -35,7 +35,7 @@ namespace DataLibrary.Models
         {
 
         }
-        public DeliveryModel(int id, DateTime entry, DateTime exit, string vreg, string company, string make, string colour, string location, 
+        public DeliveryModel(int id, DateTime entry, DateTime? exit, string vreg, string company, string make, string colour, string location, 
                             string driver, string description)
         {
             ID = id;
