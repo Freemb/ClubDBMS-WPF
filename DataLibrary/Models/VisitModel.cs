@@ -34,6 +34,8 @@ namespace DataLibrary.Models
         public bool IsPaid { get => _isPaid; set => OnPropertyChanged(ref _isPaid, value); }
         public DateTime? PaidDate { get => _paidDate; set => OnPropertyChanged(ref _paidDate, value);}
         public string Notes { get => _notes; set => OnPropertyChanged(ref _notes, value);}
+       
+        //constructors
         public VisitModel()
         {
             Member = new MemberModel();
@@ -52,9 +54,6 @@ namespace DataLibrary.Models
             Amount = price;
             IsPaid = ispaid;
             PaidDate = Pdate;
-       
-            
-
         }
 
 

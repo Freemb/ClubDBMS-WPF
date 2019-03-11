@@ -13,9 +13,10 @@
             </ResourceDictionary.MergedDictionaries>
         
             <!--Tells App what to display when trying to display a viewmodel-->
-            <DataTemplate DataType="{x:Type VMs:PortalViewModel}"><Vs:PortalView/></DataTemplate>
-            <DataTemplate DataType="{x:Type VMs:MembersViewModel}"><Vs:MembersView/></DataTemplate>
+            <DataTemplate DataType="{x:Type VMs:MembersViewModel}"><Vs:MembersView/></DataTemplate>  
             <DataTemplate DataType="{x:Type VMs:VisitsViewModel}"><Vs:VisitsView/></DataTemplate>
+            <DataTemplate DataType="{x:Type VMs:PortalViewModel}"><Vs:PortalView/></DataTemplate>
+            <DataTemplate DataType="{x:Type VMs:EventsViewModel}"><Vs:EventsView/></DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
     

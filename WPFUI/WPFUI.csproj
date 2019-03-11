@@ -70,6 +70,7 @@
     <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="ViewModels\DeliveriesViewModel.cs" />
     <Compile Include="ViewModels\EventsPortalViewModel.cs" />
+    <Compile Include="ViewModels\EventsViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MembersPortalViewModel.cs" />
     <Compile Include="ViewModels\MembersViewModel.cs" />
@@ -83,6 +84,9 @@
     </Compile>
     <Compile Include="Views\EventsPortalView.xaml.cs">
       <DependentUpon>EventsPortalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventsView.xaml.cs">
+      <DependentUpon>EventsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MembersPortalView.xaml.cs">
       <DependentUpon>MembersPortalView.xaml</DependentUpon>
@@ -147,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EventsPortalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EventsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

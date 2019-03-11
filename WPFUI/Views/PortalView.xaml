@@ -7,6 +7,7 @@
              xmlns:VMs="clr-namespace:WPFUI.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="AliceBlue">
+    <!--<UserControl.DataContext><VMs:PortalViewModel/></UserControl.DataContext>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

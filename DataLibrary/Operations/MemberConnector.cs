@@ -138,7 +138,7 @@ namespace DataLibrary.Operations
 			}
 		}
 
-		public List<MemberModel> Load(string input, bool all)
+		public List<MemberModel> Load(string input = null, bool all = false)
 		{
 			using (SqlConnection con = new SqlConnection(ConnString()))
 			{
@@ -153,7 +153,7 @@ namespace DataLibrary.Operations
 				{
 					da.SelectCommand.Parameters.AddWithValue("@Surname", DBNull.Value);
 				}
-				DataTable dt = new DataTable();
+				//DataTable dt = new DataTable();
 				da.FillSchema(dt, SchemaType.Source);
 				dt.TableName = "Members";
 				da.Fill(dt);

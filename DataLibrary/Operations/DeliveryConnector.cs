@@ -44,10 +44,17 @@ namespace DataLibrary.Operations
 
                     SqlCommand cmd = new SqlCommand("dbo.spInsertDelivery", connection) { CommandType = CommandType.StoredProcedure };
                     //Add after the stored procedure is made
-                    //cmd.Parameters.AddWithValue();
-
-                    cmd.Parameters.Add(new SqlParameter
-                    { ParameterName = "@ID", Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int });
+                    cmd.Parameters.AddWithValue("@Date",model.EntryTime.Date);
+                    cmd.Parameters.AddWithValue("@Entry", model.EntryTime);
+                    cmd.Parameters.AddWithValue("@VReg", model.VReg);
+                    cmd.Parameters.AddWithValue("@Company", model.Company);
+                    cmd.Parameters.AddWithValue("@Make", model.Make);
+                    cmd.Parameters.AddWithValue("@Colour", model.Colour);
+                    cmd.Parameters.AddWithValue("@Location", model.Location);
+                    cmd.Parameters.AddWithValue("Driver", model.DriverName);
+                    cmd.Parameters.AddWithValue("Description", model.Description);
+                    cmd.Parameters.AddWithValue("Exit", model.ExitTime);
+                    cmd.Parameters.Add(new SqlParameter{ ParameterName = "@ID", Direction = ParameterDirection.Output, SqlDbType = SqlDbType.Int });
                     connection.Open();
                     cmd.ExecuteScalar();
                     return cmd.Parameters["@ID"].Value != DBNull.Value ? Convert.ToInt32(cmd.Parameters["@ID"].Value) : 0;
@@ -68,7 +75,7 @@ namespace DataLibrary.Operations
                 using (SqlConnection connection = new SqlConnection(ConnString()))
                 {
 
-                    SqlCommand cmd = new SqlCommand("dbo.spUpdateVisit", connection){CommandType = CommandType.StoredProcedure};
+                    SqlCommand cmd = new SqlCommand("dbo.spUpdateDelivery", connection){CommandType = CommandType.StoredProcedure};
                     cmd.Parameters.AddWithValue("@DeliveryDate", model.EntryTime.Date);
                     cmd.Parameters.AddWithValue("@Entry", model.EntryTime);
                     cmd.Parameters.AddWithValue("@VReg", model.VReg);

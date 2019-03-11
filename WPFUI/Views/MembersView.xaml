@@ -8,7 +8,7 @@
              x:Class="WPFUI.Views.MembersView"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1000">
-            <!--<UserControl.DataContext><VMs:MembersViewModel/></UserControl.DataContext>-->
+    <!--<UserControl.DataContext><VMs:MembersViewModel/></UserControl.DataContext>-->
 
     <Grid>
         <Grid.ColumnDefinitions>
