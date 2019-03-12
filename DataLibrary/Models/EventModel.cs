@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class EventModel :ObservableModel
+    public class EventModel :ObservableModel, IEquatable<EventModel>
     {
         private int _id;
         private string _eventName;
@@ -41,10 +41,12 @@ namespace DataLibrary.Models
             set { _mode = value; }
         }
 
-
-
-
-
-
+        public bool Equals(EventModel other)
+        {
+            if(_id.Equals(other.ID)) //&& _eventName.Equals(other.EventName) && _type.Equals(other.Type) && _frequency.Equals(other.Frequency) && _mode.Equals(other.Mode))
+            { return true; }
+            else{ return false; }
+            
+        }
     }
 }

@@ -16,7 +16,7 @@ using DataLibrary.Utility;
 
 namespace WPFUI.ViewModels
 {
-	public class VisitsViewModel : ObservableObject,IViewModel
+	public class VisitsViewModel : ObservableObject
 	{
         //private objects
         private bool _isReadOnly = true;
@@ -155,22 +155,6 @@ namespace WPFUI.ViewModels
                 SelectedModel.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedModel.Activity.ActivityName &&
                 model.SubActivity == SelectedModel.Activity.SubActivity && model.IsWEBH == SelectedModel.VisitDate.IsWeekendBankHoliday()
                 ).Select(model => model.Price).FirstOrDefault();
-
-            // This code does the same as above with no exception as there is no assignment unless a match is found
-
-            //if (!(String.IsNullOrEmpty(SelectedVisit?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedVisit?.Activity.SubActivity)))
-            //    foreach (ActivityModel model in _activitiesWithPrices)
-            //    {
-            //        if (model.ActivityName == SelectedVisit.Activity.ActivityName && model.SubActivity == SelectedVisit.Activity.SubActivity
-            //            && model.IsWEBH == SelectedVisit.VisitDate.IsWeekendBankHoliday())
-            //        {
-            //            SelectedVisit.Activity.SubActivityID = model.SubActivityID;
-            //            SelectedVisit.Amount = model.Price;
-            //            return;
-            //        }
-
-            //    }
-
         }
         private void GetMemberDetails()
         {

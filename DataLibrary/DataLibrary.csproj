@@ -53,6 +53,7 @@
     <Compile Include="Operations\DeliveryConnector.cs" />
     <Compile Include="Operations\EventBookingConnector.cs" />
     <Compile Include="Operations\EventConnector.cs" />
+    <Compile Include="Operations\EventSpecConnector.cs" />
     <Compile Include="Operations\IModelConnector.cs" />
     <Compile Include="Operations\MemberConnector.cs" />
     <Compile Include="Models\ActivityModel.cs" />
