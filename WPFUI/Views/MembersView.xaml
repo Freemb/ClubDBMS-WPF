@@ -51,7 +51,7 @@
         </StackPanel>
 
         <DataGrid x:Name="GridMembers" ItemsSource="{Binding SourceModels}" Grid.Row="1" Grid.Column="3" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
-                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedMember, Mode=TwoWay}"
+                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedModel, Mode=TwoWay}"
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Mem No" Binding="{Binding MemNo}"/>

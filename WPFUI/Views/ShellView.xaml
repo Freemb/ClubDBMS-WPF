@@ -29,11 +29,6 @@
         <!--Row 1-->
         
             <StackPanel Grid.Row="1" Grid.Column="1" Visibility="{Binding IsMenuCollapsed}" Orientation="Vertical" Background="AliceBlue" Focusable="True">
-            <I:Interaction.Triggers>
-                <I:EventTrigger EventName="GotFocus">
-                    <I:InvokeCommandAction Command="{Binding CollapsePanecommand}"/>
-                </I:EventTrigger>
-            </I:Interaction.Triggers>
             <Button Command="{Binding LoadPortalCommand}" Grid.Column="3" Grid.Row="1">
                 <Button.Content>
                     <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\home.png" MaxHeight="80" MaxWidth="80"/>

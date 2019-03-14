@@ -15,7 +15,9 @@ namespace WPFUI.ViewModels
 {
 	public class MembersViewModel: ObservableObject
 	{
-		private ObservableCollection<MemberModel> _members = new ObservableCollection<MemberModel>();
+        private bool _isReadOnly;
+
+        private ObservableCollection<MemberModel> _members = new ObservableCollection<MemberModel>();
 		private MemberModel _selectedmember = new MemberModel();
 		public ObservableCollection<MemberModel> SourceModels
 		{
@@ -28,11 +30,28 @@ namespace WPFUI.ViewModels
 			set { OnPropertyChanged(ref _selectedmember, value); }
 		}
 
-		//constructor
-		public MembersViewModel()
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set
+            {
+                OnPropertyChanged(ref _isReadOnly, value);
+                OnPropertyChanged("IsEditMode");
+            }
+
+        }
+        public bool IsEditMode
+
+        {
+            get { return !_isReadOnly; }
+
+        }
+
+        //constructor
+        public MembersViewModel()
 		{
 			SourceModels = new ObservableCollection<MemberModel>(ShellViewModel.Softcache.Tables["Members"].ToMemberModelIEnum());
-			SelectedModel = SourceModels.First<MemberModel>();
+			SelectedModel = SourceModels.FirstOrDefault();
 		}
 		
 			   

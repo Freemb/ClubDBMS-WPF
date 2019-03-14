@@ -21,6 +21,7 @@ namespace WPFUI.ViewModels
         private EventSpecModel dirtySelection;
         private bool _isReadOnly = true;
         private ObservableCollection<EventModel> _rootEvents;
+
         public EventSpecModel SelectedModel { get => _selectedModel; set => OnPropertyChanged(ref _selectedModel, value); }
         public EventModel SelectedEvent { get => _selectedEvent; set => OnPropertyChanged(ref _selectedEvent, value); }
         public ObservableCollection<EventSpecModel> SourceModels
@@ -57,7 +58,7 @@ namespace WPFUI.ViewModels
         {
             
             EventConnector econ = new EventConnector();
-            RootEvents = new ObservableCollection<EventModel>( econ.Load(null, true));
+            RootEvents = new ObservableCollection<EventModel>(econ.Load(null, true));
             _selectedEvent = RootEvents.FirstOrDefault();
             
             LastCommand = new RelayCommand(Last, () => IsReadOnly);
@@ -74,39 +75,49 @@ namespace WPFUI.ViewModels
         #region Navigation Bar Methods
         private void First()
         {
-            EventSpecModel temp = SourceModels.FirstOrDefault();
+            if (SourceModels == null) return;
+            EventSpecModel temp = SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
         }
         private void Last()
         {
-            EventSpecModel temp = SourceModels.LastOrDefault();
+            if (SourceModels == null) return;
+            EventSpecModel temp = SourceModels?.LastOrDefault();
             if (temp != null) SelectedModel = temp;
         }
         private void Previous()
         {
-            EventSpecModel temp = SourceModels.Where((model) => model.ID < SelectedModel.ID).LastOrDefault();
+            if (SourceModels == null) return;
+            int index = GetIndex(SelectedModel?.ID);
+            EventSpecModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
+
 
         }
         private void Next()
         {
-            EventSpecModel temp = SourceModels.Where((model) => model.ID > SelectedModel.ID).FirstOrDefault();
+            if (SourceModels == null) return;
+            int index = GetIndex(SelectedModel?.ID);
+            EventSpecModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
         }
         private void Add()
         {
-            SourceModels.Add(new EventSpecModel());
-            SelectedModel = SourceModels.Last();
+            if (SourceModels == null) return;
+            SourceModels?.Add(new EventSpecModel());
+            SelectedModel = SourceModels?.LastOrDefault();
             IsReadOnly = false;
         }
         private void Edit()
         {
+            if (SourceModels == null) return;
             IsReadOnly = false;
             dirtySelection = SelectedModel?.Clone(); //not yet a deep clone, test  
         }
         private void Save()
         {
+            if (SourceModels == null) return;
             //implement validation checks before saving
             try
             {
@@ -137,35 +148,32 @@ namespace WPFUI.ViewModels
         }
         private void Delete()
         {
-            if (SelectedModel != null)
+            if (SelectedModel == null) return;
+            EventSpecConnector conn = new EventSpecConnector();
+            if (SelectedModel.ID == 0 || conn.Delete(SelectedModel))
             {
-                if (SelectedModel.ID != 0)
-                {
-                    EventSpecConnector conn = new EventSpecConnector();
-
-                    if (conn.Delete(SelectedModel) == 1)
-                    {
-                        MessageBox.Show("Event Deleted Successfully");
-                        SourceModels.Remove(SelectedModel);
-                        SelectedModel = SourceModels.LastOrDefault();
-                    }
-                    
-                    else if(conn.Ex != null) { MessageBox.Show(conn.Ex.Message); }
-                    else { MessageBox.Show("This event has bookings that must be deleted before continuing.."); }
-                }
-                else
-                {
-                    SourceModels.Remove(SelectedModel);
-                    SelectedModel = SourceModels.LastOrDefault();
-                }
-               
+                SourceModels.Remove(SelectedModel);
+                SelectedModel = SourceModels.LastOrDefault();
+                MessageBox.Show("Event Deleted Successfully");
+                return;
             }
-
+            
+            if (conn.Ex != null)
+            {
+                MessageBox.Show(conn.Ex.Message);
+            }
+             else { MessageBox.Show("This event has bookings that must be deleted before continuing.."); }
         }
+          
+
+
+
+        
         private void Cancel()
         {
-            if (SelectedModel != null)
-            {
+            IsReadOnly = true;
+            if (SelectedModel == null) return;
+            
                 //Cancel new visit
                 if (SelectedModel.ID == 0)
                 {
@@ -178,19 +186,21 @@ namespace WPFUI.ViewModels
                     SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
                     dirtySelection = null;
                 }
-            }
-            IsReadOnly = true;
+            
+            
         }
         #endregion
-        private int GetIndex(int? ID)
+        private int GetIndex(int? ID) // consider what happens if temp is null
         {
-            EventSpecModel temp = SourceModels.Where((model) => model.ID == ID).FirstOrDefault();
+            if (SourceModels == null) return 0;
+            EventSpecModel temp = SourceModels.Where(model => model.ID == ID).FirstOrDefault();
             return SourceModels.IndexOf(temp);
         }
         private void LoadEventSpec()
         {
             EventSpecConnector esconn = new EventSpecConnector();
             SourceModels = new ObservableCollection<EventSpecModel>(esconn.Load(SelectedEvent.ID.ToString(), false));
+            SelectedModel = SourceModels.FirstOrDefault();
         }
     }
 }

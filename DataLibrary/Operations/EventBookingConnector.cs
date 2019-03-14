@@ -9,7 +9,7 @@ namespace DataLibrary.Operations
 {
     public class EventBookingConnector : CommonConnector, IModelConnector<EventBookingModel>
     {
-        public int Delete(EventBookingModel model)
+        public bool Delete(EventBookingModel model)
         {
             throw new NotImplementedException();
         }

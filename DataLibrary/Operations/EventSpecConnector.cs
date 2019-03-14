@@ -11,7 +11,7 @@ namespace DataLibrary.Operations
 {
     public class EventSpecConnector : CommonConnector, IModelConnector<EventSpecModel>
     {
-        public int Delete(EventSpecModel model)
+        public bool Delete(EventSpecModel model)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace DataLibrary.Operations
                         conn.Open();
                         cmd.ExecuteScalar();
                         this.Ex = null;
-                        int flag = cmd.Parameters["@flag"].Value != DBNull.Value ? Convert.ToInt32(cmd.Parameters["@flag"].Value) : 0;
+                        bool flag = cmd.Parameters["@flag"].Value != DBNull.Value ? Convert.ToBoolean(cmd.Parameters["@flag"].Value) : false;
                         return flag;
                     }
                 }
@@ -33,7 +33,7 @@ namespace DataLibrary.Operations
             catch (Exception ex)
             {
                 this.Ex = ex;
-                return 0;
+                return false;
             }
         }
 

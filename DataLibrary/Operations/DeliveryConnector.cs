@@ -11,7 +11,7 @@ namespace DataLibrary.Operations
 {
     public class DeliveryConnector : CommonConnector, IModelConnector<DeliveryModel>
     {
-        public int Delete(DeliveryModel model)
+        public bool Delete(DeliveryModel model)
         {
             try
             {
@@ -21,17 +21,19 @@ namespace DataLibrary.Operations
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ID", model.ID);
+                        cmd.Parameters.Add(new SqlParameter { Direction = ParameterDirection.Output, ParameterName = "@flag", SqlDbType = SqlDbType.Int });
                         conn.Open();
-                        int RecordsAffected = cmd.ExecuteNonQuery();
+                        cmd.ExecuteScalar();
                         this.Ex = null;
-                        return RecordsAffected;
+                        bool flag = cmd.Parameters["@flag"].Value != DBNull.Value ? Convert.ToBoolean(cmd.Parameters["@flag"].Value) : false;
+                        return flag;
                     }
                 }
             }
             catch (Exception ex)
             {
                 this.Ex = ex;
-                return 0;
+                return false;
             }
         }
 

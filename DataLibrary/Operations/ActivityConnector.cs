@@ -14,7 +14,7 @@ namespace DataLibrary.Operations
 	{
 	
 	
-		public int Delete(ActivityModel model)
+		public bool Delete(ActivityModel model)
         {
             try
             {
@@ -24,10 +24,12 @@ namespace DataLibrary.Operations
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SubActivityID", model.ActivityID);
+                        cmd.Parameters.Add(new SqlParameter { Direction = ParameterDirection.Output, ParameterName = "@flag", SqlDbType = SqlDbType.Int });
                         con.Open();
-                        int RecordsAffected = cmd.ExecuteNonQuery();
+                        cmd.ExecuteScalar();
                         this.Ex = null;
-                        return RecordsAffected;
+                        bool flag = cmd.Parameters["@flag"].Value != DBNull.Value ? Convert.ToBoolean(cmd.Parameters["@flag"].Value) : false;
+                        return flag;
                     }
                 }
 
@@ -35,7 +37,7 @@ namespace DataLibrary.Operations
             catch(Exception ex)
             {
               this.Ex = ex;
-              return 0;
+              return false;
             }
         }  
         

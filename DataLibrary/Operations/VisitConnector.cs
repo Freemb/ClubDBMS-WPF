@@ -14,7 +14,7 @@ namespace DataLibrary.Operations
 	public class VisitConnector : CommonConnector ,IModelConnector<VisitModel>
 	{
 	
-		public int Delete(VisitModel model)
+		public bool Delete(VisitModel model)
 		{
 			try
 			{
@@ -24,17 +24,19 @@ namespace DataLibrary.Operations
 					{
 						cmd.CommandType = CommandType.StoredProcedure;
 						cmd.Parameters.AddWithValue("@VisitID", model.ID);
-						conn.Open();
-						int RecordsAffected = cmd.ExecuteNonQuery();
-						this.Ex = null;
-                        return RecordsAffected;
-					}
+                        cmd.Parameters.Add(new SqlParameter { Direction = ParameterDirection.Output, ParameterName = "@flag", SqlDbType = SqlDbType.Int });
+                        conn.Open();
+                        cmd.ExecuteScalar();
+                        bool flag = cmd.Parameters["@flag"].Value != DBNull.Value ? Convert.ToBoolean(cmd.Parameters["@flag"].Value) : false;
+                        this.Ex = null;
+                        return flag;
+                    }
 				}
 			}
 			catch (Exception ex)
 			{
 				this.Ex = ex;
-				return 0;
+				return false;
 			}
 		}
 

@@ -11,6 +11,8 @@ using WPFUI.Utility;
 using System.Windows;
 using System.Diagnostics;
 using System.Windows.Controls;
+using DataLibrary.Cache;
+using DataLibrary.Models;
 
 namespace WPFUI.ViewModels
 {
@@ -45,12 +47,14 @@ namespace WPFUI.ViewModels
         static ShellViewModel()
 		{
 			
-			Softcache = new DataSet("SoftCache");
+			//Softcache = new DataSet("SoftCache");
 			MemberConnector mc1 = new MemberConnector();
-			Softcache.Tables.Add(mc1.Load(null));
-			ActivityConnector ac2 = new ActivityConnector();
-			Softcache.Tables.Add(ac2.Load(null));
-			_instance = new ShellViewModel(); //call last in static ctor, as ShellVM needs static softcache
+            //Softcache.Tables.Add(mc1.Load(null));
+            ActivityConnector ac2 = new ActivityConnector();
+            //Softcache.Tables.Add(ac2.Load(null));
+            CacheOps.GetFromCache("Members", mc1);
+            CacheOps.GetFromCache("Members", ac2);
+            _instance = new ShellViewModel(); //call last in static ctor, as ShellVM needs static softcache
 		}
 		//instance (singleton) constructor// passing instance calls constructor again before it completes, within itself.**bad***
 		private ShellViewModel()

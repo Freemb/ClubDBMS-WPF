@@ -165,30 +165,32 @@ namespace WPFUI.ViewModels
         #region Navigation Bar Methods
         private void First()
         {
-            VisitModel temp = SourceModels.FirstOrDefault();
+            VisitModel temp = SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
         }
         private void Last()
         {
-            VisitModel temp = SourceModels.LastOrDefault();
+            VisitModel temp = SourceModels?.LastOrDefault();
             if (temp != null) SelectedModel = temp;
         }
         private void Previous()
         {
-            VisitModel temp = SourceModels.Where((model) => model.ID < SelectedModel.ID).LastOrDefault();
-            if(temp != null) SelectedModel = temp;
+            int index = GetIndex(SelectedModel.ID);
+            VisitModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
+            if (temp != null) SelectedModel = temp;
 
         }
         private void Next()
         {
-            VisitModel temp = SourceModels.Where((model) => model.ID > SelectedModel.ID).FirstOrDefault();
+            int index = GetIndex(SelectedModel.ID);
+            VisitModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
         }
         private void Add()
         {
-            SourceModels.Add(new VisitModel());
-            SelectedModel = SourceModels.Last();
+            SourceModels?.Add(new VisitModel());
+            SelectedModel = SourceModels?.Last();
             SubActivityList = null;
             ActivityList = null;
             IsReadOnly = false;
@@ -215,10 +217,10 @@ namespace WPFUI.ViewModels
                 }
                 else { MessageBox.Show(vconn.Ex.Message); }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show(ex.Message);
             }
             finally
             {

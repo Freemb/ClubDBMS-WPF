@@ -15,7 +15,7 @@ namespace DataLibrary.Operations
 		SqlException Sqlex { get; set; }
 		int Update(T model);
 		int Insert(T model);
-		int Delete(T model);
+		bool Delete(T model);
         List<T> Load(string input, bool all);
     }
 }
