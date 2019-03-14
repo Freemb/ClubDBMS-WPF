@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace DataLibrary.Operations
 {
-	public abstract  class CommonConnector
+    public abstract  class CommonConnector
 	{
 		public Exception Ex { get; set; }
 		public SqlException Sqlex { get; set; }

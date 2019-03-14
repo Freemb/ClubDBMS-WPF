@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace WPFUI.Utility
-	{
-	public class RelayCommand<T> : ICommand
+{
+    public class RelayCommand<T> : ICommand
 	{
 		private readonly Action<T> _execute = null;
 		private readonly Func<T, bool> _canExecute = null;

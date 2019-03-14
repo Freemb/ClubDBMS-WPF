@@ -1,45 +1,16 @@
-﻿using System;
+﻿using DataLibrary.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
-using DataLibrary.Models;
-using DataLibrary.Cache;
-using System.Diagnostics;
+using System.Linq;
 
 
 namespace DataLibrary.Operations
 {
-	
-	public class MemberConnector: CommonConnector,IModelConnector<MemberModel>
+
+    public class MemberConnector: CommonConnector,IModelConnector<MemberModel>
 	{
-		
-		
-		public DataTable Load(string input)
-		{
-			using (SqlConnection con = new SqlConnection(ConnString()))
-			{
-				var da = new SqlDataAdapter("dbo.spMembers_GetbySurname", con);
-				da.SelectCommand.CommandType = CommandType.StoredProcedure;
-				//passing in a null gives a default behaviour of returning top 25 records unfiltered
-				if (input != null)
-				{
-					da.SelectCommand.Parameters.AddWithValue("@Surname", input);
-				}
-				else
-				{
-					da.SelectCommand.Parameters.AddWithValue("@Surname", DBNull.Value);
-				}
-				da.FillSchema(dt, SchemaType.Source);
-				dt.TableName = "Members";
-				da.Fill(dt);
-				return dt;
-			}
-
-		}
-
 		public int Update(MemberModel member)
 		{
 			try
@@ -147,7 +118,7 @@ namespace DataLibrary.Operations
 				var da = new SqlDataAdapter("dbo.spMembers_GetbySurname", con);
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 				//passing in a null gives a default behaviour of returning top 25 records unfiltered
-				if (!(all || input == null))
+				if (!all || input != null)
 				{
 					da.SelectCommand.Parameters.AddWithValue("@Surname", input);
 				}

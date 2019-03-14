@@ -1,9 +1,6 @@
-﻿using System;
+﻿using DataLibrary.Utility;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLibrary.Utility;
 
 namespace DataLibrary.Models
 {

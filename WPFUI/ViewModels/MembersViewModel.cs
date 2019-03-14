@@ -1,19 +1,12 @@
-﻿using WPFUI.Views;
+﻿using DataLibrary.Cache;
 using DataLibrary.Models;
-using DataLibrary.Operations;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using WPFUI.Utility;
 
 namespace WPFUI.ViewModels
 {
-	public class MembersViewModel: ObservableObject
+    public class MembersViewModel: ObservableObject
 	{
         private bool _isReadOnly;
 
@@ -50,8 +43,8 @@ namespace WPFUI.ViewModels
         //constructor
         public MembersViewModel()
 		{
-			SourceModels = new ObservableCollection<MemberModel>(ShellViewModel.Softcache.Tables["Members"].ToMemberModelIEnum());
-			SelectedModel = SourceModels.FirstOrDefault();
+			SourceModels = new ObservableCollection<MemberModel>(CacheOps.GetFromCache<MemberModel>("Members"));
+            SelectedModel = SourceModels.FirstOrDefault();
 		}
 		
 			   

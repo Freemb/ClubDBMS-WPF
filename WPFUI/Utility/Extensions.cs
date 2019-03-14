@@ -1,16 +1,12 @@
-﻿using System;
+﻿using DataLibrary.Models;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLibrary.Models;
-using DataLibrary.Utility;
 
 namespace WPFUI.Utility
 {
-	public static class ExtensionMethods
+    public static class ExtensionMethods
 	{
 		public static IEnumerable<MemberModel> ToMemberModelIEnum(this DataTable table)
 		{
@@ -44,28 +40,10 @@ namespace WPFUI.Utility
 
 
 		}
-		public static MemberModel GetMemberDetails(this DataTable memberstable, double memno)
+		public static MemberModel GetMemberDetails(this List<MemberModel> memlist, double memno)
 		{
-            ////This gives an error if membership number not found, used foreach instead
-			//DataRow row = memberstable.AsEnumerable().Where(datarow => datarow.Field<double>("MemNo") == memno).First();
-            foreach (var row in memberstable.AsEnumerable())
-            {
-                
-                if(row.Field<double>("MemNo") == memno) return new MemberModel
-                {
-                        MemNo = row.Field<double>("MemNo"),
-                        Forename = row.Field<string>("Forename"),
-                        Surname = row.Field<string>("Surname"),
-                        Category = row.Field<string>("Category"),
-                        Email = row.Field<string>("Email"),
-                        MobileTel = row.Field<string>("MobileTel"),
-                        HomeTel = row.Field<string>("HomeTel"),
-                        Gender = row.Field<string>("Gender"),
-                        DateOfBirth = row.IsNull("DOB") ? DateTime.MinValue : row.Field<DateTime>("DOB")
-                };
-                
-            }
-            return new MemberModel();
+           MemberModel member = memlist.Where(model => model.MemNo == memno).FirstOrDefault();
+           return member;
         }
 		public static bool IsWeekendBankHoliday(this DateTime date)
 		{

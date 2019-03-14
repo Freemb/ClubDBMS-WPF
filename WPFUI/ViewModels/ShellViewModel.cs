@@ -22,8 +22,7 @@ namespace WPFUI.ViewModels
 		public VisitsViewModel VisVM { get; private set; }
 		public PortalViewModel Portal { get; private set; }
         public EventsViewModel EventVM { get; private set; }
-        public static DataSet Softcache { get; set; }
-		private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor finalises.
+        private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor finalises.
         private Visibility _isMenuCollapsed = Visibility.Collapsed; //0-visible, 1-hidden, 2- collapsed
         private object _currentView;
 		public object CurrentView
@@ -34,7 +33,8 @@ namespace WPFUI.ViewModels
 		public ICommand LoadPortalCommand { get; private set; }
 		public ICommand QuitCommand { get; private set; }
         public ICommand CollapsePaneCommand { get; private set; }
-		public static ShellViewModel GetInstance { get { return _instance; } }
+
+        public static ShellViewModel GetInstance { get => _instance; } 
         
 
         public Visibility  IsMenuCollapsed
@@ -46,14 +46,10 @@ namespace WPFUI.ViewModels
         //static constructor called first
         static ShellViewModel()
 		{
-			
-			//Softcache = new DataSet("SoftCache");
 			MemberConnector mc1 = new MemberConnector();
-            //Softcache.Tables.Add(mc1.Load(null));
             ActivityConnector ac2 = new ActivityConnector();
-            //Softcache.Tables.Add(ac2.Load(null));
             CacheOps.GetFromCache("Members", mc1);
-            CacheOps.GetFromCache("Members", ac2);
+            CacheOps.GetFromCache("Activities", ac2);
             _instance = new ShellViewModel(); //call last in static ctor, as ShellVM needs static softcache
 		}
 		//instance (singleton) constructor// passing instance calls constructor again before it completes, within itself.**bad***

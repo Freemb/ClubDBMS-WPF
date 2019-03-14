@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+﻿using DataLibrary.Cache;
 using DataLibrary.Models;
 using DataLibrary.Operations;
-using WPFUI.Views;
-using WPFUI.Utility;
-using System.Windows.Input;
-using System.Windows.Controls;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Linq;
 using System.Windows;
-using DataLibrary.Utility;
+using System.Windows.Input;
+using WPFUI.Utility;
 
 namespace WPFUI.ViewModels
 {
-	public class VisitsViewModel : ObservableObject
+    public class VisitsViewModel : ObservableObject
 	{
         //private objects
         private bool _isReadOnly = true;
@@ -118,8 +114,8 @@ namespace WPFUI.ViewModels
             VisitConnector vconn = new VisitConnector();
 			SourceModels = new ObservableCollection<VisitModel>(vconn.Load(null,true));
 			SelectedModel = SourceModels.FirstOrDefault();
-			_activitiesWithPrices = ShellViewModel.Softcache.Tables["Activities"].ToActivityModelIEnum();
-            
+			_activitiesWithPrices = CacheOps.GetFromCache<ActivityModel>("Activities");
+           
             #region Set Command Delegates to methods
             GetSubActivityListCommand = new RelayCommand(GetSubActivityList,()=>true);
 			GetPriceCommand = new RelayCommand(GetPrice,()=>true);
@@ -159,7 +155,7 @@ namespace WPFUI.ViewModels
         private void GetMemberDetails()
         {
             if(SelectedModel != null)
-            SelectedModel.Member = ShellViewModel.Softcache.Tables["Members"].GetMemberDetails(_selectedvisit.Member.MemNo);
+            SelectedModel.Member = CacheOps.GetFromCache<MemberModel>("Members").GetMemberDetails(_selectedvisit.Member.MemNo);
         }
 
         #region Navigation Bar Methods

@@ -1,9 +1,5 @@
 ﻿using DataLibrary.Utility;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
@@ -43,7 +39,7 @@ namespace DataLibrary.Models
 
         public bool Equals(EventModel other)
         {
-            if(_id.Equals(other.ID)) //&& _eventName.Equals(other.EventName) && _type.Equals(other.Type) && _frequency.Equals(other.Frequency) && _mode.Equals(other.Mode))
+            if(_id.Equals(other.ID) && _eventName.Equals(other.EventName) && _type.Equals(other.Type) && _frequency.Equals(other.Frequency) && _mode.Equals(other.Mode))
             { return true; }
             else{ return false; }
             

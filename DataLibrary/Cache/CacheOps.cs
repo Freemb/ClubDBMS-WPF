@@ -1,18 +1,12 @@
-﻿using System;
+﻿using DataLibrary.Operations;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLibrary.Cache;
-using DataLibrary.Operations;
 using System.Runtime.Caching;
-using System.Reflection;
 
 
 namespace DataLibrary.Cache
 {
-	public static class CacheOps
+    public static class CacheOps
 	{
         //TODO Load members list. switch to new thread or async wait to continue loading the user interface
 

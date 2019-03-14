@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLibrary.Utility;
+﻿using DataLibrary.Utility;
+using System;
 
 namespace DataLibrary.Models
 {
-	public class ActivityModel : ObservableModel,IEquatable<ActivityModel>
+    public class ActivityModel : ObservableModel,IEquatable<ActivityModel>
 	{
 		private string _activityName = "";
 		private string _subActivity = "";

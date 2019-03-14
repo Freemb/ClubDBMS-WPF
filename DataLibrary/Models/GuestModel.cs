@@ -1,13 +1,8 @@
 ﻿using DataLibrary.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-	public class GuestModel : ObservableModel
+    public class GuestModel : ObservableModel
 	{
 		private string _forename = "";
 		private string _surname = "";

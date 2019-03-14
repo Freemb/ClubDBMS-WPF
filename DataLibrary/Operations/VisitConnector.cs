@@ -1,17 +1,13 @@
-﻿using System;
+﻿using DataLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLibrary.Models;
-using DataLibrary.Cache;
-using System.Windows;
 
 namespace DataLibrary.Operations
 {
-	public class VisitConnector : CommonConnector ,IModelConnector<VisitModel>
+    public class VisitConnector : CommonConnector ,IModelConnector<VisitModel>
 	{
 	
 		public bool Delete(VisitModel model)
