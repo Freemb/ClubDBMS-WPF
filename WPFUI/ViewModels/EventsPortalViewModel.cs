@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFUI.ViewModels
 {
-    class EventsPortalViewModel
+    public class EventsPortalViewModel
     {
     }
 }

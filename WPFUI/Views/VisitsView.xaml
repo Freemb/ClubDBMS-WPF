@@ -116,7 +116,7 @@
 
         </Grid>
         <DataGrid x:Name="GridVisits" ItemsSource="{Binding SourceModels}" Grid.Row="1" Grid.Column="2" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
-                  AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True"
+                  AutoGenerateColumns="False" MaxHeight="1000" 
                   SelectedItem="{Binding SelectedModel, Mode=TwoWay}" IsEnabled="{Binding IsReadOnly}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding Path= VisitDate,ConverterCulture=en-GB, StringFormat= dd/MM/yyyy}"/>

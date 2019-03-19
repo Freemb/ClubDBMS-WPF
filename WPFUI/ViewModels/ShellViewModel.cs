@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPFUI.Views;
-using System.Data;
+﻿using DataLibrary.Cache;
 using DataLibrary.Operations;
+using System.Windows;
 using System.Windows.Input;
 using WPFUI.Utility;
-using System.Windows;
-using System.Diagnostics;
-using System.Windows.Controls;
-using DataLibrary.Cache;
-using DataLibrary.Models;
 
 namespace WPFUI.ViewModels
 {
-	public sealed class ShellViewModel : ObservableObject
+    public sealed class ShellViewModel : ObservableObject
 	{
 		public MembersViewModel MemVM { get; private set; } 
 		public VisitsViewModel VisVM { get; private set; }
@@ -52,12 +42,12 @@ namespace WPFUI.ViewModels
             CacheOps.GetFromCache("Activities", ac2);
             _instance = new ShellViewModel(); //call last in static ctor, as ShellVM needs static softcache
 		}
-		//instance (singleton) constructor// passing instance calls constructor again before it completes, within itself.**bad***
+		//instance (singleton) constructor
 		private ShellViewModel()
 		{
 			MemVM = new MembersViewModel();
 			VisVM = new VisitsViewModel();
-			Portal = new PortalViewModel();
+            Portal = new PortalViewModel();
             EventVM = new EventsViewModel();
 			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal,()=>true);
 			QuitCommand = new RelayCommand(Quit,()=>true);

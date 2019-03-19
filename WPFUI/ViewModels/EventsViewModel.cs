@@ -16,7 +16,7 @@ namespace WPFUI.ViewModels
         private EventSpecModel _selectedModel;
         private EventModel _selectedEvent;
         private EventSpecModel dirtySelection;
-        private bool _isReadOnly = true;
+        private bool _isReadOnly = false;
         private ObservableCollection<EventModel> _rootEvents;
 
         public EventSpecModel SelectedModel { get => _selectedModel; set => OnPropertyChanged(ref _selectedModel, value); }
@@ -187,7 +187,7 @@ namespace WPFUI.ViewModels
             
         }
         #endregion
-        private int GetIndex(int? ID) // consider what happens if temp is null
+        private int GetIndex(int? ID) // returns -1 if ID is null.
         {
             if (SourceModels == null) return 0;
             EventSpecModel temp = SourceModels.Where(model => model.ID == ID).FirstOrDefault();
