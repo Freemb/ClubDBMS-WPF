@@ -15,7 +15,6 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
             </Grid.ColumnDefinitions>
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
@@ -28,8 +27,32 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+               </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Grid.Column="0" Style="{StaticResource FormTextBox}" Text="{Binding SelectedModel.ID, Mode=TwoWay}" IsReadOnly="True"/>
 
-        <TextBox Style="{StaticResource FormTextBox}" Text="{Binding SelectedModel.ID, Mode=TwoWay}" IsReadOnly="True"/>
+            
+        </Grid>
+
+        <DataGrid Grid.Row="1" Grid.Column="2" ItemsSource="{Binding SourceModels}" SelectedItem="{Binding SelectedModel}"/>
+        <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+            <Button Command="{Binding FirstCommand}" Content="First"/>
+            <Button Command="{Binding PreviousCommand}" Content="Previous"/>
+            <Button Command="{Binding NextCommand}" Content="Next"/>
+            <Button Command="{Binding LastCommand}" Content="Last"/>
+            <Button Command="{Binding AddCommand}" Content="New"/>
+            <Button Command="{Binding EditCommand}" Content="Edit"/>
+            <Button Command="{Binding DeleteCommand}" Content="Delete"/>
+            <Button Command="{Binding CancelCommand}" Content="Cancel"/>
+            <Button Command="{Binding SaveCommand}" Content="Save"/>
+        </WrapPanel>
 
     </Grid>
 </UserControl>

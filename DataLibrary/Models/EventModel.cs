@@ -3,15 +3,15 @@ using System;
 
 namespace DataLibrary.Models
 {
-    public class EventModel :ObservableModel, IEquatable<EventModel>
+    public class EventModel :ObservableModel, IEquatable<EventModel>, IModel<EventModel>
     {
-        private int _id;
+        private int? _id;
         private string _eventName;
         private string _type;
         private string _frequency;
         private string _mode;
 
-        public int ID
+        public int? ID
         {
             get { return _id; }
             set {OnPropertyChanged(ref _id , value); }
@@ -35,6 +35,11 @@ namespace DataLibrary.Models
         {
             get { return _mode; }
             set { _mode = value; }
+        }
+
+        public EventModel Clone(EventModel model)
+        {
+            return (EventModel)this.MemberwiseClone();
         }
 
         public bool Equals(EventModel other)

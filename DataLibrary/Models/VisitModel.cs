@@ -3,19 +3,19 @@ using System;
 
 namespace DataLibrary.Models
 {
-    public class VisitModel : ObservableModel, IEquatable<VisitModel>
+    public class VisitModel : ObservableModel, IEquatable<VisitModel>, IModel<VisitModel>
     {
         private ActivityModel _activity;
         private DateTime _visitDate = DateTime.Now.Date;
         private MemberModel _member;
-        private int _visitID = 0;
+        private int? _visitID = 0;
         private GuestModel _guest;
         private decimal? _amount = null;
         private bool _isPaid = false;
         private string _notes = "";
         private DateTime? _paidDate = null;
 
-        public int ID { get => _visitID; set => OnPropertyChanged(ref _visitID, value);}
+        public int? ID { get => _visitID; set => OnPropertyChanged(ref _visitID, value);}
         public DateTime VisitDate { get => _visitDate; set => OnPropertyChanged(ref _visitDate, value);}
         public MemberModel Member { get => _member; set => OnPropertyChanged(ref _member, value); }
         public GuestModel Guest { get => _guest; set => OnPropertyChanged(ref _guest, value);}
@@ -38,12 +38,12 @@ namespace DataLibrary.Models
             Guest = new GuestModel();
         }
 
-        public VisitModel(int id, DateTime VDate, double memno, string memfore, string memsur, string category, int? activityID, string activityname, string subactivity,
+        public VisitModel(int? id, DateTime VDate, double memno, string memfore, string memsur, string category, int? activityID, string activityname, string subactivity,
                             decimal? price, DateTime? Pdate,bool ispaid, string GFore, string GSur)
         {
             Member = new MemberModel { Forename = memfore, Surname = memsur, Category = category, MemNo = memno };
             Guest = new GuestModel { Forename = GFore, Surname = GSur };
-            Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity, SubActivityID = activityID };
+            Activity = new ActivityModel { ActivityName = activityname, SubActivity = subactivity, ID = activityID };
             VisitDate = VDate;
             ID = id;
             Amount = price;

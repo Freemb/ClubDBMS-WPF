@@ -117,7 +117,6 @@ namespace DataLibrary.Operations
 			{
 				var da = new SqlDataAdapter("dbo.spMembers_GetbySurname", con);
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
-				//passing in a null gives a default behaviour of returning top 25 records unfiltered
 				if (!all || input != null)
 				{
 					da.SelectCommand.Parameters.AddWithValue("@Surname", input);
@@ -126,9 +125,8 @@ namespace DataLibrary.Operations
 				{
 					da.SelectCommand.Parameters.AddWithValue("@Surname", DBNull.Value);
 				}
-				//DataTable dt = new DataTable();
-				da.FillSchema(dt, SchemaType.Source);
-				dt.TableName = "Members";
+				//da.FillSchema(dt, SchemaType.Source);
+				//dt.TableName = "Members";
 				da.Fill(dt);
 				#region ConvertToModels
 				List<MemberModel> output = dt.AsEnumerable().Select(row => new MemberModel()

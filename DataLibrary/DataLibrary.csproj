@@ -47,6 +47,7 @@
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\EventPriceModel.cs" />
     <Compile Include="Models\EventSpecModel.cs" />
+    <Compile Include="Models\IModel.cs" />
     <Compile Include="Operations\ActivityConnector.cs" />
     <Compile Include="Cache\CacheOps.cs" />
     <Compile Include="Operations\CommonConnector.cs" />

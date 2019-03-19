@@ -57,7 +57,7 @@ namespace DataLibrary.Operations
                     pricelist.Columns.Add(new DataColumn("Cost", typeof(decimal)));
                     foreach (EventPriceModel item in model.PriceList)
                     {
-                        pricelist.Rows.Add(item.EventSpecID, item.Group, item.Cost);
+                        pricelist.Rows.Add(item.ID, item.Group, item.Cost);
                     }
                     cmd.Parameters.Add(new SqlParameter
                     {
@@ -98,7 +98,7 @@ namespace DataLibrary.Operations
             //        pricelist.Columns.Add(new DataColumn("Cost", typeof(decimal)));
             //        foreach (EventPriceModel item in model.PriceList)
             //        {
-            //            pricelist.Rows.Add(item.EventSpecID, item.Group, item.Cost);
+            //            pricelist.Rows.Add(item.ID, item.Group, item.Cost);
             //        }
 
             //        cmd.Parameters.Add( new SqlParameter {SqlDbType = SqlDbType.Structured,ParameterName = "@PriceList",
@@ -149,7 +149,7 @@ namespace DataLibrary.Operations
                 {
                     EventPriceModel modelprices = new EventPriceModel()
                     {
-                        EventSpecID = EventSpecID,
+                        ID = EventSpecID,
                         Group = tempList[i].Field<string>("Group"),
                         Cost = tempList[i].IsNull("Cost") ? 0 : tempList[i].Field<decimal?>("Cost")
                     };

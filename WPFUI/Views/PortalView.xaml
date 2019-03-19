@@ -42,7 +42,7 @@
                 </StackPanel>
             </Button.Content>
         </Button>
-        <Button  Grid.Row="2" Grid.Column="4" Command="{Binding LoadEventsCommand}" Style="{StaticResource PortalButtons}">
+        <Button  Grid.Row="2" Grid.Column="3" Command="{Binding LoadEventsCommand}" Style="{StaticResource PortalButtons}">
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text=" " MinWidth="110"/>
@@ -51,11 +51,20 @@
                 </StackPanel>
             </Button.Content>
         </Button>
-        <Button  Grid.Row="2" Grid.Column="3" Command="{Binding LoadVisitsCommand}" Style="{StaticResource PortalButtons}">
+        <Button  Grid.Row="2" Grid.Column="4" Command="{Binding LoadVisitsCommand}" Style="{StaticResource PortalButtons}">
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text=" " MinWidth="110"/>
                     <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\payment.png" MaxHeight="80" MaxWidth="80" />
+                    <TextBlock Text="Visits" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+        <Button  Grid.Row="2" Grid.Column="5" Command="{Binding LoadDeliveriesCommand}" Style="{StaticResource PortalButtons}">
+            <Button.Content>
+                <StackPanel>
+                    <TextBlock Text=" " MinWidth="110"/>
+                    <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\deliveryvan.png" MaxHeight="80" MaxWidth="80" />
                     <TextBlock Text="Visits" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button.Content>

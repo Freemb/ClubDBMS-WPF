@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DataLibrary.Models
 {
-    public class EventSpecModel : ObservableModel
+    public class EventSpecModel : ObservableModel, IModel<EventSpecModel>
     {
         private int? _id = 0;
         private DateTime? _eventdate;
@@ -57,7 +57,7 @@ namespace DataLibrary.Models
             Event.Frequency = freq;
             Event.Mode = mode;
         }
-        public EventSpecModel Clone()
+        public EventSpecModel Clone(EventSpecModel model)
         {
             return (EventSpecModel)this.MemberwiseClone();
         }

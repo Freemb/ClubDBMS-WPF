@@ -3,7 +3,7 @@ using System;
 
 namespace DataLibrary.Models
 {
-    public class ActivityModel : ObservableModel,IEquatable<ActivityModel>
+    public class ActivityModel : ObservableModel,IEquatable<ActivityModel>, IModel<ActivityModel>
 	{
 		private string _activityName = "";
 		private string _subActivity = "";
@@ -18,7 +18,7 @@ namespace DataLibrary.Models
 			get => _subActivity;
 			set{OnPropertyChanged(ref _subActivity, value);	}
 		}
-		public int? SubActivityID
+		public int? ID
 		{
 			get => _subActivityID;
             set => _subActivityID = value;
@@ -61,8 +61,12 @@ namespace DataLibrary.Models
 		{
 			return ActivityName + "  |  " + SubActivity;
 		}
-        
-	}
+
+        public ActivityModel Clone(ActivityModel model)
+        {
+            return (ActivityModel)this.MemberwiseClone();
+        }
+    }
 
 
 }

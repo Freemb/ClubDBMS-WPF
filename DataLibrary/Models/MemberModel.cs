@@ -3,8 +3,9 @@ using System;
 
 namespace DataLibrary.Models
 {
-    public class MemberModel : ObservableModel
+    public class MemberModel : ObservableModel, IModel<MemberModel>
     {
+        private int? _id = 0;
         private double _memNo = 0;
         private string _forename = "";
         private string _surname = "";
@@ -16,7 +17,16 @@ namespace DataLibrary.Models
         private string _gender = "";
         private DateTime _dateOfBirth = DateTime.Today.Date;
 
-        public double MemNo { get => _memNo; set { OnPropertyChanged(ref _memNo, value); } }
+        public int? ID { get => _id;} // constructed to adhere to int requirement of IModel, still unique
+        public double MemNo
+        {
+            get => _memNo;
+            set
+            {
+                OnPropertyChanged(ref _memNo, value);
+                _id = (int)(value * 10D);
+            }
+        }
         public string Forename { get => _forename; set { OnPropertyChanged(ref _forename, value); } }
         public string Surname { get => _surname; set { OnPropertyChanged(ref _surname, value); } }
         public string Title { get => _title; set { OnPropertyChanged(ref _title, value); } }
@@ -26,6 +36,9 @@ namespace DataLibrary.Models
         public string MobileTel { get => _mobileTel; set { OnPropertyChanged(ref _mobileTel, value); } }
         public string Gender { get => _gender; set { OnPropertyChanged(ref _gender, value); } }
         public DateTime DateOfBirth { get => _dateOfBirth; set { OnPropertyChanged(ref _dateOfBirth, value); } }
+
+        int? IModel<MemberModel>.ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public MemberModel()
         {
 
@@ -52,6 +65,11 @@ namespace DataLibrary.Models
         public override string ToString()
         {
             return this.Forename + "  " + this.Surname;
+        }
+
+        public MemberModel Clone(MemberModel model)
+        {
+            return (MemberModel)this.MemberwiseClone();
         }
     }
 }

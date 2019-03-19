@@ -2,8 +2,9 @@
 
 namespace DataLibrary.Models
 {
-    public class EventPriceModel:ObservableModel
+    public class EventPriceModel:ObservableModel, IModel<EventPriceModel>
     {
+
         private int? _eventspecid;
         private string _group;
         private decimal? _cost;
@@ -18,10 +19,15 @@ namespace DataLibrary.Models
             get => _cost;
             set => OnPropertyChanged(ref _cost, value);
         }
-        public int? EventSpecID
+        public int? ID
         {
             get => _eventspecid;
             set => OnPropertyChanged(ref _eventspecid, value);
+        }
+
+        public EventPriceModel Clone(EventPriceModel model)
+        {
+            return (EventPriceModel)this.MemberwiseClone();
         }
     }
 }

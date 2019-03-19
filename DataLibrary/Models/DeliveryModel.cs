@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.Models
 {
-    public class DeliveryModel : ObservableModel
+    public class DeliveryModel : ObservableModel, IModel<DeliveryModel>
     {
-        private int _iD = 0;
+        private int? _iD = 0;
         private DateTime _entryTime = DateTime.Now;
         private DateTime? _exitTime = null;
         private string _vReg = "";
@@ -20,7 +20,7 @@ namespace DataLibrary.Models
         private string _driverName = "";
         private string _description = "";
 
-        public int ID { get => _iD; set => OnPropertyChanged(ref _iD, value); }
+        public int? ID { get => _iD; set => OnPropertyChanged(ref _iD, value); }
         public DateTime EntryTime { get => _entryTime; set => OnPropertyChanged(ref _entryTime , value); }
         public DateTime? ExitTime { get => _exitTime; set => OnPropertyChanged(ref  _exitTime , value); }
         public string VReg { get => _vReg; set => OnPropertyChanged(ref _vReg , value); }
@@ -48,6 +48,11 @@ namespace DataLibrary.Models
             Location = location;
             DriverName = driver;
             Description = description;
+        }
+       
+        public DeliveryModel Clone(DeliveryModel model)
+        {
+            return (DeliveryModel)this.MemberwiseClone();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace WPFUI.ViewModels
         private EventSpecModel _selectedModel;
         private EventModel _selectedEvent;
         private EventSpecModel dirtySelection;
-        private bool _isReadOnly = false;
+        private bool _isReadOnly = true;
         private ObservableCollection<EventModel> _rootEvents;
 
         public EventSpecModel SelectedModel { get => _selectedModel; set => OnPropertyChanged(ref _selectedModel, value); }
@@ -110,7 +110,7 @@ namespace WPFUI.ViewModels
         {
             if (SourceModels == null) return;
             IsReadOnly = false;
-            dirtySelection = SelectedModel?.Clone(); //not yet a deep clone, test  
+            dirtySelection = SelectedModel?.Clone(); //not a deep clone, test  
         }
         private void Save()
         {
@@ -161,16 +161,10 @@ namespace WPFUI.ViewModels
             }
              else { MessageBox.Show("This event has bookings that must be deleted before continuing.."); }
         }
-          
-
-
-
-        
         private void Cancel()
         {
             IsReadOnly = true;
             if (SelectedModel == null) return;
-            
                 //Cancel new visit
                 if (SelectedModel.ID == 0)
                 {
@@ -183,8 +177,6 @@ namespace WPFUI.ViewModels
                     SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
                     dirtySelection = null;
                 }
-            
-            
         }
         #endregion
         private int GetIndex(int? ID) // returns -1 if ID is null.

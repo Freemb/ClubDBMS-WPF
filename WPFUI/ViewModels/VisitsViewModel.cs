@@ -171,14 +171,14 @@ namespace WPFUI.ViewModels
         }
         private void Previous()
         {
-            int index = GetIndex(SelectedModel.ID);
+            int index = SourceModels.GetBoundCollectionIndex(SelectedModel.ID);
             VisitModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
 
         }
         private void Next()
         {
-            int index = GetIndex(SelectedModel.ID);
+            int index = SourceModels.GetBoundCollectionIndex(SelectedModel.ID);
             VisitModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
@@ -265,7 +265,7 @@ namespace WPFUI.ViewModels
                 //Cancel Edit Visit
                 else if(dirtySelection !=null)
                 {
-                    SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
+                    SourceModels[SourceModels.GetBoundCollectionIndex(SelectedModel.ID)] = dirtySelection;
                     dirtySelection = null;
                 }
             }
@@ -273,11 +273,11 @@ namespace WPFUI.ViewModels
         }
         #endregion
 
-        private int GetIndex(int visitid)
-        {
-            VisitModel temp = SourceModels.Where((model) => model.ID == visitid).FirstOrDefault();
-            return SourceModels.IndexOf(temp);
-        }
+        //private int GetIndex(int visitid)
+        //{
+        //    VisitModel temp = SourceModels.Where((model) => model.ID == visitid).FirstOrDefault();
+        //    return SourceModels.IndexOf(temp);
+        //}
 
     }
 }

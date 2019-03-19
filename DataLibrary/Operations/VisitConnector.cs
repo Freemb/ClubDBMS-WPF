@@ -53,7 +53,7 @@ namespace DataLibrary.Operations
 					cmd.Parameters.AddWithValue("@GuestSur", model.Guest.Surname);
 					cmd.Parameters.AddWithValue("@Activity", model.Activity.ActivityName);
 					cmd.Parameters.AddWithValue("@SubActivity", model.Activity.SubActivity);
-					cmd.Parameters.AddWithValue("@SubActivityID", model.Activity.SubActivityID);
+					cmd.Parameters.AddWithValue("@SubActivityID", model.Activity.ID);
 					cmd.Parameters.AddWithValue("@Amount", model.Amount);
 					cmd.Parameters.AddWithValue("@PaidDate", model.PaidDate);
 					cmd.Parameters.AddWithValue("@Paid", model.IsPaid);

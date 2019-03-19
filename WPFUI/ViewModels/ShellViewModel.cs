@@ -12,6 +12,7 @@ namespace WPFUI.ViewModels
 		public VisitsViewModel VisVM { get; private set; }
 		public PortalViewModel Portal { get; private set; }
         public EventsViewModel EventVM { get; private set; }
+        public DeliveriesViewModel DelVM { get; private set; }
         private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor finalises.
         private Visibility _isMenuCollapsed = Visibility.Collapsed; //0-visible, 1-hidden, 2- collapsed
         private object _currentView;
@@ -49,13 +50,15 @@ namespace WPFUI.ViewModels
 			VisVM = new VisitsViewModel();
             Portal = new PortalViewModel();
             EventVM = new EventsViewModel();
+            DelVM = new DeliveriesViewModel();
 			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal,()=>true);
 			QuitCommand = new RelayCommand(Quit,()=>true);
             CollapsePaneCommand = new RelayCommand(CollapsePane,()=>true);
 			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM,()=>true);
 			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM,()=>true);
             Portal.LoadEventsCommand = new RelayCommand(() => CurrentView = EventVM, () => true);
-			CurrentView = Portal; //Loads portal on opening
+            Portal.LoadDeliveriesCommand = new RelayCommand(() => CurrentView = DelVM, () => true);
+            CurrentView = Portal; //Loads portal on opening
 
 		}
 		private void Quit()

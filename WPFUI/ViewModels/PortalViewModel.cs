@@ -8,8 +8,9 @@ namespace WPFUI.ViewModels
 		public ICommand LoadMembersCommand { get; set; }
 		public ICommand LoadVisitsCommand { get; set; }
         public ICommand LoadEventsCommand { get; set; }
-		
-		public PortalViewModel()
+        public ICommand LoadDeliveriesCommand { get; set; }
+
+        public PortalViewModel()
 		{
 			
 		}

@@ -118,7 +118,7 @@ namespace DataLibrary.Operations
                         ActivityType = row.Field<string>("Type"),
                         ActivityName = row.Field<string>("Activity"),
                         SubActivity = row.Field<string>("SubActivity"),
-                        SubActivityID = row.Field<int?>("SubActivityID"),
+                        ID = row.Field<int?>("SubActivityID"),
                         Price = row.Field<decimal>("Price"),
                         IsWEBH = row.Field<bool>("WkBH")
                     }).ToList();

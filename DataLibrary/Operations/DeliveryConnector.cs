@@ -75,7 +75,7 @@ namespace DataLibrary.Operations
                 {
 
                     SqlCommand cmd = new SqlCommand("dbo.spUpdateDelivery", connection){CommandType = CommandType.StoredProcedure};
-                    cmd.Parameters.AddWithValue("@DeliveryDate", model.EntryTime.Date);
+                    cmd.Parameters.AddWithValue("@Date", model.EntryTime.Date);
                     cmd.Parameters.AddWithValue("@Entry", model.EntryTime);
                     cmd.Parameters.AddWithValue("@VReg", model.VReg);
                     cmd.Parameters.AddWithValue("@Company", model.Company);
@@ -99,7 +99,7 @@ namespace DataLibrary.Operations
             }
         }
 
-        public List<DeliveryModel> Load(string input, bool all)
+        public List<DeliveryModel> Load(string input = null, bool all = true)
         {
             using (SqlConnection con = new SqlConnection(ConnString()))
             {
@@ -108,11 +108,11 @@ namespace DataLibrary.Operations
                 //passing in a null for input gives a default date of today's date in stored procedure
                 if (!all)
                 {
-                    da.SelectCommand.Parameters.AddWithValue("@DeliveryDate", Convert.ToDateTime(input));
+                    da.SelectCommand.Parameters.AddWithValue("@Date", Convert.ToDateTime(input));
                 }
                 else
                 {
-                    da.SelectCommand.Parameters.AddWithValue("@DeliveryDate", DBNull.Value);
+                    da.SelectCommand.Parameters.AddWithValue("@Date", DBNull.Value);
                 }
                 da.FillSchema(dt, SchemaType.Source);
                 dt.TableName = "Deliveries";

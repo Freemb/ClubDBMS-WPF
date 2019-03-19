@@ -3,6 +3,7 @@ using DataLibrary.Operations;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using WPFUI.Utility;
 
@@ -10,7 +11,7 @@ namespace WPFUI.ViewModels
 {
     public class DeliveriesViewModel : ObservableObject, IViewModel
     {
-        private bool _isReadOnly;
+        private bool _isReadOnly = true;
         private DeliveryModel _selectedDelivery = new DeliveryModel();
         private ObservableCollection<DeliveryModel> _deliveries;
         private DeliveryModel dirtySelection;
@@ -60,7 +61,7 @@ namespace WPFUI.ViewModels
         {
             //Load Deliveries data from database and assign to observable collection for binding
             DeliveryConnector conn = new DeliveryConnector();
-            SourceModels = new ObservableCollection<DeliveryModel>(conn.Load(null, true));
+            SourceModels = new ObservableCollection<DeliveryModel>(conn.Load());
             SelectedModel = SourceModels.FirstOrDefault();
 
             //Assign Commands for Binding
@@ -81,39 +82,48 @@ namespace WPFUI.ViewModels
         //Navigation Bar Methods
         private void First()
         {
-            DeliveryModel temp = SourceModels.FirstOrDefault();
+            if (SourceModels == null) return;
+            DeliveryModel temp = SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
         }
         private void Last()
         {
-            DeliveryModel temp = SourceModels.LastOrDefault();
+            if (SourceModels == null) return;
+            DeliveryModel temp = SourceModels?.LastOrDefault();
             if (temp != null) SelectedModel = temp;
         }
         private void Previous()
         {
-            DeliveryModel temp = SourceModels.Where((model) => model.ID < SelectedModel.ID).LastOrDefault();
+            if (SourceModels == null) return;
+            int index = GetIndex(SelectedModel?.ID);
+            DeliveryModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
 
         }
         private void Next()
         {
-            DeliveryModel temp = SourceModels.Where((model) => model.ID > SelectedModel.ID).FirstOrDefault();
+            if (SourceModels == null) return;
+            int index = GetIndex(SelectedModel?.ID);
+            DeliveryModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
         }
         private void Add()
         {
-            SourceModels.Add(new DeliveryModel());
-            SelectedModel = SourceModels.Last();
+            if (SourceModels == null) return;
+            SourceModels?.Add(new DeliveryModel());
+            SelectedModel = SourceModels?.LastOrDefault();
             IsReadOnly = false;
         }
         private void Edit()
         {
+            if (SourceModels == null) return;
             IsReadOnly = false;
-            // dirtyDelivery = SelectedDelivery.MemberWiseClone();
+            dirtySelection = SelectedModel.Clone();
         }
         private void Cancel()
         {
+            IsReadOnly = true;
             if (SelectedModel != null)
             {
                 //Cancel new visit
@@ -129,21 +139,37 @@ namespace WPFUI.ViewModels
                     dirtySelection = null;
                 }
             }
-            IsReadOnly = true;
         }
-
         private void Delete()
         {
-            throw new NotImplementedException();
+            {
+                if (SelectedModel == null) return;
+                DeliveryConnector conn = new DeliveryConnector();
+                //Delete call to Datasource does not run unless ID !=0
+                if (SelectedModel.ID == 0 || conn.Delete(SelectedModel)) 
+                {
+                    SourceModels.Remove(SelectedModel);
+                    SelectedModel = SourceModels.LastOrDefault();
+                    MessageBox.Show("Entry Deleted Successfully");
+                    return;
+                }
+                if (conn.Ex != null)
+                {
+                    MessageBox.Show(conn.Ex.Message);
+                }
+                else { MessageBox.Show("Something went wrong oopsie.."); }
+            }
         }
 
         private void Save()
         {
             throw new NotImplementedException();
         }
-        private int GetIndex(int id)
+
+        private int GetIndex(int? ID) // returns -1 if ID is null.
         {
-            DeliveryModel temp = SourceModels.Where((model) => model.ID == id).FirstOrDefault();
+            if (SourceModels == null) return 0;
+            DeliveryModel temp = SourceModels.Where(model => model.ID == ID).FirstOrDefault();
             return SourceModels.IndexOf(temp);
         }
 
