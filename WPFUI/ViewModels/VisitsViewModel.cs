@@ -115,7 +115,6 @@ namespace WPFUI.ViewModels
 			SourceModels = new ObservableCollection<VisitModel>(vconn.Load(null,true));
 			SelectedModel = SourceModels.FirstOrDefault();
 			_activitiesWithPrices = CacheOps.GetFromCache<ActivityModel>("Activities");
-           
             #region Set Command Delegates to methods
             GetSubActivityListCommand = new RelayCommand(GetSubActivityList,()=>true);
 			GetPriceCommand = new RelayCommand(GetPrice,()=>true);
@@ -133,9 +132,16 @@ namespace WPFUI.ViewModels
             #endregion
         }
 
-        //Fetch Methods for data bound to view controls by System.Windows.Interactivity triggers
+        #region Interaction Methods for data bound to View controls by System.Windows.Interactivity triggers
+        /// <summary>
+        /// Populates main list of activities
+        /// </summary>
         private ObservableCollection<string> GetActivityList()
 		{ return  new ObservableCollection<string>( _activitiesWithPrices.Select(model => model.ActivityName).Distinct());}
+
+        /// <summary>
+        /// Populates secondary list of activities based on main selection.
+        /// </summary>
 		private void GetSubActivityList()
 		{
             if (SelectedModel != null )
@@ -144,19 +150,28 @@ namespace WPFUI.ViewModels
                 model.ActivityName == SelectedModel.Activity.ActivityName).Select(model => model.SubActivity).Distinct());
             }
 		}
+
+        /// <summary>
+        /// Searches for price from master list based on activity and subactivity, finally on IsWeBH as criteria
+        /// </summary>
 		private void GetPrice()
 		{
-            // This code returns exception if no match found in activities
+            
             if (!(String.IsNullOrEmpty(SelectedModel?.Activity.ActivityName) || String.IsNullOrEmpty(SelectedModel?.Activity.SubActivity)))
                 SelectedModel.Amount = _activitiesWithPrices.Where(model => model.ActivityName == SelectedModel.Activity.ActivityName &&
                 model.SubActivity == SelectedModel.Activity.SubActivity && model.IsWEBH == SelectedModel.VisitDate.IsWeekendBankHoliday()
                 ).Select(model => model.Price).FirstOrDefault();
         }
+
+        /// <summary>
+        /// Gets member details from cache using member number of visitmodel. Currently not used.
+        /// </summary>
         private void GetMemberDetails()
         {
             if(SelectedModel != null)
             SelectedModel.Member = CacheOps.GetFromCache<MemberModel>("Members").GetMemberDetails(_selectedvisit.Member.MemNo);
         }
+        #endregion
 
         #region Navigation Bar Methods
         private void First()
@@ -171,14 +186,14 @@ namespace WPFUI.ViewModels
         }
         private void Previous()
         {
-            int index = SourceModels.GetBoundCollectionIndex(SelectedModel.ID);
+            int index = SourceModels.GetCollectionIndex(SelectedModel.ID);
             VisitModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
 
         }
         private void Next()
         {
-            int index = SourceModels.GetBoundCollectionIndex(SelectedModel.ID);
+            int index = SourceModels.GetCollectionIndex(SelectedModel.ID);
             VisitModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
@@ -265,7 +280,7 @@ namespace WPFUI.ViewModels
                 //Cancel Edit Visit
                 else if(dirtySelection !=null)
                 {
-                    SourceModels[SourceModels.GetBoundCollectionIndex(SelectedModel.ID)] = dirtySelection;
+                    SourceModels[SourceModels.GetCollectionIndex(SelectedModel.ID)] = dirtySelection;
                     dirtySelection = null;
                 }
             }
@@ -273,11 +288,7 @@ namespace WPFUI.ViewModels
         }
         #endregion
 
-        //private int GetIndex(int visitid)
-        //{
-        //    VisitModel temp = SourceModels.Where((model) => model.ID == visitid).FirstOrDefault();
-        //    return SourceModels.IndexOf(temp);
-        //}
+       
 
     }
 }

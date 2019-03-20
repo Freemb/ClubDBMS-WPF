@@ -21,10 +21,25 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <!--Row 1-->
-        <StackPanel Grid.Column="1" Grid.Row="1">
+        <!--Row 1 Main Grid-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+                   
+            <StackPanel Grid.Column="1" Grid.Row="1">
             <TextBlock Text="Mem No" Margin="5" MinHeight="35" MinWidth="20"/>
             <TextBlock Text ="Title" Margin="5" MinHeight="35" MinWidth="20"/>
             <TextBlock Text ="Forename" Margin="5" MinHeight="35" MinWidth="20"/>
@@ -37,7 +52,7 @@
             <TextBlock Text ="D.O.B" Margin="5" MinHeight="35" MinWidth="20"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.Row="1" >
+            <StackPanel Grid.Column="2" Grid.Row="1" >
             <TextBox x:Name="MemNo" Text="{Binding SourceModels/MemNo, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
             <TextBox x:Name="Title" Text="{Binding SourceModels/Title, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
             <TextBox x:Name="Forename" Text="{Binding SourceModels/Forename, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
@@ -49,6 +64,7 @@
             <TextBox x:Name="Gender" Text="{Binding SourceModels/Gender, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
             <TextBox x:Name="DOB" Text="{Binding SourceModels/DateOfBirth, Mode=TwoWay}" MinWidth="300" Style="{StaticResource FormTextBox}"/>
         </StackPanel>
+        </Grid>
 
         <DataGrid x:Name="GridMembers" ItemsSource="{Binding SourceModels}" Grid.Row="1" Grid.Column="3" Margin="5" AlternatingRowBackground="AliceBlue" IsReadOnly="True" 
                   AutoGenerateColumns="False" MaxHeight="1000" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedModel, Mode=TwoWay}"
@@ -67,7 +83,18 @@
             </DataGrid.Columns>            
         </DataGrid>
 
-        <!--Row 2-->
+        <!--Row 2 Main Grid-->
+        <WrapPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+            <Button Command="{Binding FirstCommand}" Content="First"/>
+            <Button Command="{Binding PreviousCommand}" Content="Previous"/>
+            <Button Command="{Binding NextCommand}" Content="Next"/>
+            <Button Command="{Binding LastCommand}" Content="Last"/>
+            <Button Command="{Binding AddCommand}" Content="New"/>
+            <Button Command="{Binding EditCommand}" Content="Edit"/>
+            <Button Command="{Binding DeleteCommand}" Content="Delete"/>
+            <Button Command="{Binding CancelCommand}" Content="Cancel"/>
+            <Button Command="{Binding SaveCommand}" Content="Save"/>
+        </WrapPanel>
     </Grid>
 
 </UserControl>

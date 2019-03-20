@@ -5,10 +5,15 @@ using DataLibrary.Utility;
 
 namespace WPFUI.ViewModels
 {
-    public interface IViewModel
+    public interface IViewModel<T> where T:IModel<T>
     {
+        ObservableCollection<T> SourceModels { get; set; }
+        T SelectedModel { get; set; }
+        T DirtySelection { get; set; }
+
         bool IsEditMode { get; }
         bool IsReadOnly { get; set; }
+
         ICommand AddCommand { get; }
         ICommand FirstCommand { get; }
         ICommand LastCommand { get; }
@@ -19,5 +24,6 @@ namespace WPFUI.ViewModels
         ICommand DeleteCommand { get; }
         ICommand EditCommand { get; }
         
+
     }
 }

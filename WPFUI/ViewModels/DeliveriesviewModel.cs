@@ -9,7 +9,7 @@ using WPFUI.Utility;
 
 namespace WPFUI.ViewModels
 {
-    public class DeliveriesViewModel : ObservableObject, IViewModel
+    public class DeliveriesViewModel : ObservableObject
     {
         private bool _isReadOnly = true;
         private DeliveryModel _selectedDelivery = new DeliveryModel();
@@ -95,7 +95,7 @@ namespace WPFUI.ViewModels
         private void Previous()
         {
             if (SourceModels == null) return;
-            int index = GetIndex(SelectedModel?.ID);
+            int index = SourceModels.GetCollectionIndex(SelectedModel?.ID);
             DeliveryModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
 
@@ -103,7 +103,7 @@ namespace WPFUI.ViewModels
         private void Next()
         {
             if (SourceModels == null) return;
-            int index = GetIndex(SelectedModel?.ID);
+            int index = SourceModels.GetCollectionIndex(SelectedModel?.ID);
             DeliveryModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
@@ -135,7 +135,7 @@ namespace WPFUI.ViewModels
                 //Cancel Edit Visit
                 else if (dirtySelection != null)
                 {
-                    SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
+                    SourceModels[SourceModels.GetCollectionIndex(SelectedModel.ID)] = dirtySelection;
                     dirtySelection = null;
                 }
             }
@@ -166,14 +166,7 @@ namespace WPFUI.ViewModels
             throw new NotImplementedException();
         }
 
-        private int GetIndex(int? ID) // returns -1 if ID is null.
-        {
-            if (SourceModels == null) return 0;
-            DeliveryModel temp = SourceModels.Where(model => model.ID == ID).FirstOrDefault();
-            return SourceModels.IndexOf(temp);
-        }
-
-
+       
     }  
 
 }

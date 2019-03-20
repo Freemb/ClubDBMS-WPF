@@ -50,7 +50,7 @@ namespace DataLibrary.Models
             Description = description;
         }
        
-        public DeliveryModel Clone(DeliveryModel model)
+        public DeliveryModel Clone(DeliveryModel model = null)
         {
             return (DeliveryModel)this.MemberwiseClone();
         }

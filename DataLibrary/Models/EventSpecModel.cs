@@ -57,7 +57,7 @@ namespace DataLibrary.Models
             Event.Frequency = freq;
             Event.Mode = mode;
         }
-        public EventSpecModel Clone(EventSpecModel model)
+        public EventSpecModel Clone(EventSpecModel model = null)
         {
             return (EventSpecModel)this.MemberwiseClone();
         }

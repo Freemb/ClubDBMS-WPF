@@ -40,6 +40,7 @@ namespace WPFUI.ViewModels
             }
         }
 
+        #region ICommands for binding to buttons/events
         public ICommand AddCommand { get; private set; }
         public ICommand FirstCommand { get; private set; }
         public ICommand LastCommand { get; private set; }
@@ -50,6 +51,7 @@ namespace WPFUI.ViewModels
         public ICommand DeleteCommand { get; private set; }
         public ICommand EditCommand { get; private set; }
         public ICommand LoadEventSpecCommand { get; private set; }
+        #endregion
 
         public EventsViewModel()
         {
@@ -57,7 +59,7 @@ namespace WPFUI.ViewModels
             EventConnector econ = new EventConnector();
             RootEvents = new ObservableCollection<EventModel>(econ.Load(null, true));
             _selectedEvent = RootEvents.FirstOrDefault();
-            
+            #region Set Command Delegates to methods
             LastCommand = new RelayCommand(Last, () => IsReadOnly);
             FirstCommand = new RelayCommand(First, () => IsReadOnly);
             PreviousCommand = new RelayCommand(Previous, () => IsReadOnly);
@@ -68,6 +70,7 @@ namespace WPFUI.ViewModels
             DeleteCommand = new RelayCommand(Delete, () => IsReadOnly);
             CancelCommand = new RelayCommand(Cancel, () => IsEditMode);
             LoadEventSpecCommand = new RelayCommand(LoadEventSpec, () => true);
+            #endregion
         }
         #region Navigation Bar Methods
         private void First()
@@ -85,7 +88,7 @@ namespace WPFUI.ViewModels
         private void Previous()
         {
             if (SourceModels == null) return;
-            int index = GetIndex(SelectedModel?.ID);
+            int index = SourceModels.GetCollectionIndex(SelectedModel?.ID);
             EventSpecModel temp = index - 1 > 0 ? SourceModels?[index - 1] : SourceModels?.FirstOrDefault();
             if (temp != null) SelectedModel = temp;
 
@@ -94,7 +97,7 @@ namespace WPFUI.ViewModels
         private void Next()
         {
             if (SourceModels == null) return;
-            int index = GetIndex(SelectedModel?.ID);
+            int index = SourceModels.GetCollectionIndex(SelectedModel?.ID);
             EventSpecModel temp = index + 1 < SourceModels.IndexOf(SourceModels.LastOrDefault()) ? SourceModels[index + 1] : SourceModels.LastOrDefault();
             if (temp != null) SelectedModel = temp;
 
@@ -174,17 +177,11 @@ namespace WPFUI.ViewModels
                 //Cancel Edit Visit
                 else if (dirtySelection != null)
                 {
-                    SourceModels[GetIndex(SelectedModel.ID)] = dirtySelection;
+                    SourceModels[SourceModels.GetCollectionIndex(SelectedModel.ID)] = dirtySelection;
                     dirtySelection = null;
                 }
         }
         #endregion
-        private int GetIndex(int? ID) // returns -1 if ID is null.
-        {
-            if (SourceModels == null) return 0;
-            EventSpecModel temp = SourceModels.Where(model => model.ID == ID).FirstOrDefault();
-            return SourceModels.IndexOf(temp);
-        }
         private void LoadEventSpec()
         {
             EventSpecConnector esconn = new EventSpecConnector();

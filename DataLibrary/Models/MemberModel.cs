@@ -17,14 +17,18 @@ namespace DataLibrary.Models
         private string _gender = "";
         private DateTime _dateOfBirth = DateTime.Today.Date;
 
-        public int? ID { get => _id;} // constructed to adhere to int requirement of IModel, still unique
+        public int? ID { get => _id; set => _id = value; } // introduced to satisfy implementation of IModel, not present in data source
         public double MemNo
         {
             get => _memNo;
             set
             {
-                OnPropertyChanged(ref _memNo, value);
-                _id = (int)(value * 10D);
+               if(OnPropertyChanged(ref _memNo, value))
+               {
+                   _id = (int)(value * 10D);
+                    OnPropertyChanged("ID");
+               }
+                
             }
         }
         public string Forename { get => _forename; set { OnPropertyChanged(ref _forename, value); } }
@@ -36,8 +40,6 @@ namespace DataLibrary.Models
         public string MobileTel { get => _mobileTel; set { OnPropertyChanged(ref _mobileTel, value); } }
         public string Gender { get => _gender; set { OnPropertyChanged(ref _gender, value); } }
         public DateTime DateOfBirth { get => _dateOfBirth; set { OnPropertyChanged(ref _dateOfBirth, value); } }
-
-        int? IModel<MemberModel>.ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public MemberModel()
         {
@@ -67,7 +69,7 @@ namespace DataLibrary.Models
             return this.Forename + "  " + this.Surname;
         }
 
-        public MemberModel Clone(MemberModel model)
+        public MemberModel Clone(MemberModel model = null)
         {
             return (MemberModel)this.MemberwiseClone();
         }
