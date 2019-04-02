@@ -8,19 +8,17 @@ namespace WPFUI.ViewModels
 {
     public sealed class ShellViewModel : ObservableObject
 	{
-		public MembersViewModel MemVM { get; private set; } 
-		public VisitsViewModel VisVM { get; private set; }
-		public PortalViewModel Portal { get; private set; }
-        public EventsViewModel EventVM { get; private set; }
-        public DeliveriesViewModel DelVM { get; private set; }
+        public PortalViewModel Portal { get; private set; }
         private static readonly ShellViewModel _instance; // don't initialise here, calls ctor before static ctor finalises.
         private Visibility _isMenuCollapsed = Visibility.Collapsed; //0-visible, 1-hidden, 2- collapsed
         private object _currentView;
-		public object CurrentView
+        //implement stack for back navigation
+        public object CurrentView
 		{
 			get { return _currentView; }
 			set { OnPropertyChanged(ref _currentView, value); }
 		}
+        
 		public ICommand LoadPortalCommand { get; private set; }
 		public ICommand QuitCommand { get; private set; }
         public ICommand CollapsePaneCommand { get; private set; }
@@ -46,18 +44,20 @@ namespace WPFUI.ViewModels
 		//instance (singleton) constructor
 		private ShellViewModel()
 		{
-			MemVM = new MembersViewModel();
-			VisVM = new VisitsViewModel();
+            //Shell Objects
             Portal = new PortalViewModel();
-            EventVM = new EventsViewModel();
-            DelVM = new DeliveriesViewModel();
-			LoadPortalCommand = new RelayCommand(() => CurrentView = Portal,()=>true);
+            LoadPortalCommand = new RelayCommand(() => CurrentView = Portal,()=>true);
 			QuitCommand = new RelayCommand(Quit,()=>true);
             CollapsePaneCommand = new RelayCommand(CollapsePane,()=>true);
-			Portal.LoadMembersCommand = new RelayCommand(() => CurrentView = MemVM,()=>true);
-			Portal.LoadVisitsCommand = new RelayCommand(() => CurrentView = VisVM,()=>true);
-            Portal.LoadEventsCommand = new RelayCommand(() => CurrentView = EventVM, () => true);
-            Portal.LoadDeliveriesCommand = new RelayCommand(() => CurrentView = DelVM, () => true);
+            //Portal Objects
+            Portal.LoadMembersPortalCommand = new RelayCommand(() => CurrentView = Portal.MemPortalVM, () => true);
+            Portal.LoadEventsPortalCommand = new RelayCommand(() => CurrentView = Portal.EventPortalVM, () => true);
+            Portal.LoadDeliveriesCommand = new RelayCommand(() => CurrentView = Portal.DelVM, () => true);
+            //Portal Sub-Objects
+            Portal.MemPortalVM.LoadMembersCommand = new RelayCommand(() => CurrentView = Portal.MemPortalVM.MemVM,()=>true);
+			Portal.MemPortalVM.LoadVisitsCommand = new RelayCommand(() => CurrentView = Portal.MemPortalVM.VisVM,()=>true);
+            Portal.EventPortalVM.LoadEventsCommand = new RelayCommand(() => CurrentView = Portal.EventPortalVM.EventVM, () => true);
+            
             CurrentView = Portal; //Loads portal on opening
 
 		}

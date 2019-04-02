@@ -23,8 +23,24 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-            <Button Content="Event Setup" Margin="5"/>
-            <Button Content = "Event Bookings" Margin="5"/>
+            <Button  Command="{Binding LoadEventsCommand}" Style="{StaticResource PortalButtons}">
+                <Button.Content>
+                    <StackPanel>
+                        <TextBlock Text=" " MinWidth="110"/>
+                        <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\fireworks.png" MaxHeight="80" MaxWidth="80" />
+                        <TextBlock Text="Events" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button  Command="{Binding LoadBookingsCommand}" Style="{StaticResource PortalButtons}">
+                <Button.Content>
+                    <StackPanel>
+                        <TextBlock Text=" " MinWidth="110"/>
+                        <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\fireworks.png" MaxHeight="80" MaxWidth="80" />
+                        <TextBlock Text="Bookings" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
             <Button Content="EventLists" Margin="5"/>
             <Button Content="Event Reports" Margin="5"/>
             <Button Content="EmailConfirmations" Margin="5"/>

@@ -24,7 +24,24 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <WrapPanel Grid.Row="1" Grid.Column="1">
-            <Button Margin="5" Content="Members/CRUD ops"/>
+            <Button  Command="{Binding LoadVisitsCommand}" Style="{StaticResource PortalButtons}">
+                <Button.Content>
+                    <StackPanel>
+                        <TextBlock Text=" " MinWidth="110"/>
+                        <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\payment.png" MaxHeight="80" MaxWidth="80" />
+                        <TextBlock Text="Visits" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button  Command="{Binding LoadMembersCommand}" Style="{StaticResource PortalButtons}">
+                <Button.Content>
+                    <StackPanel>
+                        <TextBlock Text=" " MinWidth="110"/>
+                        <Image Source="C:\Users\everr\Pictures\ClubDBMSWPF\man.png" MaxHeight="80" MaxWidth="80" />
+                        <TextBlock Text="Members" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
             <Button Margin="5" Content="CarPasses"/>
             <Button Margin="5" Content="EChargePurchase"/>
             <Button Margin="5" Content="EChargeBooking"  />
@@ -33,5 +50,7 @@
             <Button Margin="5" Content="Reciprocal"/>
             <Button Margin="5" Content="Validation Exempts"/>
         </WrapPanel>
+
+        
     </Grid>
 </UserControl>

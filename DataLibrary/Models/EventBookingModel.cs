@@ -13,7 +13,7 @@ namespace DataLibrary.Models
 
         public int? ID { get => _iD; set => _iD = value; }
 
-        public EventBookingModel Clone(EventBookingModel model)
+        public EventBookingModel Clone(EventBookingModel model = null)
         {
             return (EventBookingModel)this.MemberwiseClone();
         }
