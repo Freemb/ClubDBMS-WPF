@@ -1,4 +1,5 @@
-﻿using DataLibrary.Models;
+﻿using DataLibrary.Cache;
+using DataLibrary.Models;
 using DataLibrary.Operations;
 using System;
 using System.Collections.ObjectModel;
@@ -18,15 +19,15 @@ namespace WPFUI.ViewModels
         private EventSpecModel dirtySelection;
         private bool _isReadOnly = true;
         private ObservableCollection<EventModel> _rootEvents;
+        private ObservableCollection<EventBookingModel> _bookingsDetail;
+        private EventBookingModel _selectedBooking;
 
         public EventSpecModel SelectedModel { get => _selectedModel; set => OnPropertyChanged(ref _selectedModel, value); }
         public EventModel SelectedEvent { get => _selectedEvent; set => OnPropertyChanged(ref _selectedEvent, value); }
-        public ObservableCollection<EventSpecModel> SourceModels
-        {
-            get { return _sourcemodels; }
-            set { OnPropertyChanged(ref _sourcemodels, value); }
-        }
-        public ObservableCollection<EventModel> RootEvents { get => _rootEvents; set => OnPropertyChanged(ref _rootEvents , value); }
+        public EventBookingModel SelectedBooking { get => _selectedBooking; set => OnPropertyChanged(ref _selectedBooking , value); }
+        public ObservableCollection<EventBookingModel> BookingsDetail { get => _bookingsDetail; set => OnPropertyChanged(ref _bookingsDetail, value); }
+        public ObservableCollection<EventSpecModel> SourceModels{get => _sourcemodels; set => OnPropertyChanged(ref _sourcemodels, value);}
+        public ObservableCollection<EventModel> RootEvents { get => _rootEvents; set => OnPropertyChanged(ref _rootEvents, value); }
 
 
         public bool IsEditMode { get => !IsReadOnly; }
@@ -51,11 +52,11 @@ namespace WPFUI.ViewModels
         public ICommand DeleteCommand { get; private set; }
         public ICommand EditCommand { get; private set; }
         public ICommand LoadEventSpecCommand { get; private set; }
+        public ICommand LoadBookingsCommand { get; private set; }
         #endregion
 
         public EventsViewModel()
         {
-            
             EventConnector econ = new EventConnector();
             RootEvents = new ObservableCollection<EventModel>(econ.Load(null, true));
             _selectedEvent = RootEvents.FirstOrDefault();
@@ -70,6 +71,7 @@ namespace WPFUI.ViewModels
             DeleteCommand = new RelayCommand(Delete, () => IsReadOnly);
             CancelCommand = new RelayCommand(Cancel, () => IsEditMode);
             LoadEventSpecCommand = new RelayCommand(LoadEventSpec, () => true);
+            LoadBookingsCommand = new RelayCommand(LoadBookings, () => true);
             #endregion
         }
         #region Navigation Bar Methods
@@ -157,29 +159,29 @@ namespace WPFUI.ViewModels
                 MessageBox.Show("Event Deleted Successfully");
                 return;
             }
-            
+
             if (conn.Ex != null)
             {
                 MessageBox.Show(conn.Ex.Message);
             }
-             else { MessageBox.Show("This event has bookings that must be deleted before continuing.."); }
+            else { MessageBox.Show("This event has bookings that must be deleted before continuing.."); }
         }
         private void Cancel()
         {
             IsReadOnly = true;
             if (SelectedModel == null) return;
-                //Cancel new visit
-                if (SelectedModel.ID == 0)
-                {
-                    SourceModels.Remove(SourceModels.Last());
-                    SelectedModel = SourceModels.LastOrDefault();
-                }
-                //Cancel Edit Visit
-                else if (dirtySelection != null)
-                {
-                    SourceModels[SourceModels.GetCollectionIndex(SelectedModel.ID)] = dirtySelection;
-                    dirtySelection = null;
-                }
+            //Cancel new visit
+            if (SelectedModel.ID == 0)
+            {
+                SourceModels.Remove(SourceModels.Last());
+                SelectedModel = SourceModels.LastOrDefault();
+            }
+            //Cancel Edit Visit
+            else if (dirtySelection != null)
+            {
+                SourceModels[SourceModels.GetCollectionIndex(SelectedModel.ID)] = dirtySelection;
+                dirtySelection = null;
+            }
         }
         #endregion
         private void LoadEventSpec()
@@ -187,6 +189,17 @@ namespace WPFUI.ViewModels
             EventSpecConnector esconn = new EventSpecConnector();
             SourceModels = new ObservableCollection<EventSpecModel>(esconn.Load(SelectedEvent.ID.ToString(), false));
             SelectedModel = SourceModels.FirstOrDefault();
+        }
+        private void LoadBookings()
+        {
+            EventBookingConnector conn = new EventBookingConnector();
+            BookingsDetail = new ObservableCollection<EventBookingModel>(conn.Load(SelectedModel.ID.ToString(), false));
+            SelectedBooking = BookingsDetail.FirstOrDefault();
+        }
+        private void GetMemberDetails()
+        {
+            if (SelectedModel != null)
+                SelectedBooking.Member = CacheOps.GetFromCache<MemberModel>("Members").GetMemberDetails(_selectedBooking.Member.MemNo);
         }
     }
 }

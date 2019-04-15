@@ -68,7 +68,6 @@
     </Compile>
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
-    <Compile Include="ViewModels\EventBookingsViewModel.cs" />
     <Compile Include="ViewModels\DeliveriesViewModel.cs" />
     <Compile Include="ViewModels\EventsPortalViewModel.cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
@@ -80,9 +79,6 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\VisitsPortalViewModel.cs" />
     <Compile Include="ViewModels\VisitsViewModel.cs" />
-    <Compile Include="Views\EventBookingsView.xaml.cs">
-      <DependentUpon>EventBookingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DeliveriesView.xaml.cs">
       <DependentUpon>DeliveriesView.xaml</DependentUpon>
     </Compile>
@@ -150,10 +146,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Views\EventBookingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\DeliveriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

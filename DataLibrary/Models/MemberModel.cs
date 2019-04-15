@@ -31,7 +31,7 @@ namespace DataLibrary.Models
                 
             }
         }
-        public string Forename { get => _forename; set { OnPropertyChanged(ref _forename, value); } }
+        public string Forename { get => _forename; set => OnPropertyChanged(ref _forename, value);}
         public string Surname { get => _surname; set { OnPropertyChanged(ref _surname, value); } }
         public string Title { get => _title; set { OnPropertyChanged(ref _title, value); } }
         public string Category { get => _category; set { OnPropertyChanged(ref _category, value); } }
@@ -63,6 +63,33 @@ namespace DataLibrary.Models
             DateTime.TryParse(dob, out DateTime DOBValue);
             DateOfBirth = DOBValue.Date;
 
+        }
+        public override bool Equals(object obj)
+        {
+            MemberModel temp = obj as MemberModel;
+            if (temp == null)
+            {
+                return false;
+            }
+            else
+            {
+                return MemNo == temp.MemNo &&
+                    Title == temp.Title &&
+                    Forename == temp.Forename &&
+                    Surname == temp.Surname &&
+                    Category == temp.Category &&
+                    Email == temp.Email &&
+                    HomeTel == temp.HomeTel &&
+                    MobileTel == temp.MobileTel &&
+                    Gender == temp.Gender &&
+                    DateOfBirth == temp.DateOfBirth;
+
+
+            }
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
         public override string ToString()
         {

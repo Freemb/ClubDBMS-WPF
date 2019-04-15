@@ -20,7 +20,7 @@
             <DataTemplate DataType="{x:Type VMs:DeliveriesViewModel}"><Vs:DeliveriesView/></DataTemplate>
             <DataTemplate DataType="{x:Type VMs:MembersPortalViewModel}"><Vs:MembersPortalView/></DataTemplate>
             <DataTemplate DataType="{x:Type VMs:EventsPortalViewModel}"><Vs:EventsPortalView/></DataTemplate>
-            <DataTemplate DataType="{x:Type VMs:EventBookingsViewModel}"><Vs:EventBookingsView/></DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
     

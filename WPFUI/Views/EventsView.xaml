@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:I ="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:WPFUI.Views"
+             xmlns:controls="clr-namespace:WPFUI.Views"
+             xmlns:VMs="clr-namespace:WPFUI.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="450" d:DesignWidth="500">
+    
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="auto"/>
@@ -18,29 +20,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid x:Name="EventSelectionGrid" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Column="0" Grid.Row="2" Margin="0">
+             </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
@@ -49,8 +42,8 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <ComboBox ItemsSource="{Binding RootEvents, Mode=TwoWay}" SelectedItem ="{Binding SelectedEvent, Mode=TwoWay}" 
-                          Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                <ComboBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" ItemsSource="{Binding RootEvents, Mode=TwoWay}" 
+                          SelectedItem ="{Binding SelectedEvent, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -62,6 +55,7 @@
                     <I:Interaction.Triggers>
                         <I:EventTrigger EventName="SelectionChanged">
                             <I:InvokeCommandAction Command="{Binding LoadEventSpecCommand}"/>
+                            <I:InvokeCommandAction Command="{Binding LoadBookingsCommand}"/>
                         </I:EventTrigger>
                     </I:Interaction.Triggers>
                 </ComboBox>
@@ -81,24 +75,69 @@
                     <TextBox Text="{Binding SelectedEvent.Frequency, Mode=TwoWay}" Style="{StaticResource FormTextBox}"/>
                 </StackPanel>
             </Grid>
-        </Grid>
-        <DataGrid ItemsSource="{Binding SourceModels}" Grid.Column="2" Grid.Row="1" IsSynchronizedWithCurrentItem="True"
+            <DataGrid ItemsSource="{Binding SourceModels}" Grid.Column="1" Grid.Row="0" IsSynchronizedWithCurrentItem="True"
                   SelectedItem="{Binding SelectedModel, Mode=TwoWay}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding EventDate, ConverterCulture=en-GB, StringFormat= dd/MM/yyyy}"/>
-                <DataGridTextColumn Header="Location" Binding="{Binding Location}"/>
-                <DataGridTextColumn Header="MaxLimit" Binding="{Binding MaxLimit}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid ItemsSource="{Binding SelectedModel.PriceList, Mode=TwoWay}" Grid.Column="3" Grid.Row="1" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Group" Binding="{Binding Group}"/>
-                <DataGridTextColumn Header="Cost" Binding="{Binding Cost}"/>
-            </DataGrid.Columns>
-            
-        </DataGrid>
-        <WrapPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding EventDate, ConverterCulture=en-GB, StringFormat= dd/MM/yyyy}"/>
+                    <DataGridTextColumn Header="Location" Binding="{Binding Location}"/>
+                    <DataGridTextColumn Header="MaxLimit" Binding="{Binding MaxLimit}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid ItemsSource="{Binding SelectedModel.PriceList, Mode=TwoWay}" Grid.Column="2" Grid.Row="0" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Group" Binding="{Binding Group}"/>
+                    <DataGridTextColumn Header="Cost" Binding="{Binding Cost}"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+         </Grid>
+       
+        <Grid x:Name="BookingsDetail" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <!--Row 0-->
+            <TextBlock Text="Booking Ref:" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Text="{Binding SelectedBooking.BookingRef}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource FormTextBox}"/>
+            <TextBox Text="{Binding SelectedBooking.BookingTime, ConverterCulture= en-GB, StringFormat= hh:mm}" Grid.Row="0" Grid.Column="3" Style="{StaticResource FormTextBox}"/>
+            <DataGrid Grid.Row="0" Grid.Column="4" Grid.RowSpan="5" ItemsSource="{Binding BookingsDetail, Mode=TwoWay}">
+                
+            </DataGrid>
+            <!--Row 1-->
+            <TextBlock Text="Mem No:" Grid.Row="1" Grid.Column="0"/>
+            <TextBox Text="{Binding SelectedBooking.MemNo}" Grid.Row="1" Grid.Column="1" Style="{StaticResource FormTextBox}"/>
+            <TextBox Text="{Binding MemName}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource FormTextBox}"/>
+            <!--Row 2-->
+            <TextBlock Text="Contact No:" Grid.Row="2" Grid.Column="0"/>
+            <TextBox Text="{Binding SelectedBooking.ContactNo}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Style="{StaticResource FormTextBox}"/>
+            <!--Row 3-->
+            <TextBlock Text="Table Details:" Grid.Row="3" Grid.Column="0"/>
+            <TextBox Text="{Binding SelectedBooking.TableNo}" Grid.Row="3" Grid.Column="1" Style="{StaticResource FormTextBox}"/>
+            <TextBox Text="{Binding SelectedBooking.TablePos}" Grid.Row="3" Grid.Column="2" Style="{StaticResource FormTextBox}"/>
+            <TextBox Text="{Binding SelectedBooking.NumPeople}" Grid.Row="3" Grid.Column="3" Style="{StaticResource FormTextBox}"/>
+            <!--Row 4-->
+            <TextBlock Text="Requirements:" Grid.Row="4" Grid.Column="0"/>
+            <TextBox Text="{Binding SelectedBooking.Requirements}" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Style="{StaticResource FormTextBox}"/>
+            <!--Row 5-->
+            <TextBlock Text="Total People:" Grid.Row="5" Grid.Column="0"/>
+
+        </Grid>
+        <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3">
             <Button Command="{Binding FirstCommand}" Content="First"/>
             <Button Command="{Binding PreviousCommand}" Content="Previous"/>
             <Button Command="{Binding NextCommand}" Content="Next"/>

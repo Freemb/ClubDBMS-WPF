@@ -103,7 +103,7 @@ namespace DataLibrary.Operations
         {
             using (SqlConnection con = new SqlConnection(ConnString()))
             {
-                SqlDataAdapter da = new SqlDataAdapter("dbo.spLoadDeliveries", con);
+                SqlDataAdapter da = new SqlDataAdapter("spLoadDeliveries", con);
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 //passing in a null for input gives a default date of today's date in stored procedure
                 if (!all)

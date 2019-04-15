@@ -24,13 +24,10 @@ namespace WPFUI.ViewModels
                 OnPropertyChanged(ref _isReadOnly, value);
                 OnPropertyChanged("IsEditMode");
             }
-
         }
         public bool IsEditMode
-
         {
             get { return !_isReadOnly; }
-
         }
 
         //properties for binding to View
@@ -64,7 +61,7 @@ namespace WPFUI.ViewModels
             SourceModels = new ObservableCollection<DeliveryModel>(conn.Load());
             SelectedModel = SourceModels.FirstOrDefault();
 
-            //Assign Commands for Binding
+            #region Assign Commands for Binding
             LastCommand = new RelayCommand(Last, () => IsReadOnly);
             FirstCommand = new RelayCommand(First, () => IsReadOnly);
             PreviousCommand = new RelayCommand(Previous, () => IsReadOnly);
@@ -74,12 +71,12 @@ namespace WPFUI.ViewModels
             EditCommand = new RelayCommand(Edit, () => IsReadOnly);
             DeleteCommand = new RelayCommand(Delete, () => IsReadOnly);
             CancelCommand = new RelayCommand(Cancel, () => IsEditMode);
-
+            #endregion
         }
 
 
 
-        //Navigation Bar Methods
+        #region Navigation Bar Methods
         private void First()
         {
             if (SourceModels == null) return;
@@ -160,13 +157,13 @@ namespace WPFUI.ViewModels
                 else { MessageBox.Show("Something went wrong oopsie.."); }
             }
         }
-
         private void Save()
         {
             throw new NotImplementedException();
         }
+        #endregion
 
-       
-    }  
+
+    }
 
 }
