@@ -18,16 +18,16 @@ namespace DataLibrary.Models
         private bool _isConfirmed;
 
         public int? ID { get => _iD; set => _iD = value; }
-        public string BookingRef { get => _bookingRef; set => _bookingRef = value; }
-        public int EventSpecID { get => _eventSpecID; set => _eventSpecID = value; }
-        public DateTime BookingTime { get => _bookingTime; set => _bookingTime = value; }
-        public MemberModel Member { get => _member; set => _member = value; }
+        public string BookingRef { get => _bookingRef; set => OnPropertyChanged(ref _bookingRef , value); }
+        public int EventSpecID { get => _eventSpecID; set => OnPropertyChanged(ref _eventSpecID , value); }
+        public DateTime BookingTime { get => _bookingTime; set => OnPropertyChanged(ref _bookingTime ,value); }
+        public MemberModel Member { get => _member; set => OnPropertyChanged(ref _member ,value); }
         public string ContactNo { get => _contactNo; set => _contactNo = value; }
-        public short TableNo { get => _tableNo; set => _tableNo = value; }
+        public short TableNo { get => _tableNo; set => OnPropertyChanged(ref _tableNo , value); }
         public string TablePos { get => _tablePos; set => _tablePos = value; }
         public short NumPeople { get => _numPeople; set => _numPeople = value; }
         public string Requirements { get => _requirements; set => _requirements = value; }
-        public bool IsConfirmed { get => _isConfirmed; set => _isConfirmed = value; }
+        public bool IsConfirmed { get => _isConfirmed; set => OnPropertyChanged(ref _isConfirmed ,value); }
 
         public EventBookingModel()
         {

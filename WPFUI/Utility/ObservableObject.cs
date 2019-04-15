@@ -16,9 +16,7 @@ namespace WPFUI.Utility
 		// checks to see if the value has changed before setting value and notifying of property change
 		protected virtual bool OnPropertyChanged<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
 		{
-			if (EqualityComparer<T>.Default.Equals(backingField, value))
-            
-				return false;
+			if (EqualityComparer<T>.Default.Equals(backingField, value)) return false;
 			backingField = value;
 			OnPropertyChanged(propertyName);
 			return true;

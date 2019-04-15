@@ -18,7 +18,6 @@ namespace WPFUI.ViewModels
         private bool _isReadOnly = true;
         private VisitModel _selectedvisit = new VisitModel();
         private VisitModel dirtySelection;
-        private MemberModel _selectedmember = new MemberModel();
         private ObservableCollection<VisitModel> _sourceModels;
 		private ObservableCollection<string> _activitylist;
 		private ObservableCollection<string> _subactivitylist;
@@ -80,16 +79,7 @@ namespace WPFUI.ViewModels
 				OnPropertyChanged(ref _subactivitylist, value); 
 			}
 		}
-        public MemberModel SelectedMember
-		{
-			get { return _selectedmember; }
-			set
-			{
-				OnPropertyChanged(ref _selectedmember, value);
-			}   
-			
-		}
-		
+        
         public bool IsReadOnly
         {
             get { return _isReadOnly; }

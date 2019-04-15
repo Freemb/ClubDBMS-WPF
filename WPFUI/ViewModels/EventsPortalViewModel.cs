@@ -11,8 +11,7 @@ namespace WPFUI.ViewModels
     {
         
         public EventsViewModel EventVM { get; private set; }
-        public EventBookingsViewModel BookVM { get; private set; }
-
+        
         public ICommand LoadEventsCommand { get; set; }
         public ICommand LoadBookingsCommand { get; set; }
 
@@ -20,7 +19,6 @@ namespace WPFUI.ViewModels
         {
             
             EventVM = new EventsViewModel();
-            BookVM = new EventBookingsViewModel();
             
         }
     }

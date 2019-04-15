@@ -3,6 +3,7 @@ using DataLibrary.Models;
 using DataLibrary.Operations;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -19,14 +20,15 @@ namespace WPFUI.ViewModels
         private EventSpecModel dirtySelection;
         private bool _isReadOnly = true;
         private ObservableCollection<EventModel> _rootEvents;
-        private ObservableCollection<EventBookingModel> _bookingsDetail;
+        private BindingList<EventBookingModel> _bookingsDetail;
         private EventBookingModel _selectedBooking;
-
+        
         public EventSpecModel SelectedModel { get => _selectedModel; set => OnPropertyChanged(ref _selectedModel, value); }
         public EventModel SelectedEvent { get => _selectedEvent; set => OnPropertyChanged(ref _selectedEvent, value); }
-        public EventBookingModel SelectedBooking { get => _selectedBooking; set => OnPropertyChanged(ref _selectedBooking , value); }
-        public ObservableCollection<EventBookingModel> BookingsDetail { get => _bookingsDetail; set => OnPropertyChanged(ref _bookingsDetail, value); }
-        public ObservableCollection<EventSpecModel> SourceModels{get => _sourcemodels; set => OnPropertyChanged(ref _sourcemodels, value);}
+
+        public EventBookingModel SelectedBooking {get => _selectedBooking; set => OnPropertyChanged(ref _selectedBooking, value);}
+        public BindingList<EventBookingModel> BookingsDetail { get => _bookingsDetail; set => OnPropertyChanged(ref _bookingsDetail, value); }
+        public ObservableCollection<EventSpecModel> SourceModels { get => _sourcemodels; set => OnPropertyChanged(ref _sourcemodels, value); }
         public ObservableCollection<EventModel> RootEvents { get => _rootEvents; set => OnPropertyChanged(ref _rootEvents, value); }
 
 
@@ -53,6 +55,7 @@ namespace WPFUI.ViewModels
         public ICommand EditCommand { get; private set; }
         public ICommand LoadEventSpecCommand { get; private set; }
         public ICommand LoadBookingsCommand { get; private set; }
+        public ICommand GetMemberDetailsCommand { get; private set; }
         #endregion
 
         public EventsViewModel()
@@ -72,6 +75,7 @@ namespace WPFUI.ViewModels
             CancelCommand = new RelayCommand(Cancel, () => IsEditMode);
             LoadEventSpecCommand = new RelayCommand(LoadEventSpec, () => true);
             LoadBookingsCommand = new RelayCommand(LoadBookings, () => true);
+            GetMemberDetailsCommand = new RelayCommand(GetMemberDetails, () => true);
             #endregion
         }
         #region Navigation Bar Methods
@@ -193,13 +197,13 @@ namespace WPFUI.ViewModels
         private void LoadBookings()
         {
             EventBookingConnector conn = new EventBookingConnector();
-            BookingsDetail = new ObservableCollection<EventBookingModel>(conn.Load(SelectedModel.ID.ToString(), false));
+            BookingsDetail = new BindingList<EventBookingModel>(conn.Load(SelectedModel.ID.ToString(), false));
             SelectedBooking = BookingsDetail.FirstOrDefault();
         }
         private void GetMemberDetails()
         {
-            if (SelectedModel != null)
-                SelectedBooking.Member = CacheOps.GetFromCache<MemberModel>("Members").GetMemberDetails(_selectedBooking.Member.MemNo);
+            if (SelectedBooking != null)
+                _selectedBooking.Member = CacheOps.GetFromCache<MemberModel>("Members").GetMemberDetails(_selectedBooking.Member.MemNo);
         }
     }
 }
